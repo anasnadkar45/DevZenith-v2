@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { cn } from "@/lib/utils";
-import { SideBar } from "./components/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,23 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "max-w-[1500px] mx-auto")} >
+      <body className={cn(inter.className)} >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="h-screen grid flex-1 md:grid-cols-[250px_1fr]">
-            <aside className="hidden w-[250px]  h-full flex-col md:flex">
-              <SideBar />
-            </aside>
-            <div className="bg- m-4 rounded-md">
-              {children}
-            </div>
-
-          </div>
-
+          {children}
         </ThemeProvider>
       </body>
     </html>
