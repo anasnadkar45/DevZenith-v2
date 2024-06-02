@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
+import { cn } from "@/lib/utils";
+import { SideBar } from "./components/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,14 +19,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "max-w-[1400px] mx-auto")} >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex h-screen w-screen">
+            <aside className="hidden w-[200px] h-full flex-col md:flex">
+              <SideBar />
+            </aside>
+            {children}
+          </div>
+
         </ThemeProvider>
       </body>
     </html>
