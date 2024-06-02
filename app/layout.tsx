@@ -19,18 +19,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "max-w-[1400px] mx-auto")} >
+      <body className={cn(inter.className, "max-w-[1500px] mx-auto")} >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen w-screen">
-            <aside className="hidden w-[200px] h-full flex-col md:flex">
+          <div className="h-screen grid flex-1 md:grid-cols-[250px_1fr]">
+            <aside className="hidden w-[250px]  h-full flex-col md:flex">
               <SideBar />
             </aside>
-            {children}
+            <div className="bg- m-4 rounded-md">
+              {children}
+            </div>
+
           </div>
 
         </ThemeProvider>
