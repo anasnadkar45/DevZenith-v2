@@ -1,5 +1,8 @@
 import { ThemeProvider } from "../components/theme-provider";
 import { SideBar } from "../components/SideBar";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "../api/uploadthing/core";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 
 export default function RootLayout({
   children,
@@ -9,6 +12,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
+        <NextSSRPlugin
+          routerConfig={extractRouterConfig(ourFileRouter)}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
