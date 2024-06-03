@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,7 +42,6 @@ export function ResourceForm() {
                             required
                             minLength={3}
                         />
-
                     </div>
 
                     <div className="flex flex-col gap-y-2">
@@ -67,18 +67,32 @@ export function ResourceForm() {
                     </div>
 
                     <div className="flex flex-col gap-y-2">
-                        <input type="hidden" name="image" />
+                        <input type="hidden" name="image" value={JSON.stringify(image)} />
                         <Label>Resource Logo/Icon</Label>
                         <UploadDropzone
+                            className="border-accent"
                             endpoint="imageUploader"
                             onClientUploadComplete={(res) => {
-                                setImage(res[0].url);
+                                const uploadedUrl = res[0].url;
+                                console.log('Uploaded URL:', uploadedUrl);
+                                setImage(uploadedUrl);
                                 toast.success("Your images have been uploaded");
                             }}
                             onUploadError={(error: Error) => {
                                 toast.error("Something went wrong, try again");
                             }}
                         />
+                        {image && (
+                            <div className="flex w-full justify-center">
+                                <Image
+                                    src={image}
+                                    alt="Uploaded Resource Logo"
+                                    width={200}
+                                    height={200}
+                                    className="rounded"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex flex-col gap-y-2">

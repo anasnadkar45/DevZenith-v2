@@ -68,7 +68,7 @@ export async function AddResource(prevState: any, formData: FormData) {
         description: formData.get('description'),
         category: formData.get('category'),
         url: formData.get('url'),
-        image: formData.get('image'),
+        image: JSON.parse(formData.get("image") as string),
     });
 
     if (!validateFields.success) {
