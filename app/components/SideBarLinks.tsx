@@ -5,10 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const navItems = [
-    { name: "Home", href: "/dashboard", icon: Home },
-    { name: "Resources", href: "/resources", icon: Home },
-    { name: "Code Review", href: "/codereview", icon: Home },
-    { name: "Dev Rooms", href: "/devrooms", icon: Home },
+    { name: "Home", href: "/main", icon: Home },
+    { name: "Resources", href: "/main/resources", icon: Home },
+    { name: "Code Review", href: "/main/codereview", icon: Home },
+    { name: "Dev Rooms", href: "/main/devrooms", icon: Home },
 ];
 
 export function SideBarLinks() {

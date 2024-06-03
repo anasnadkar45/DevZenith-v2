@@ -3,18 +3,7 @@ import { UserNav } from './UserNav';
 import Link from 'next/link';
 import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { SideBarLinks } from './SideBarLinks';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
 export async function SideBar() {
     const { getUser } = getKindeServerSession();
@@ -23,7 +12,7 @@ export async function SideBar() {
     return (
         <nav className='pt-8 border-r h-full flex-col gap-y-4'>
             <div className='mb-8'>
-                <Link href="/">
+                <Link href="/main">
                     <h1 className="font-bold text-4xl px-3 pb-3">
                         Dev<span className="text-primary">Zenith</span>
                     </h1>
