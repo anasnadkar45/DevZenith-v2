@@ -25,15 +25,18 @@ const resourceSchema = z.object({
     url: z
         .string()
         .min(1, { message: "URL is required" }),
+    image: z
+        .string()
+        .min(1, { message: "URL is required" }),
 });
 
-async function getUserRole(userId:string){
+async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
-        where:{
+        where: {
             id: userId
         },
-        select:{
-            role:true,
+        select: {
+            role: true,
         }
     });
 
@@ -49,7 +52,7 @@ export async function AddResource(prevState: any, formData: FormData) {
     }
 
     const role = await getUserRole(user.id);
-    
+
     if (role !== Role.ADMIN) {
         const state: State = {
             status: "error",
@@ -65,6 +68,7 @@ export async function AddResource(prevState: any, formData: FormData) {
         description: formData.get('description'),
         category: formData.get('category'),
         url: formData.get('url'),
+        image: formData.get('image'),
     });
 
     if (!validateFields.success) {
@@ -85,6 +89,7 @@ export async function AddResource(prevState: any, formData: FormData) {
             userId: user.id,
             description: validateFields.data.description,
             url: validateFields.data.url,
+            image: validateFields.data.image,
         },
     });
 
