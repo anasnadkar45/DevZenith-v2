@@ -19,7 +19,7 @@ export default function RootLayout({
             <aside className="hidden w-[240px] h-full flex-col md:flex">
               <SideBar />
             </aside>
-            <div className="my-8 mx-6">
+            <div className="my-6 mx-6">
               {children}
             </div>
 

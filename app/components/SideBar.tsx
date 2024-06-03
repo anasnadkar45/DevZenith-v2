@@ -10,10 +10,10 @@ export async function SideBar() {
     const user = await getUser();
 
     return (
-        <nav className='pt-8 border-r h-full flex-col gap-y-4'>
+        <nav className='pt-6 border-r h-full flex-col gap-y-4'>
             <div className='mb-8'>
                 <Link href="/main">
-                    <h1 className="font-bold text-4xl px-3 pb-3">
+                    <h1 className="font-bold text-3xl px-3 pb-3">
                         Dev<span className="text-primary">Zenith</span>
                     </h1>
                 </Link>

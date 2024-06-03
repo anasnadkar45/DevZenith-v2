@@ -28,7 +28,7 @@ model Resource {
   id          String        @id @default(uuid())
   name        String
   description String
-  image       String
+  // image       String
   url         String
   category    CategoryTypes
 
