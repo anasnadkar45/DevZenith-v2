@@ -1,4 +1,5 @@
 import { ResourceCard } from "@/app/components/ResourceCard";
+import { ResourceCategoryLinks } from "@/app/components/ResourceCategoryLinks";
 import prisma from "@/app/lib/db";
 import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
@@ -28,11 +29,7 @@ export default async function ResourcesPage() {
             </div>
 
             <div className="flex mt-2 gap-2">
-                <div className="py-1 px-4 border-2 border-primary rounded-lg">All</div>
-                <div className="py-1 px-4 border-2 rounded-lg">Frontend</div>
-                <div className="py-1 px-4 border-2 rounded-lg">Backend</div>
-                <div className="py-1 px-4 border-2 rounded-lg">Devops</div>
-                <div className="py-1 px-4 border-2 rounded-lg">DSA</div>
+                <ResourceCategoryLinks />
             </div>
 
             <div className="grid gird-cols-1 lg:grid-cols-3 sm:grid-cols-2 mt-4 gap-10 mb-6">

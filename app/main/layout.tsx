@@ -3,6 +3,7 @@ import { SideBar } from "../components/SideBar";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "../api/uploadthing/core";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -12,26 +13,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
-        <NextSSRPlugin
-          routerConfig={extractRouterConfig(ourFileRouter)}
-        />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr]">
-            <aside className="hidden w-[240px] h-full flex-col md:flex">
-              <SideBar />
-            </aside>
-            <div className="my-6 mx-6">
-              {children}
+        <main>
+          <NextSSRPlugin
+            routerConfig={extractRouterConfig(ourFileRouter)}
+          />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr]">
+              <aside className="hidden w-[240px] h-full flex-col md:flex">
+                <SideBar />
+              </aside>
+              <div className="my-6 mx-6">
+                {children}
+              </div>
+
             </div>
 
-          </div>
+          </ThemeProvider>
+        </main>
 
-        </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

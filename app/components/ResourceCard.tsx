@@ -1,7 +1,11 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ArrowRight, ArrowUpRight, Bookmark, Copy } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Bookmark, CopyIcon, } from "lucide-react";
+import copy from "copy-to-clipboard";
 import Image from "next/image";
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface iAppProps {
     name: string;
@@ -31,18 +35,18 @@ export function ResourceCard({
                     className="border-2 border-primary rounded-md object-fill bg-white "
                 />
                 <div>
-                    <h1 className="text-3xl font-bold">{name}</h1>
+                    <h1 className="xl::text-3xl text-2xl font-bold">{name}</h1>
                     <p className="text-muted-foreground text-sm">Design Inspiration </p>
                 </div>
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger asChild className="absolute right-2 top-2">
-                            <Button variant="ghost">
-                                <Bookmark />
+                        <TooltipTrigger asChild className="absolute -right-2 top-0 w-fit">
+                            <Button variant="ghost" className="w-fit hover:bg-transparent" >
+                                <Bookmark className="hover" />
                             </Button>
                         </TooltipTrigger>
-                        <TooltipContent align="start" className="absolute right-2 top-2">
-                            <p>Bookmark</p>
+                        <TooltipContent align="start" className="absolute -right-3 top-2">
+                            <p>Comming Soon</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -51,11 +55,19 @@ export function ResourceCard({
             <p className="text-muted-foreground text-sm mb-2 mt-1">Description</p>
             <p className="line-clamp-2">{description}</p>
             <div className="grid grid-cols-2 gap-2 absolute bottom-2 right-2 left-2">
-                <Button variant={"secondary"} className="space-x-2">
+                <Button variant={"secondary"}
+                    className="space-x-2"
+                    onClick={() => {
+                        copy(url);
+                        toast.success("Link copied")
+                    }}>
                     <p>Copy</p>
-                    <Copy />
+                    <CopyIcon />
                 </Button>
-                <Button className="space-x-2">
+                <Button
+                    className="space-x-2"
+                    onClick={() => window.open(url, '_blank')}
+                >
                     <p>Visit</p>
                     <ArrowRight />
                 </Button>
