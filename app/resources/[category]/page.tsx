@@ -6,34 +6,10 @@ import { ResourceCard } from "@/app/components/ResourceCard";
 import { ResourceCategoryLinks } from "@/app/components/ResourceCategoryLinks";
 
 async function getData(category: string) {
-    let input;
-
-    switch (category) {
-        case "frontend": {
-            input = "frontend";
-            break;
-        }
-        case "backend": {
-            input = "backend";
-            break;
-        }
-        case "devops": {
-            input = "devops";
-            break;
-        }
-        case "all": {
-            input = "all";
-            break;
-        }
-        default: {
-            return notFound();
-        }
-    }
+    const whereClause = category === "all" ? {} : { category: category as CategoryTypes };
 
     const data = await prisma.resource.findMany({
-        where: {
-            category: input as CategoryTypes,
-        },
+        where: whereClause,
         select: {
             id: true,
             image: true,
@@ -46,6 +22,7 @@ async function getData(category: string) {
 
     return data;
 }
+
 
 export default async function CategoryPage({
     params,

@@ -48,5 +48,5 @@ export async function GET() {
     });
   }
 
-  return NextResponse.redirect("http://localhost:3000/main/resources");
+  return NextResponse.redirect("http://localhost:3000/resources/frontend");
 }

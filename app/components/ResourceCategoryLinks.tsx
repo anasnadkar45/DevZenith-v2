@@ -7,22 +7,22 @@ export const categoryLinks = [
     {
         id: 0,
         name: 'All',
-        href: '/main/resources'
+        href: '/resources/all'
     },
     {
         id: 1,
         name: 'frontend',
-        href: '/main/resources/frontend'
+        href: '/resources/frontend'
     },
     {
         id: 2,
         name: 'backend',
-        href: '/main/resources/backend'
+        href: '/resources/backend'
     },
     {
         id: 3,
         name: 'devops',
-        href: '/main/resources/devops'
+        href: '/resources/devops'
     },
 ]
 
