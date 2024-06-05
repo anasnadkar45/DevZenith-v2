@@ -9,6 +9,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { SideBar } from "./components/SideBar";
 import { Toaster } from "sonner";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Navbar } from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main>
+        <main className="custom-scrollbar">
           <NextSSRPlugin
             routerConfig={extractRouterConfig(ourFileRouter)}
           />
@@ -36,20 +37,15 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {(await isAuthenticated()) ? (
-              <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr]">
-                <aside className="hidden w-[240px] h-full flex-col md:flex">
-                  <SideBar />
-                </aside>
-                <div className="my-6 mx-6">
-                  {children}
-                </div>
-              </div>
-            ) : (
-              <div>
+            <Navbar />
+            <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr] pt-12">
+              <aside className="hidden w-[240px] h-full flex-col md:flex">
+                <SideBar />
+              </aside>
+              <div className="my-6 mx-6">
                 {children}
               </div>
-            )}
+            </div>
           </ThemeProvider>
         </main>
         <Toaster />

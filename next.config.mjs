@@ -5,6 +5,7 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'utfs.io',
+                hostname:'media.geeksforgeeks.org',
                 port: '',
                 // pathname: '/**',
             },

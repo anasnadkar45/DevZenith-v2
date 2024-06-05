@@ -41,21 +41,19 @@ export default async function CategoryPage({
             <div className="flex mt-2 gap-2">
                 <ResourceCategoryLinks />
             </div>
-            <section className="">
-                <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-10 mt-4">
-                    {data.map((resource) => (
-                        <ResourceCard
-                            key={resource.id}
-                            id={resource.id}
-                            name={resource.name}
-                            image={resource.image}
-                            description={resource.description}
-                            category={resource.category}
-                            url={resource.url}
-                        />
-                    ))}
-                </div>
-            </section>
+            <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-10 mt-4">
+                {data.map((resource) => (
+                    <ResourceCard
+                        key={resource.id}
+                        id={resource.id}
+                        name={resource.name}
+                        image={resource.image}
+                        description={resource.description}
+                        category={resource.category}
+                        url={resource.url}
+                    />
+                ))}
+            </div>
         </div>
 
     );
