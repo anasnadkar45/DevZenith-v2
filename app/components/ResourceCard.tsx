@@ -25,7 +25,7 @@ export function ResourceCard({
     image,
 }: iAppProps) {
     return (
-        <div className="border-2 p-2 border-primary/25 rounded-lg min-h-[265px] relative">
+        <div className="bg-card border-2 p-2 border-primary/25 rounded-lg min-h-[265px] relative">
             <div className="flex items-center gap-3">
                 <Image
                     src={image}

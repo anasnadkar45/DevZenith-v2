@@ -38,7 +38,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr] pt-12">
+            <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr] pt-14">
               <aside className="hidden w-[240px] h-full flex-col md:flex">
                 <SideBar />
               </aside>

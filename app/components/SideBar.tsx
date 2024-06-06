@@ -11,14 +11,6 @@ export async function SideBar() {
 
     return (
         <nav className='pt-6  border-r h-full flex-col gap-y-4 fixed w-[240px]'>
-            {/* <div className='mb-5'>
-                <Link href="/main/resources">
-                    <h1 className="font-bold text-3xl px-3 pb-5">
-                        Dev<span className="text-primary">Zenith</span>
-                    </h1>
-                </Link>
-                <div className='h-[1px] border-b'></div>
-            </div> */}
 
             <div className=''>
                 <SideBarLinks />

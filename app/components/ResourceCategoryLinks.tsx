@@ -36,8 +36,8 @@ export function ResourceCategoryLinks() {
                     key={item.id}
                     className={cn(
                         location === item.href
-                            ? "bg-muted border-primary rounded-lg"
-                            : "hover:bg-muted hover:bg-opacity-75",
+                            ? "bg-card border-primary rounded-lg"
+                            : "hover:bg-card hover:bg-opacity-75",
                         "group text-sm flex items-center px-5 py-1 border-2 font-medium rounded-md  "
                     )}
                 >

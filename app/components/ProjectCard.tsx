@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 export function ProjectCard() {
     return (
-        <Card className="bg-secondary">
+        <Card className="bg-card ">
             <CardHeader>
                 <div className="flex items-center gap-4">
                     <Avatar className="hidden h-9 w-9 sm:flex">

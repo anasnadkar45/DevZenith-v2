@@ -3,6 +3,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
 import { Role, type CategoryTypes } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export type State = {
     status: "error" | "success" | undefined;
@@ -30,6 +31,14 @@ const resourceSchema = z.object({
         .min(1, { message: "URL is required" }),
 });
 
+const squadSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The name has to be a minimum character length of 3" }),
+    description: z
+        .string()
+        .min(10, { message: "Description is required" }),
+})
 async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
         where: {
@@ -96,6 +105,47 @@ export async function AddResource(prevState: any, formData: FormData) {
     const state: State = {
         status: "success",
         message: "Your resource has been created successfully",
+    };
+
+    console.log(state);
+    return state;
+}
+
+
+// create Squad
+export async function createSquad(prevState:any,formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return redirect('/api/auth/login');
+    }
+
+    const validateFields = squadSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description')
+    })
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        }
+        return state;
+    }
+
+    const data = await prisma.squad.create({
+        data:{
+            name:validateFields.data.name,
+            userId:user.id,
+            description:validateFields.data.description
+        }
+    })
+
+    const state: State = {
+        status: "success",
+        message: "Your Squad has been created successfully",
     };
 
     console.log(state);

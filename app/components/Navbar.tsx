@@ -12,10 +12,10 @@ export async function Navbar() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   return (
-    <nav className="fixed mb-12 w-full bg-accent mx-auto flex px-3 h-14 items-center z-10">
+    <nav className="fixed mb-12 w-full border-b bg-card mx-auto flex px-3 h-14 items-center z-10">
       <div className="md:col-span-3">
         <Link href="/">
-          <h1 className="text-2xl font-semibold ">
+          <h1 className="text-3xl font-bold ">
             Dev<span className="text-primary">Zenith</span>
           </h1>
         </Link>

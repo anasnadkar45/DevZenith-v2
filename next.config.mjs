@@ -5,9 +5,20 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'utfs.io',
-                hostname:'media.geeksforgeeks.org',
                 port: '',
-                // pathname: '/**',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'media.geeksforgeeks.org',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'avatars.githubusercontent.com',
+                port: '',
+                pathname: '/**',
             },
         ],
     },
