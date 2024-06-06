@@ -35,9 +35,15 @@ const squadSchema = z.object({
     name: z
         .string()
         .min(3, { message: "The name has to be a minimum character length of 3" }),
+    username: z
+        .string()
+        .min(5, { message: "The username has to be a minimum character length of 5" }),
     description: z
         .string()
-        .min(10, { message: "Description is required" }),
+        .min(10, { message: "Description has to be a minimum character length of 3" }),
+    image: z
+        .string()
+        .min(1, { message: "image is required" }),
 })
 async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
@@ -113,7 +119,7 @@ export async function AddResource(prevState: any, formData: FormData) {
 
 
 // create Squad
-export async function createSquad(prevState:any,formData: FormData) {
+export async function createSquad(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
@@ -123,7 +129,9 @@ export async function createSquad(prevState:any,formData: FormData) {
 
     const validateFields = squadSchema.safeParse({
         name: formData.get('name'),
-        description: formData.get('description')
+        description: formData.get('description'),
+        username: formData.get('username'),
+        image: JSON.parse(formData.get("image") as string),
     })
 
     if (!validateFields.success) {
@@ -136,10 +144,12 @@ export async function createSquad(prevState:any,formData: FormData) {
     }
 
     const data = await prisma.squad.create({
-        data:{
-            name:validateFields.data.name,
-            userId:user.id,
-            description:validateFields.data.description
+        data: {
+            name: validateFields.data.name,
+            userId: user.id,
+            description: validateFields.data.description,
+            username: validateFields.data.username,
+            image: validateFields.data.image
         }
     })
 

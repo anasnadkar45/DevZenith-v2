@@ -1,5 +1,8 @@
 import prisma from "@/app/lib/db";
+import { Button } from "@/components/ui/button";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Image from "next/image";
+import Link from "next/link";
 
 async function getData(id: string){
     const data = await prisma.squad.findUnique({
@@ -8,7 +11,10 @@ async function getData(id: string){
         },
         select: {
             name: true,
+            id:true,
             description: true,
+            username: true,
+            image: true,
             userId:true,
             createdAt:true,
             User:true
@@ -23,11 +29,16 @@ export default async function SquadRoutePage({
 }: {
     params: { id: string };
 }) {
+    const {getUser} = getKindeServerSession()
+    const user = await getUser();
     const data = await getData(params.id);
     return (
         <div>
-            <p>{data?.User?.profileImage}</p>
-            <Image src={data?.User?.profileImage as string} alt="UserImage" width={50} height={50} /> 
+            <Button asChild>
+                <Link href={user?.id ? `/squads/${data?.id}/create`:"/api/auth/login"}>
+                    Create Post
+                </Link>
+            </Button>
         </div>
     )
 }

@@ -40,9 +40,9 @@ model Resource {
 
 model Squad {
   id          String   @id @default(uuid())
-  name        String   @unique
-  // username    String   @unique
-  // image String
+  name        String
+  username    String   @unique
+  image       String
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
