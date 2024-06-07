@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-  id            String     @id @unique
+  id            String      @id @unique
   email         String
   firstName     String
   lastName      String
   profileImage  String
-  role          Role       @default(USER)
+  role          Role        @default(USER)
   resource      Resource[]
   createdSquads Squad[]
+  SquadPosts    SquadPost[]
 }
 
 model Resource {
@@ -39,15 +40,30 @@ model Resource {
 }
 
 model Squad {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   name        String
-  username    String   @unique
+  username    String      @unique
   image       String
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  User        User?    @relation(fields: [userId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  User        User?       @relation(fields: [userId], references: [id])
   userId      String?
+  SquadPosts  SquadPost[]
+}
+
+model SquadPost {
+  id          String  @id @default(uuid())
+  title       String
+  textContent Json?
+  imageString String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Squad     Squad?   @relation(fields: [squadId], references: [id])
+  squadId   String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 enum CategoryTypes {
