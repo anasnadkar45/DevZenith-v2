@@ -52,7 +52,7 @@ export default async function Squads() {
                     {data.map((squad) => (
                         <SquadCard
                             key={squad.id}
-                            id={squad.id}
+                            id={squad.username}
                             name={squad.name}
                             image={squad.image}
                             description={squad.description}
