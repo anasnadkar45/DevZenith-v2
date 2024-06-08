@@ -4,6 +4,7 @@ import { z } from "zod";
 import prisma from "./lib/db";
 import { Role, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { title } from "process";
 
 export type State = {
     status: "error" | "success" | undefined;
@@ -45,6 +46,16 @@ const squadSchema = z.object({
         .string()
         .min(1, { message: "image is required" }),
 })
+
+const squadPostSchema = z.object({
+    title: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    description: z
+        .string()
+        .min(10, { message: "Description is required" }),
+})
+
 async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
         where: {
@@ -173,5 +184,43 @@ export async function createSquad(prevState: any, formData: FormData) {
 
     console.log(state);
     redirect('/squads')
+    return state;
+}
+
+
+export async function createSquadPost( prevState:any ,formData:FormData){
+    const {getUser} = getKindeServerSession();
+    const user = await getUser();
+
+    if(!user){
+        throw new Error('User not found');
+    }
+
+    const validateFields = squadPostSchema.safeParse({
+        title : formData.get('title'),
+        description : formData.get('description'),
+    })
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        }
+        return state;
+    }
+
+    const data = await prisma.squadPost.create({
+        data:{
+            title : validateFields.data.title,
+            description: validateFields.data.description,
+        }
+        
+    })
+
+    const state: State = {
+        status: "success",
+        message: "Your Squad has been created successfully",
+    };
     return state;
 }
