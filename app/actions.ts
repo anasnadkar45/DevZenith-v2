@@ -143,6 +143,19 @@ export async function createSquad(prevState: any, formData: FormData) {
         return state;
     }
 
+    // Check if the username already exists
+    const existingSquad = await prisma.squad.findUnique({
+        where: { username: validateFields.data.username },
+    });
+
+    if (existingSquad) {
+        const state: State = {
+            status: "error",
+            message: "Username is already taken, please choose another one.",
+        };
+        return state;
+    }
+
     const data = await prisma.squad.create({
         data: {
             name: validateFields.data.name,
@@ -159,5 +172,6 @@ export async function createSquad(prevState: any, formData: FormData) {
     };
 
     console.log(state);
+    redirect('/squads')
     return state;
 }

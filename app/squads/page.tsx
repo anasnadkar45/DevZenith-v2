@@ -21,7 +21,7 @@ interface Squad {
 }
 
 // Function to get squad data
-async function getData(){
+async function getData() {
     return prisma.squad.findMany({
         select: {
             id: true,
@@ -48,20 +48,31 @@ export default async function Squads() {
     return (
         <div>
             {user ? (
-                <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4">
-                    {data.map((squad) => (
-                        <SquadCard
-                            key={squad.id}
-                            id={squad.username}
-                            name={squad.name}
-                            image={squad.image}
-                            description={squad.description}
-                            createdAt={squad.createdAt}
-                            username={squad.username}
-                            User={squad.User} // Pass User, which can be null
-                        />
-                    ))}
+                <div>
+                    <div className="flex justify-between mb-4">
+                        <h1 className="text-3xl text-primary font-bold">DevSquads</h1>
+                        <Button asChild>
+                            <Link href={'/squads/create'}>
+                                Create Squad
+                            </Link>
+                        </Button>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4">
+                        {data.map((squad) => (
+                            <SquadCard
+                                key={squad.id}
+                                id={squad.username}
+                                name={squad.name}
+                                image={squad.image}
+                                description={squad.description}
+                                createdAt={squad.createdAt}
+                                username={squad.username}
+                                User={squad.User} // Pass User, which can be null
+                            />
+                        ))}
+                    </div>
                 </div>
+
             ) : (
                 <Card className="max-w-3xl mx-auto p-4">
                     <h1 className="text-center">

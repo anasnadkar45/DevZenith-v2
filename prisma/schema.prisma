@@ -23,7 +23,7 @@ model User {
   role          Role        @default(USER)
   resource      Resource[]
   createdSquads Squad[]
-  SquadPosts    SquadPost[]
+  // SquadPosts    SquadPost[]
 }
 
 model Resource {
@@ -49,22 +49,22 @@ model Squad {
   updatedAt   DateTime    @updatedAt
   User        User?       @relation(fields: [userId], references: [id])
   userId      String?
-  SquadPosts  SquadPost[]
+  // SquadPosts  SquadPost[]
 }
 
-model SquadPost {
-  id          String  @id @default(uuid())
-  title       String
-  textContent Json?
-  imageString String?
+// model SquadPost {
+//   id          String  @id @default(uuid())
+//   title       String
+//   textContent Json?
+//   imageString String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Squad     Squad?   @relation(fields: [squadId], references: [id])
-  squadId   String?
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   Squad     Squad?   @relation(fields: [squadId], references: [id])
+//   squadId   String?
+//   User      User?    @relation(fields: [userId], references: [id])
+//   userId    String?
+// }
 
 enum CategoryTypes {
   frontend

@@ -26,7 +26,7 @@ export default function squadPage() {
     }, [state]);
     return (
         <div className="grid grid-cols-3">
-            <form className="col-span-2" action={formAction}>
+            <form className="col-span-3 lg:col-span-2" action={formAction}>
                 <Card>
                     <CardHeader>
                         <CardTitle>Create Squad</CardTitle>
