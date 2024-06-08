@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss"
-import {withUt} from "uploadthing/tw"
+import { withUt } from "uploadthing/tw"
 const config = {
   darkMode: ["class"],
   content: [
@@ -7,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -15,7 +15,7 @@ const config = {
       // padding: "2rem",
       screens: {
         "2xl": "1400px",
-        "8xl":"100px"
+        "8xl": "100px"
       },
     },
     extend: {
@@ -77,7 +77,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('@tailwindcss/typography')
+  ],
 } satisfies Config
 
 export default withUt(config); 

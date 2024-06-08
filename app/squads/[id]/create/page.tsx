@@ -15,8 +15,8 @@ export default function CreatePostRoute({
 }: {
     params: { id: string };
 }) {
-    const initialState: State = { message: "", status: undefined }
-    const [state, formAction] = useFormState(createSquadPost, initialState)
+    const initialState: State = { message: "", status: undefined };
+    const [state, formAction] = useFormState(createSquadPost, initialState);
     const [json, setJson] = useState<null | JSONContent>(null);
 
     useEffect(() => {
@@ -27,10 +27,12 @@ export default function CreatePostRoute({
             toast.error(state.message);
         }
     }, [state]);
+
     return (
         <div className="grid grid-cols-3">
             <form className="col-span-3 lg:col-span-2" action={formAction}>
                 <Card>
+                    <input type="hidden" name="squadUsername" value={params.id} />
                     <CardHeader>
                         <CardTitle>Create SquadPost</CardTitle>
                         <CardDescription>Please describe your squad post in detail.</CardDescription>
@@ -51,7 +53,7 @@ export default function CreatePostRoute({
                             <input
                                 type="hidden"
                                 name="description"
-                                value={JSON.stringify(json)}
+                                value={json ? JSON.stringify(json) : ""}
                             />
                             <Label>Description</Label>
                             <TipTapEditor json={json} setJson={setJson} />
@@ -61,47 +63,6 @@ export default function CreatePostRoute({
                                 </p>
                             )}
                         </div>
-
-                        {/* <div className="flex flex-col gap-y-2">
-                            <Label>URL</Label>
-                            <Input
-                                name="url"
-                                type="text"
-                                placeholder="URL of your resource"
-                                required
-                                minLength={3}
-                            />
-                        </div> */}
-
-                        {/* <div className="flex flex-col gap-y-2">
-                            <input type="hidden" name="image" value={JSON.stringify(image)} />
-                            <Label>Resource Logo/Icon</Label>
-                            <UploadDropzone
-                                className="border-accent"
-                                endpoint="imageUploader"
-                                onClientUploadComplete={(res) => {
-                                    const uploadedUrl = res[0].url;
-                                    console.log('Uploaded URL:', uploadedUrl);
-                                    setImage(uploadedUrl);
-                                    toast.success("Your images have been uploaded");
-                                }}
-                                onUploadError={(error: Error) => {
-                                    toast.error("Something went wrong, try again");
-                                }}
-                            />
-                            {image && (
-                                <div className="flex w-full justify-center">
-                                    <Image
-                                        src={image}
-                                        alt="Uploaded Resource Logo"
-                                        width={200}
-                                        height={200}
-                                        className="rounded"
-                                    />
-                                </div>
-                            )}
-                        </div> */}
-
                     </CardContent>
                     <CardFooter className="mt-5">
                         <SubmitButton title="Create your Squad Post" />
@@ -109,5 +70,5 @@ export default function CreatePostRoute({
                 </Card>
             </form>
         </div>
-    )
+    );
 }

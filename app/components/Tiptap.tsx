@@ -3,79 +3,60 @@
 import { Button } from "@/components/ui/button";
 import { EditorContent, JSONContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useState } from "react";
-import {common, createLowlight} from 'lowlight'
+import { useEffect, useState } from "react";
+import CodeBlock from "@tiptap/extension-code-block";
 
-const lowlight = createLowlight(common)
-import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
-
-// // Import specific languages for highlighting if needed
-// import javascript from 'highlight.js/lib/languages/javascript';
-// import css from 'highlight.js/lib/languages/css';
-// // Add other languages as needed
-
-// // Register the languages with lowlight
-// lowlight.registerLanguage('javascript', javascript);
-// lowlight.registerLanguage('css', css);
-
+// MenuBar component
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
-  if (!editor) {
-    return null;
-  }
+  if (!editor) return null;
 
   return (
     <div className="flex flex-wrap gap-5">
       <Button
+        className={`button ${editor.isActive("heading", { level: 1 }) ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        variant={editor.isActive("heading", { level: 1 }) ? "default" : "secondary"}
         type="button"
       >
         H1
       </Button>
-
       <Button
+        className={`button ${editor.isActive("heading", { level: 2 }) ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        variant={editor.isActive("heading", { level: 2 }) ? "default" : "secondary"}
         type="button"
       >
         H2
       </Button>
-
       <Button
+        className={`button ${editor.isActive("heading", { level: 3 }) ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        variant={editor.isActive("heading", { level: 3 }) ? "default" : "secondary"}
         type="button"
       >
         H3
       </Button>
-
       <Button
+        className={`button ${editor.isActive("bold") ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleBold().run()}
-        variant={editor.isActive("bold") ? "default" : "secondary"}
         type="button"
       >
         Bold
       </Button>
-
       <Button
+        className={`button ${editor.isActive("italic") ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        variant={editor.isActive("italic") ? "default" : "secondary"}
         type="button"
       >
         Italic
       </Button>
-
       <Button
+        className={`button ${editor.isActive("strike") ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        variant={editor.isActive("strike") ? "default" : "secondary"}
         type="button"
       >
         Strike
       </Button>
-
       <Button
+        className={`button ${editor.isActive("codeBlock") ? "is-active" : ""}`}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        variant={editor.isActive("codeBlock") ? "default" : "secondary"}
         type="button"
       >
         Code Block
@@ -84,33 +65,34 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   );
 };
 
-export function TipTapEditor({ setJson, json }: { setJson: any, json: JSONContent | null }) {
+// TipTapEditor component
+export function TipTapEditor({ setJson, json }: { setJson: (json: JSONContent) => void, json: JSONContent | null }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      CodeBlockLowlight.configure({
-        lowlight, // Use the lowlight instance
-        defaultLanguage: 'plaintext', // Set default language if desired
+      CodeBlock.configure({
+        languageClassPrefix: 'language-', // Optional: Prefix for code block language classes
+        exitOnTripleEnter: true, // Optional: Exits code block on triple Enter
+        exitOnArrowDown: true, // Optional: Exits code block on Arrow Down if there's no node after
       }),
     ],
     content: json ?? "",
     editorProps: {
       attributes: {
-        class: "text-white focus:outline-none min-h-[150px] prose prose-sm sm:prose-base",
+        class: "editor-content focus:outline-none min-h-[150px] prose prose-sm sm:prose-base", // Apply dark theme styles
       },
     },
-
     onUpdate: ({ editor }) => {
       setJson(editor.getJSON());
     },
   });
 
   return (
-    <div>
+    <div className="editor-container"> {/* Dark themed container */}
       <MenuBar editor={editor} />
       <EditorContent
         editor={editor}
-        className="rounded-lg text-white border p-2 min-h-[150px] mt-2"
+        className="editor-content" // Apply dark theme styles
       />
     </div>
   );

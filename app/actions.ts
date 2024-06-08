@@ -52,9 +52,12 @@ const squadPostSchema = z.object({
         .string()
         .min(3, { message: "The title has to be a minimum character length of 3" }),
     description: z
+        .any()
+        .refine((value) => typeof value === "object" && value !== null, { message: "Description must be a valid JSON object" }),
+    squadUsername: z
         .string()
-        .min(10, { message: "Description is required" }),
-})
+        .min(1, { message: "Squad username is required" }),
+});
 
 async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
@@ -188,39 +191,69 @@ export async function createSquad(prevState: any, formData: FormData) {
 }
 
 
-export async function createSquadPost( prevState:any ,formData:FormData){
-    const {getUser} = getKindeServerSession();
+export async function createSquadPost(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
     const user = await getUser();
 
-    if(!user){
-        throw new Error('User not found');
+    if (!user) {
+        const state: State = {
+            status: "error",
+            message: "User not found. Please log in to create a post.",
+        };
+        return state;
     }
 
+    const description = formData.get('description');
+    let parsedDescription;
+    try {
+        parsedDescription = JSON.parse(description as string);
+    } catch (error) {
+        const state: State = {
+            status: "error",
+            message: "Description must be valid JSON.",
+        };
+        return state;
+    }
+
+    // Validate fields
     const validateFields = squadPostSchema.safeParse({
-        title : formData.get('title'),
-        description : formData.get('description'),
-    })
+        title: formData.get('title'),
+        description: parsedDescription,
+        squadUsername: formData.get('squadUsername'),
+    });
 
     if (!validateFields.success) {
         const state: State = {
             status: "error",
             errors: validateFields.error.flatten().fieldErrors,
             message: "Oops, I think there is a mistake with your inputs.",
-        }
+        };
         return state;
     }
 
-    const data = await prisma.squadPost.create({
-        data:{
-            title : validateFields.data.title,
-            description: validateFields.data.description,
-        }
-        
-    })
+    try {
+        // Create Squad Post
+        const data = await prisma.squadPost.create({
+            data: {
+                title: validateFields.data.title,
+                description: validateFields.data.description,
+                squadUsername: validateFields.data.squadUsername,
+                userId: user.id,
+            }
+        });
 
-    const state: State = {
-        status: "success",
-        message: "Your Squad has been created successfully",
-    };
-    return state;
+        const state: State = {
+            status: "success",
+            message: "Your SquadPost has been created successfully",
+        };
+        return state;
+    } catch (error) {
+        console.error("Error creating SquadPost:", error);
+        const state: State = {
+            status: "error",
+            message: "An error occurred while creating the SquadPost. Please try again later.",
+        };
+        return state;
+    }
 }
+

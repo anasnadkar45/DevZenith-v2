@@ -19,6 +19,8 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@tailwindcss/typography": "^0.5.13",
+    "@tiptap/extension-code-block": "^2.4.0",
     "@tiptap/extension-code-block-lowlight": "^2.4.0",
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
