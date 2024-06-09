@@ -1,8 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import 'highlight.js/styles/github-dark.css';
 
+/* Customize scrollbar */
 *::-webkit-scrollbar {
   width: 1px;
   height: 1px;
@@ -25,20 +27,14 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color:#963aff #030712 ;
+  scrollbar-color: #963aff #030712;
 }
-
-/* styles.css or styles.scss */
-
-/* Base editor styles */
-/* styles.css or styles.scss */
 
 /* Apply white text color to Tiptap editor content */
 .prose-white {
   color: #ffffff; /* White color */
 }
 
-/* Ensure all nested elements are also white */
 .prose-white p,
 .prose-white h1,
 .prose-white h2,
@@ -52,7 +48,7 @@
   color: inherit;
 }
 
-
+/* Editor container styles */
 .editor-container {
   background-color: #1e1e1e; /* Dark background for the editor */
   color: #d4d4d4; /* Light text color */
@@ -61,10 +57,11 @@
   border: 1px solid #3c3c3c; /* Contrast border */
 }
 
+/* Editor content styles */
 .editor-content {
   min-height: 150px;
   padding: 10px;
-  font-size: 1rem;
+  font-size: 1rem; /* Base font size */
   line-height: 1.5;
   color: #d4d4d4; /* Light text color for content */
 }
@@ -73,19 +70,22 @@
   color: #ffffff; /* White for headings */
 }
 
+/* Code block styles */
 .pre {
   background: #0d0d0d;
   color: #fff;
   font-family: 'JetBrainsMono', monospace;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
+  font-size: 1rem; /* Adjust the font size for preformatted text */
 }
 
+/* Inline code styles */
 .pre code {
   background: none;
   color: inherit;
   padding: 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem; /* Adjust the font size for code inside pre */
 }
 
 code {
@@ -94,8 +94,10 @@ code {
   padding: 2px 4px;
   border-radius: 3px;
   font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem; /* Adjust the font size for inline code */
 }
 
+/* Button styles */
 .button {
   background-color: #3c3c3c;
   color: #d4d4d4;
@@ -115,7 +117,7 @@ code {
   color: #ffffff;
 }
 
-
+/* Tailwind base layer customizations */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -162,7 +164,6 @@ code {
     --ring: 263.4 70% 50.4%;
   }
 }
-
 
 @layer base {
   * {

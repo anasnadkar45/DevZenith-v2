@@ -32,7 +32,7 @@ export function SquadCard({
         <div className="bg-card p-2 border rounded-lg min-h-[400px] space-y-2 relative ">
             <div className="relative h-[150px]">
                 <Image
-                    alt="Product image"
+                    alt="squad image"
                     src={image}
                     fill
                     className="object-cover w-full rounded-lg border"
