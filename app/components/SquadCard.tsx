@@ -29,7 +29,7 @@ export function SquadCard({
     User,
 }: iAppProps) {
     return (
-        <div className="bg-card p-2 border rounded-lg min-h-[450px] space-y-2 relative ">
+        <div className="bg-card p-2 border rounded-lg min-h-[400px] space-y-2 relative ">
             <div className="relative h-[150px]">
                 <Image
                     alt="Product image"
@@ -39,7 +39,7 @@ export function SquadCard({
                 />
                 <p className="absolute z-10 right-2 top-2 border-2 border-primary rounded-lg pb-[2px] px-2 bg-primary/50 animate-pulse">Popular</p>
             </div>
-            <h1 className="text-2xl font-bold">{name}</h1>
+            <h1 className="text-2xl font-bold line-clamp-2">{name}</h1>
             <div className="flex gap-2 items-center">
                 {User ? (
                     <Image

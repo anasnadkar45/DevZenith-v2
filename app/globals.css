@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'highlight.js/styles/github-dark.css';
 
 *::-webkit-scrollbar {
   width: 1px;
@@ -30,15 +31,16 @@
 /* styles.css or styles.scss */
 
 /* Base editor styles */
+/* styles.css or styles.scss */
+
 .editor-container {
   background-color: #1e1e1e; /* Dark background for the editor */
-  color: #d4d4d4; /* Light text color for general content */
+  color: #d4d4d4; /* Light text color */
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #3c3c3c; /* Slightly lighter border for contrast */
+  border: 1px solid #3c3c3c; /* Contrast border */
 }
 
-/* Editor content */
 .editor-content {
   min-height: 150px;
   padding: 10px;
@@ -47,51 +49,52 @@
   color: #d4d4d4; /* Light text color for content */
 }
 
-/* Styling for headings */
 .editor-content h1, .editor-content h2, .editor-content h3 {
-  color: #ffffff; /* White color for headings */
+  color: #ffffff; /* White for headings */
 }
 
-/* Code block styles */
-pre {
-  background-color: #2d2d2d; /* Dark background for code blocks */
-  color: #f8f8f2; /* Light text color for code */
-  padding: 10px;
-  border-radius: 5px;
-  overflow-x: auto;
-  white-space: pre-wrap; /* Wrap long lines */
-  font-family: 'Courier New', Courier, monospace;
-  margin: 10px 0; /* Space around code blocks */
+.pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'JetBrainsMono', monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.8rem;
 }
 
 code {
-  background-color: #2d2d2d; /* Match the code block background */
-  color: #f8f8f2; /* Match the code block text color */
+  background-color: #2d2d2d;
+  color: #f8f8f2;
   padding: 2px 4px;
   border-radius: 3px;
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Customize buttons for dark theme */
 .button {
-  background-color: #3c3c3c; /* Dark background for buttons */
-  color: #d4d4d4; /* Light text color for buttons */
-  border: 1px solid #5a5a5a; /* Slightly lighter border */
+  background-color: #3c3c3c;
+  color: #d4d4d4;
+  border: 1px solid #5a5a5a;
   border-radius: 3px;
   padding: 5px 10px;
   margin: 5px;
 }
 
 .button:hover {
-  background-color: #555555; /* Slightly lighter on hover */
-  color: #ffffff; /* White text color on hover */
+  background-color: #555555;
+  color: #ffffff;
 }
 
-/* Active button state */
 .button.is-active {
-  background-color: #0d0d0d; /* Blue background for active buttons */
-  color: #ffffff; /* White text color for active buttons */
+  background-color: #0d0d0d;
+  color: #ffffff;
 }
+
 
 @layer base {
   :root {

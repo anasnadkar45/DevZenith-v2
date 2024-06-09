@@ -1,7 +1,9 @@
+import { PostDescription } from "@/app/components/PostDescription";
 import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { JSONContent } from "@tiptap/react";
 import { ArrowBigLeft, ArrowLeft, DotSquare, Link2, Menu, Star, Thermometer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +28,24 @@ async function getData(username: string) {
     return data;
 }
 
+async function getPosts(username: string) {
+    const data = await prisma.squadPost.findMany({
+        where: {
+            squadUsername: username
+        },
+        select: {
+            id: true,
+            title: true,
+            description: true,
+            squadUsername: true,
+            User: true,
+            createdAt: true,
+
+        }
+    })
+    return data
+}
+
 export default async function SquadRoutePage({
     params,
 }: {
@@ -34,11 +54,12 @@ export default async function SquadRoutePage({
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData(params.id);
+    const posts = await getPosts(params.id);
 
     if (!data) {
         return (
             <div>
-                <p>No squad data found.</p>
+                <p>No squad post found.</p>
             </div>
         );
     }
@@ -63,7 +84,7 @@ export default async function SquadRoutePage({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="mt-1 bg-card">
                             <DropdownMenuItem>
-                                <Link2 className="mr-2"/>
+                                <Link2 className="mr-2" />
                                 Invitation Link
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -135,7 +156,25 @@ export default async function SquadRoutePage({
                 </div>
             </div>
 
-            <div className="border-b mt-4"></div>
+            <div className="border-b mt-4">
+                {/* Display posts */}
+                <div className="posts-section">
+                    {posts?.length ? (
+                        posts.map((post) => (
+                            <div key={post.id} className="post-item">
+                                <h2>{post.title}</h2>
+                                <div className="">
+                                    <PostDescription content={post?.description as JSONContent} />
+                                </div>
+
+                                <p>{new Date(post.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No posts found.</p>
+                    )}
+                </div>
+            </div>
         </div>
 
 

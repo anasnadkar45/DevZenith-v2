@@ -51,7 +51,7 @@ export default async function Squads() {
                 <div>
                     <div className="flex justify-between mb-4">
                         <h1 className="text-3xl text-primary font-bold">DevSquads</h1>
-                        <Button asChild>
+                        <Button asChild size={"sm"}>
                             <Link href={'/squads/create'}>
                                 Create Squad
                             </Link>

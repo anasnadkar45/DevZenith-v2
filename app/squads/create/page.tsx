@@ -45,7 +45,7 @@ export default function squadPage() {
                         </div>
 
                         <div className="flex flex-col gap-y-2">
-                            <Label>Username</Label>
+                            <Label>Squad Username</Label>
                             <Input
                                 name="username"
                                 type="text"
