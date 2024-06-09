@@ -10,7 +10,7 @@ export function PostDescription({ content }: { content: JSONContent }) {
     content: content,
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose-base",
+        class: "prose prose-sm sm:prose-base prose-white", // Add the custom class here
       },
     },
   });

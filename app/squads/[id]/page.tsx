@@ -162,7 +162,7 @@ export default async function SquadRoutePage({
                     {posts?.length ? (
                         posts.map((post) => (
                             <div key={post.id} >
-                                
+                                <PostDescription content={post?.description as JSONContent} />
                             </div>
                         ))
                     ) : (

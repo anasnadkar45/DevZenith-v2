@@ -33,6 +33,26 @@
 /* Base editor styles */
 /* styles.css or styles.scss */
 
+/* Apply white text color to Tiptap editor content */
+.prose-white {
+  color: #ffffff; /* White color */
+}
+
+/* Ensure all nested elements are also white */
+.prose-white p,
+.prose-white h1,
+.prose-white h2,
+.prose-white h3,
+.prose-white h4,
+.prose-white h5,
+.prose-white h6,
+.prose-white strong,
+.prose-white em,
+.prose-white a {
+  color: inherit;
+}
+
+
 .editor-container {
   background-color: #1e1e1e; /* Dark background for the editor */
   color: #d4d4d4; /* Light text color */
@@ -69,7 +89,7 @@
 }
 
 code {
-  background-color: #2d2d2d;
+  background-color: #000000;
   color: #f8f8f2;
   padding: 2px 4px;
   border-radius: 3px;

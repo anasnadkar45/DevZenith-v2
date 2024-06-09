@@ -54,7 +54,7 @@ export default function CreatePostRoute({
 
                         <div className="flex flex-col gap-y-2">
                             <input type="hidden" name="thumbnail" value={JSON.stringify(image)} />
-                            <Label>Resource Logo/Icon</Label>
+                            <Label>SquadPost Thumbnail</Label>
                             <UploadDropzone
                                 className="border-accent"
                                 endpoint="imageUploader"
