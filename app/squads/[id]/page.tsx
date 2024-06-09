@@ -161,13 +161,8 @@ export default async function SquadRoutePage({
                 <div className="posts-section">
                     {posts?.length ? (
                         posts.map((post) => (
-                            <div key={post.id} className="post-item">
-                                <h2>{post.title}</h2>
-                                <div className="">
-                                    <PostDescription content={post?.description as JSONContent} />
-                                </div>
-
-                                <p>{new Date(post.createdAt).toLocaleDateString()}</p>
+                            <div key={post.id} >
+                                
                             </div>
                         ))
                     ) : (

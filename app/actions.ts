@@ -51,6 +51,9 @@ const squadPostSchema = z.object({
     title: z
         .string()
         .min(3, { message: "The title has to be a minimum character length of 3" }),
+    thumbnail: z
+        .string()
+        .min(1, { message: "image is required" }),
     description: z
         .any()
         .refine((value) => typeof value === "object" && value !== null, { message: "Description must be a valid JSON object" }),
@@ -218,6 +221,7 @@ export async function createSquadPost(prevState: any, formData: FormData) {
     // Validate fields
     const validateFields = squadPostSchema.safeParse({
         title: formData.get('title'),
+        thumbnail: JSON.parse(formData.get("thumbnail") as string),
         description: parsedDescription,
         squadUsername: formData.get('squadUsername'),
     });
@@ -236,6 +240,7 @@ export async function createSquadPost(prevState: any, formData: FormData) {
         const data = await prisma.squadPost.create({
             data: {
                 title: validateFields.data.title,
+                thumbnail: validateFields.data.thumbnail,
                 description: validateFields.data.description,
                 squadUsername: validateFields.data.squadUsername,
                 userId: user.id,
