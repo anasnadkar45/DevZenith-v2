@@ -2,16 +2,14 @@ import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { FaArrowCircleUp } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { CiMenuKebab } from "react-icons/ci";
 import { FaLink } from "react-icons/fa6";
 import { HiMiniArrowLeftEndOnRectangle } from "react-icons/hi2";
-import { BiSolidCommentDots } from "react-icons/bi";
-import { IoBookmark } from "react-icons/io5";
-import { FaShare } from "react-icons/fa6";
+
 import Image from "next/image";
 import Link from "next/link";
+import { SquadPostCard } from "@/app/components/SquadPostCard";
 
 async function getData(username: string) {
     const data = await prisma.squad.findUnique({
@@ -43,9 +41,14 @@ async function getPosts(username: string) {
             title: true,
             description: true,
             squadUsername: true,
-            User: true,
             createdAt: true,
             thumbnail: true,
+            User: {
+                select: {
+                    firstName: true,
+                    profileImage: true,
+                }
+            }
         }
     })
     return data
@@ -74,7 +77,7 @@ export default async function SquadRoutePage({
             <div className="flex justify-between mb-4">
                 <Button variant={"outline"}>
                     <Link href={'/squads'}>
-                        <HiMiniArrowLeftEndOnRectangle size={20}/>
+                        <HiMiniArrowLeftEndOnRectangle size={20} />
                     </Link>
                 </Button>
                 <div className="flex items-center gap-2">
@@ -165,59 +168,22 @@ export default async function SquadRoutePage({
 
             {/* Display posts */}
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4">
-                {posts?.length ? (
-                    posts.map((post) => (
-                        <div className="bg-card p-2 border rounded-lg min-h-[300px] space-y-2 relative">
-                            <div className="flex gap-2 items-center">
-                                {post.User ? (
-                                    <Image
-                                        alt="User profile image"
-                                        src={post.User.profileImage}
-                                        width={40}
-                                        height={40}
-                                        className="rounded-xl"
-                                    />
-                                ) : (
-                                    <div className="rounded-xl w-[50px] h-[40px] bg-gray-200 flex items-center justify-center">
-                                        <span>No Image</span>
-                                    </div>
-                                )}
-                                <div className="leading-[15px]">
-                                    <h1 className="font-bold">{post.User ? post.User.firstName : "Unknown"}</h1>
-                                    <p className="text-primary text-sm font-semibold">1 hour ago</p>
-                                </div>
-                            </div>
-                            <h1 className="line-clamp-2">{post.title}</h1>
-                            <div className="relative h-[150px]">
-                                <Image
-                                    alt="squad image"
-                                    src={post.thumbnail as string}
-                                    fill
-                                    className="object-cover w-full rounded-lg border"
-                                />
-                            </div>
-                            <div className="flex justify-between absolute bottom-0 ">
-                                <Button variant={"ghost"} className="flex items-center gap-2">
-                                    <FaArrowCircleUp className="text-slate-300" size={20}/>
-                                    <p className="text-slate-300 text-lg ">99</p>
-                                </Button>
-                                <Button variant={"ghost"} className="flex items-center gap-2">
-                                    <BiSolidCommentDots className="text-slate-300" size={20}/>
-                                    <p className="text-slate-300 text-lg ">99</p>
-                                </Button>
-                                <Button variant={"ghost"} className="flex items-center gap-2">
-                                    <IoBookmark className="text-slate-300" size={20}/>
-                                </Button>
-                                <Button variant={"ghost"} className="flex items-center gap-2">
-                                    <FaShare className="text-slate-300" size={20}/>
-                                    <p className="text-slate-300 text-lg ">99</p>
-                                </Button>
-                            </div>
-                        </div>
+                {
+                    posts.map(post => (
+                        <SquadPostCard
+                            key={post.id}
+                            id={post.id}
+                            title={post.title}
+                            squadUsername={post.squadUsername}
+                            description={post.description}
+                            thumbnail={post.thumbnail}
+                            createdAt={post.createdAt}
+                            profileImage={post.User?.profileImage}
+                            firstName={post.User?.firstName}
+                            User={post.User}
+                        />
                     ))
-                ) : (
-                    <p>No posts found.</p>
-                )}
+                }
             </div>
         </div>
 

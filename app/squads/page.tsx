@@ -6,19 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { SquadCard } from "../components/SquadCard";
 
-// Define the shape of the squad data expected from the database
-interface Squad {
-    id: string;
-    name: string;
-    username: string;
-    image: string;
-    description: string;
-    createdAt: string;
-    User?: {
-        profileImage: string;
-        firstName: string;
-    } | null; // Allow User to be null
-}
 
 // Function to get squad data
 async function getData() {
