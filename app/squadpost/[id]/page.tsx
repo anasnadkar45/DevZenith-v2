@@ -6,11 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { BiSolidCommentDots } from "react-icons/bi";
 import { BsCopy } from "react-icons/bs";
-import { FaArrowCircleUp, FaWhatsapp } from "react-icons/fa";
+import { FaArrowCircleDown, FaArrowCircleUp, FaWhatsapp } from "react-icons/fa";
 import { FaShare, FaXTwitter } from "react-icons/fa6";
 import { HiMiniArrowLeftEndOnRectangle } from "react-icons/hi2";
 import { IoBookmark } from "react-icons/io5";
 import { SlSocialLinkedin } from "react-icons/sl";
+import { FaAngleRight } from "react-icons/fa";
+import { handleVote } from "@/app/actions";
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -24,11 +29,28 @@ async function getData(id: string) {
             description: true,
             createdAt: true,
             squadUsername: true,
+            Vote: {
+                select: {
+                    voteType: true,
+                    User: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            profileImage: true,
+                        }
+                    }
+                }
+            },
             User: {
                 select: {
                     firstName: true,
                     lastName: true,
                     profileImage: true,
+                    Vote:{
+                        select:{
+                            voteType: true,
+                        }
+                    }
                 }
             },
             Squad: {
@@ -75,7 +97,7 @@ export default async function SquadPostRoute({
     const data = await getData(params.id);
     const morePosts = await getMorePosts(data?.squadUsername as string)
     return (
-        <div className="flex-col xl:grid xl:grid-cols-4 h-full space-y-4 md:space-x-4">
+        <div className="flex-col xl:grid xl:grid-cols-4 h-full space-y-4 md:space-x-4 pr-3 md:pr-0">
             <div className="lg:col-span-3 w-full mx-auto space-y-2 bg-card rounded-lg p-2">
                 <Link href={`/squads/${data?.squadUsername}`}>
                     <Button variant={"outline"}>
@@ -113,21 +135,80 @@ export default async function SquadPostRoute({
                     <PostDescription content={data?.description as JSONContent} />
                 </div>
 
-                <div className="flex justify-between border p-3 rounded-xl">
-                    <Button variant={"ghost"} className="flex items-center gap-2">
-                        <FaArrowCircleUp className="text-slate-300" size={20} />
-                        <p className="text-slate-300 text-lg">Up</p>
+                <div>
+                    <Dialog>
+                        <DialogTrigger>
+                            <p className="flex items-center space-x-1">
+                                <span>
+                                    {data?.Vote.reduce((acc, vote) => {
+                                        if (vote.voteType === "UP") return acc + 1;
+                                        if (vote.voteType === "DOWN") return acc - 1;
+                                        return acc;
+                                    }, 0)}
+                                </span>
+                                <span>Upvotes</span>
+                            </p>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Upvoted by</DialogTitle>
+                            </DialogHeader>
+                            <ScrollArea className="">
+                                {
+                                    data?.Vote.filter(vote => vote.voteType === "UP").map((vote, index) => (
+                                        <li key={index} className="flex items-center gap-2 p-2 bg-card rounded-md mb-1">
+                                            {vote.User?.profileImage && (
+                                                <Image
+                                                    src={vote.User.profileImage}
+                                                    alt={`${vote.User.firstName} ${vote.User.lastName}`}
+                                                    width={40}
+                                                    height={40}
+                                                    className="rounded-lg border-2"
+                                                />
+                                            )}
+                                            <span>{vote.User?.firstName} {vote.User?.lastName}</span>
+                                        </li>
+                                    ))
+                                }
+                            </ScrollArea>
+                        </DialogContent>
+                    </Dialog>
+
+
+                </div>
+
+                <div className="flex justify-between items-center border p-2 rounded-xl">
+                    <div className="flex border rounded-md p-1">
+                        <form action={handleVote}>
+                            <input type="hidden" name="voteDirection" value="UP" />
+                            <input type="hidden" name="squadPostId" value={data?.id} />
+                            <Button variant={"ghost"} className="space-x-2 group hover:bg-green-400/40 transition-all hover:duration-150">
+                                <FaArrowCircleUp className="text-slate-300 group-hover:text-green-400 transition-all hover:duration-150" size={20} />
+                                <span className="group-hover:text-green-400 text-slate-400 font-bold text-lg">Upvote</span>
+                            </Button>
+                        </form>
+
+                        {/* <form action={handleVote}>
+                            <input type="hidden" name="voteDirection" value="DOWN" />
+                            <input type="hidden" name="squadPostId" value={data?.id} />
+                            <Button variant={"ghost"}>
+                                <FaArrowCircleDown className="text-slate-300" size={20} />
+                            </Button>
+                        </form> */}
+
+                    </div>
+
+                    <Button variant={"ghost"} className="flex items-center gap-2 group hover:bg-blue-400/40 transition-all hover:duration-150">
+                        <BiSolidCommentDots className="text-slate-300 group-hover:text-blue-400 transition-all hover:duration-150" size={20} />
+                        <p className="group-hover:text-blue-400 text-slate-400 font-bold text-lg">Comment</p>
                     </Button>
-                    <Button variant={"ghost"} className="flex items-center gap-2">
-                        <BiSolidCommentDots className="text-slate-300" size={20} />
-                        <p className="text-slate-300 text-lg">99</p>
+                    <Button variant={"ghost"} className="flex items-center gap-2 group hover:bg-orange-400/40 transition-all hover:duration-150">
+                        <IoBookmark className="text-slate-300 group-hover:text-orange-400 transition-all hover:duration-150" size={20} />
+                        <p className="group-hover:text-orange-400 text-slate-400 font-bold text-lg">Bookmark</p>
                     </Button>
-                    <Button variant={"ghost"} className="flex items-center gap-2">
-                        <IoBookmark className="text-slate-300" size={20} />
-                    </Button>
-                    <Button variant={"ghost"} className="flex items-center gap-2">
-                        <FaShare className="text-slate-300" size={20} />
-                        <p className="text-slate-300 text-lg">99</p>
+                    <Button variant={"ghost"} className="flex items-center gap-2 group hover:bg-primary/40 transition-all hover:duration-150">
+                        <FaShare className="text-slate-300 group-hover:text-primary transition-all hover:duration-150" size={20} />
+                        <p className="group-hover:text-primary text-slate-400 font-bold text-lg">Share</p>
                     </Button>
                 </div>
             </div>
@@ -166,7 +247,7 @@ export default async function SquadPostRoute({
                 </div>
 
                 <div className="border rounded-lg">
-                    <p className="text-center border-b py-2 text-slate-400">More posts from {data?.squadUsername}</p>
+                    <p className="text-center border-b py-2 text-slate-400">More posts from @{data?.squadUsername}</p>
                     <div className="p-2 space-y-2">
                         {morePosts?.map((post) => (
                             <Link href={`/squadpost/${post.id}`}>
@@ -192,8 +273,9 @@ export default async function SquadPostRoute({
                     </div>
                     <div className="border-t p-1">
                         <Link href={`/squads/${data?.squadUsername}`}>
-                            <Button variant={"ghost"}>
-                                Explore More
+                            <Button variant={"ghost"} className="flex gap-2">
+                                <p>Explore More</p>
+                                <FaAngleRight size={25} />
                             </Button>
                         </Link>
                     </div>

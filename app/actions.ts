@@ -2,9 +2,10 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { Role, type CategoryTypes } from "@prisma/client";
+import { Role, TypeOfVote, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { title } from "process";
+import { revalidatePath } from "next/cache";
 
 export type State = {
     status: "error" | "success" | undefined;
@@ -264,3 +265,54 @@ export async function createSquadPost(prevState: any, formData: FormData) {
     }
 }
 
+export async function handleVote(formData:FormData){
+    const {getUser} = getKindeServerSession();
+    const user = await getUser();
+
+    if(!user){
+        return redirect('/api/auth/login');
+    }
+
+    const squadPostId = formData.get("squadPostId") as string;
+    const voteDirection = formData.get("voteDirection") as TypeOfVote;
+
+    const vote = await prisma.vote.findFirst({
+        where:{
+            squadPostId:squadPostId,
+            userId:user.id,
+        }
+    });
+
+    if(vote){
+        if(vote.voteType === voteDirection){
+            await prisma.vote.delete({
+                where:{
+                    id:vote.id
+                }
+            });
+
+            return revalidatePath('/' , "page");
+        }else{
+            await prisma.vote.update({
+                where:{
+                    id:vote.id
+                },
+                data:{
+                    voteType:voteDirection,
+                }
+            });
+
+            return revalidatePath('/' , "page");
+        }
+    }
+
+    await prisma.vote.create({
+        data:{
+            voteType:voteDirection,
+            userId:user.id,
+            squadPostId:squadPostId,
+        }
+    });
+
+    return revalidatePath('/' , "page");
+}

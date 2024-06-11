@@ -60,11 +60,13 @@ export function SquadCard({
                 </div>
             </div>
             <p className="text-slate-500 line-clamp-3">{description}</p>
-            <Button className="absolute bottom-2 right-2 left-2">
-                <Link href={`/squads/${id}`}>
+
+            <Link href={`/squads/${id}`}>
+                <Button className="absolute bottom-2 right-2 left-2">
                     View Squad
-                </Link>
-            </Button>
+                </Button>
+            </Link>
+
         </div>
     );
 }

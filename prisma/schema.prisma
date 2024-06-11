@@ -24,6 +24,7 @@ model User {
   resource      Resource[]
   createdSquads Squad[]
   SquadPosts    SquadPost[]
+  Vote          Vote[]
 }
 
 model Resource {
@@ -63,6 +64,21 @@ model SquadPost {
   squadUsername String?
   User          User?    @relation(fields: [userId], references: [id])
   userId        String?
+  Vote          Vote[]
+}
+
+model Vote {
+  id          String     @id @default(uuid())
+  SquadPost   SquadPost? @relation(fields: [squadPostId], references: [id])
+  squadPostId String?
+  User        User?      @relation(fields: [userId], references: [id])
+  userId      String?
+  voteType    TypeOfVote
+}
+
+enum TypeOfVote {
+  UP
+  DOWN
 }
 
 enum CategoryTypes {

@@ -14,7 +14,7 @@ export function SubmitButton({ title }: { title: string }) {
                     Please Wait
                 </Button>
             ) : (
-                <Button type="submit">{title}</Button>
+                <Button type="submit" asChild>{title}</Button>
             )}
         </>
     )
