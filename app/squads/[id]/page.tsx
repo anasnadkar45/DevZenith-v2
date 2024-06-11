@@ -36,6 +36,9 @@ async function getPosts(username: string) {
         where: {
             squadUsername: username
         },
+        orderBy:{
+            createdAt:"desc"
+        },
         select: {
             id: true,
             title: true,

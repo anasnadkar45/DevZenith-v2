@@ -4,9 +4,12 @@ import { Button } from "@/components/ui/button";
 import { JSONContent } from "@tiptap/react";
 import Image from "next/image";
 import Link from "next/link";
+import { BiSolidCommentDots } from "react-icons/bi";
 import { BsCopy } from "react-icons/bs";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaArrowCircleUp, FaWhatsapp } from "react-icons/fa";
+import { FaShare, FaXTwitter } from "react-icons/fa6";
+import { HiMiniArrowLeftEndOnRectangle } from "react-icons/hi2";
+import { IoBookmark } from "react-icons/io5";
 import { SlSocialLinkedin } from "react-icons/sl";
 
 async function getData(id: string) {
@@ -21,7 +24,13 @@ async function getData(id: string) {
             description: true,
             createdAt: true,
             squadUsername: true,
-            User: true,
+            User: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                    profileImage: true,
+                }
+            },
             Squad: {
                 select: {
                     image: true,
@@ -67,7 +76,16 @@ export default async function SquadPostRoute({
     const morePosts = await getMorePosts(data?.squadUsername as string)
     return (
         <div className="flex-col xl:grid xl:grid-cols-4 h-full space-y-4 md:space-x-4">
-            <div className="lg:col-span-3 w-full mx-auto space-y-2">
+            <div className="lg:col-span-3 w-full mx-auto space-y-2 bg-card rounded-lg p-2">
+                <Link href={`/squads/${data?.squadUsername}`}>
+                    <Button variant={"outline"}>
+                        <HiMiniArrowLeftEndOnRectangle size={20} />
+                    </Button>
+                </Link>
+                <div className="flex items-center gap-3">
+                    <Image src={data?.Squad?.image as string} alt="squad image" width={80} height={50} className="border rounded-lg" />
+                    <p className="text-slate-400">{data?.squadUsername}</p>
+                </div>
                 <p className="text-2xl font-bold">{data?.title}</p>
                 <p className="text-sm text-slate-400">
                     Created:{' '}
@@ -94,8 +112,43 @@ export default async function SquadPostRoute({
                 <div className="max-w-[800px] mx-auto">
                     <PostDescription content={data?.description as JSONContent} />
                 </div>
+
+                <div className="flex justify-between border p-3 rounded-xl">
+                    <Button variant={"ghost"} className="flex items-center gap-2">
+                        <FaArrowCircleUp className="text-slate-300" size={20} />
+                        <p className="text-slate-300 text-lg">Up</p>
+                    </Button>
+                    <Button variant={"ghost"} className="flex items-center gap-2">
+                        <BiSolidCommentDots className="text-slate-300" size={20} />
+                        <p className="text-slate-300 text-lg">99</p>
+                    </Button>
+                    <Button variant={"ghost"} className="flex items-center gap-2">
+                        <IoBookmark className="text-slate-300" size={20} />
+                    </Button>
+                    <Button variant={"ghost"} className="flex items-center gap-2">
+                        <FaShare className="text-slate-300" size={20} />
+                        <p className="text-slate-300 text-lg">99</p>
+                    </Button>
+                </div>
             </div>
             <div className="space-y-4">
+                <div className="border p-2 rounded-lg ">
+                    <p className="text-slate-400">Post created by</p>
+                    <div className="flex items-center gap-2">
+                        {data?.User?.profileImage && (
+                            <Image src={data?.User?.profileImage}
+                                alt={"user"}
+                                width={40}
+                                height={40}
+                                className="rounded-xl border-2 "
+                            />
+                        )}
+                        <p className="text-slate-500">
+                            {data?.User?.firstName} {data?.User?.lastName}
+                        </p>
+                    </div>
+
+                </div>
                 <div className="border h-fit p-3 rounded-xl">
                     <p className="text-slate-400">Would you recommend this post?</p>
                     <Button variant={"ghost"}>

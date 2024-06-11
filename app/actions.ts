@@ -131,6 +131,8 @@ export async function AddResource(prevState: any, formData: FormData) {
     };
 
     console.log(state);
+    redirect('/resources/all')
+
     return state;
 }
 

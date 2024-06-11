@@ -10,6 +10,7 @@ import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { UploadDropzone } from "@/app/lib/uploadthing";
+import { Textarea } from '@/components/ui/textarea';
 
 export function ResourceForm() {
     const initialState: State = { message: "", status: undefined };
@@ -46,9 +47,8 @@ export function ResourceForm() {
 
                     <div className="flex flex-col gap-y-2">
                         <Label>Description</Label>
-                        <Input
+                        <Textarea
                             name="description"
-                            type="text"
                             placeholder="Description of your resource"
                             required
                             minLength={10}
