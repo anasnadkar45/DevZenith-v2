@@ -16,6 +16,7 @@ import { handleVote } from "@/app/actions";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CopyLink } from "@/app/components/CopyLink";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -210,6 +211,7 @@ export default async function SquadPostRoute({
                         <FaShare className="text-slate-300 group-hover:text-primary transition-all hover:duration-150" size={20} />
                         <p className="group-hover:text-primary text-slate-400 font-bold text-lg">Share</p>
                     </Button>
+                    <CopyLink id={params.id}/>
                 </div>
             </div>
             <div className="space-y-4">
