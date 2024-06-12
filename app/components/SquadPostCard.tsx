@@ -5,6 +5,7 @@ import { FaShare } from "react-icons/fa6";
 import { FaArrowCircleUp } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SquadCardBottom } from "./SquadCardBottom";
 // Define the User type to describe the user object
 interface User {
     profileImage: string;
@@ -69,23 +70,7 @@ export function SquadPostCard({
                     />
                 </div>
             </Link>
-            <div className="flex justify-between absolute bottom-0">
-                <Button variant={"ghost"} className="flex items-center gap-2">
-                    <FaArrowCircleUp className="text-slate-300" size={20} />
-                    <p className="text-slate-300 text-lg">99</p>
-                </Button>
-                <Button variant={"ghost"} className="flex items-center gap-2">
-                    <BiSolidCommentDots className="text-slate-300" size={20} />
-                    <p className="text-slate-300 text-lg">99</p>
-                </Button>
-                <Button variant={"ghost"} className="flex items-center gap-2">
-                    <IoBookmark className="text-slate-300" size={20} />
-                </Button>
-                <Button variant={"ghost"} className="flex items-center gap-2">
-                    <FaShare className="text-slate-300" size={20} />
-                    <p className="text-slate-300 text-lg">99</p>
-                </Button>
-            </div>
+            <SquadCardBottom id={id} />
         </div>
     );
 }

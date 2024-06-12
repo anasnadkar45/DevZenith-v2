@@ -25,6 +25,7 @@ model User {
   createdSquads Squad[]
   SquadPosts    SquadPost[]
   Vote          Vote[]
+  Comment       Comment[]
 }
 
 model Resource {
@@ -54,17 +55,18 @@ model Squad {
 }
 
 model SquadPost {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   title         String
   description   Json?
   thumbnail     String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  Squad         Squad?   @relation(fields: [squadUsername], references: [username])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  Squad         Squad?    @relation(fields: [squadUsername], references: [username])
   squadUsername String?
-  User          User?    @relation(fields: [userId], references: [id])
+  User          User?     @relation(fields: [userId], references: [id])
   userId        String?
   Vote          Vote[]
+  Comment       Comment[]
 }
 
 model Vote {
@@ -74,6 +76,16 @@ model Vote {
   User        User?      @relation(fields: [userId], references: [id])
   userId      String?
   voteType    TypeOfVote
+}
+
+model Comment {
+  id   String @id @default(uuid())
+  text String
+
+  User        User?      @relation(fields: [userId], references: [id])
+  userId      String?
+  SquadPost   SquadPost? @relation(fields: [squadPostId], references: [id])
+  squadPostId String?
 }
 
 enum TypeOfVote {

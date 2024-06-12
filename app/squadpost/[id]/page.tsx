@@ -17,6 +17,9 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CopyLink } from "@/app/components/CopyLink";
+import { useState } from "react";
+import { SquadCardBottom } from "@/app/components/SquadCardBottom";
+import { TypeOfVote } from "@prisma/client";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -121,7 +124,7 @@ export default async function SquadPostRoute({
                 <div className="relative h-[200px] sm:h-[250px] md:h-[350px] w-full">
                     {data?.thumbnail ? (
                         <Image
-                            alt="Product image"
+                            alt="post image"
                             src={data.thumbnail}
                             fill
                             className="object-cover w-full rounded-lg border"
@@ -178,7 +181,15 @@ export default async function SquadPostRoute({
 
                 </div>
 
-                <div className="flex justify-between items-center border p-2 rounded-xl">
+                {/* <form action={handleVote}>
+                            <input type="hidden" name="voteDirection" value="DOWN" />
+                            <input type="hidden" name="squadPostId" value={data?.id} />
+                            <Button variant={"ghost"}>
+                                <FaArrowCircleDown className="text-slate-300" size={20} />
+                            </Button>
+                        </form> */}
+
+                {/* <div className="flex justify-between items-center border p-2 rounded-xl">
                     <div className="flex border rounded-md p-1">
                         <form action={handleVote}>
                             <input type="hidden" name="voteDirection" value="UP" />
@@ -189,13 +200,7 @@ export default async function SquadPostRoute({
                             </Button>
                         </form>
 
-                        {/* <form action={handleVote}>
-                            <input type="hidden" name="voteDirection" value="DOWN" />
-                            <input type="hidden" name="squadPostId" value={data?.id} />
-                            <Button variant={"ghost"}>
-                                <FaArrowCircleDown className="text-slate-300" size={20} />
-                            </Button>
-                        </form> */}
+                        
 
                     </div>
 
@@ -207,12 +212,9 @@ export default async function SquadPostRoute({
                         <IoBookmark className="text-slate-300 group-hover:text-orange-400 transition-all hover:duration-150" size={20} />
                         <p className="group-hover:text-orange-400 text-slate-400 font-bold text-lg">Bookmark</p>
                     </Button>
-                    <Button variant={"ghost"} className="flex items-center gap-2 group hover:bg-primary/40 transition-all hover:duration-150">
-                        <FaShare className="text-slate-300 group-hover:text-primary transition-all hover:duration-150" size={20} />
-                        <p className="group-hover:text-primary text-slate-400 font-bold text-lg">Share</p>
-                    </Button>
                     <CopyLink id={params.id}/>
-                </div>
+                </div> */}
+                <SquadCardBottom id={data?.id as string}  />
             </div>
             <div className="space-y-4">
                 <div className="border p-2 rounded-lg ">
