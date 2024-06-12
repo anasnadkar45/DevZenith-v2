@@ -13,9 +13,9 @@ export function CopyLink({ id }: { id: string }) {
         );
     }
     return (
-        <Button variant={"ghost"} className="flex items-center gap-2 group hover:bg-primary/40 transition-all hover:duration-150" onClick={copytoClipboard}>
+        <Button variant={"ghost"} size={"sm"} className="flex items-center gap-2 group hover:bg-primary/40 transition-all hover:duration-150" onClick={copytoClipboard}>
             <FaShare className="text-slate-300 group-hover:text-primary transition-all hover:duration-150" size={20} />
-            {/* <p className="group-hover:text-primary text-slate-400 font-bold text-lg">Share</p> */}
+            <p className="group-hover:text-primary text-slate-400 font-bold text-sm">Share</p>
         </Button>
     );
 }

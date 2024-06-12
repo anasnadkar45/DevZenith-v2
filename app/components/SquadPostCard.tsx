@@ -39,38 +39,42 @@ export function SquadPostCard({
     User
 }: iAppProps) {
     return (
-        <div className="bg-card p-2 border rounded-lg min-h-[300px] space-y-2 relative">
+        <div className="bg-card p-2 border rounded-lg min-h-[340px] relative">
             <Link href={`/squadpost/${id}`}>
-                <div className="flex gap-2 items-center">
-                    {profileImage ? (
-                        <Image
-                            alt="User profile image"
-                            src={profileImage}
-                            width={40}
-                            height={40}
-                            className="rounded-xl"
-                        />
-                    ) : (
-                        <div className="rounded-xl w-[50px] h-[40px] bg-gray-200 flex items-center justify-center">
-                            <span>No Image</span>
+                <div className="space-y-2">
+                    <div className="flex gap-2 items-center">
+                        {profileImage ? (
+                            <Image
+                                alt="User profile image"
+                                src={profileImage}
+                                width={40}
+                                height={40}
+                                className="rounded-xl"
+                            />
+                        ) : (
+                            <div className="rounded-xl w-[50px] h-[40px] bg-gray-200 flex items-center justify-center">
+                                <span>No Image</span>
+                            </div>
+                        )}
+                        <div className="leading-[15px]">
+                            <h1 className="font-bold">{firstName || "Unknown"}</h1>
+                            <p className="text-primary text-sm font-semibold">1 hour ago</p>
                         </div>
-                    )}
-                    <div className="leading-[15px]">
-                        <h1 className="font-bold">{firstName || "Unknown"}</h1>
-                        <p className="text-primary text-sm font-semibold">1 hour ago</p>
+                    </div>
+                    <h1 className="line-clamp-2">{title}</h1>
+                    <div className="relative h-[150px]">
+                        <Image
+                            alt="squad image"
+                            src={thumbnail as string}
+                            fill
+                            className="object-cover w-full rounded-lg border"
+                        />
                     </div>
                 </div>
-                <h1 className="line-clamp-2">{title}</h1>
-                <div className="relative h-[150px]">
-                    <Image
-                        alt="squad image"
-                        src={thumbnail as string}
-                        fill
-                        className="object-cover w-full rounded-lg border"
-                    />
-                </div>
             </Link>
-            <SquadCardBottom id={id} />
+            <div className="absolute bottom-2 right-2 left-2">
+                <SquadCardBottom id={id} />
+            </div>
         </div>
     );
 }

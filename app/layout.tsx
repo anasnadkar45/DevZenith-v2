@@ -10,6 +10,7 @@ import { SideBar } from "./components/SideBar";
 import { Toaster } from "sonner";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Navbar } from "./components/Navbar";
+import BottomBar from "./components/BottomBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,9 +43,10 @@ export default async function RootLayout({
               <aside className="hidden w-[240px] h-full flex-col md:flex">
                 <SideBar />
               </aside>
-              <div className="m-3 md:m-6">
+              <div className="m-3 pb-32 lg:pb-0 lg:m-6 ">
                 {children}
               </div>
+              <BottomBar />
             </div>
           </ThemeProvider>
         </main>

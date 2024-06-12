@@ -63,6 +63,11 @@ const squadPostSchema = z.object({
         .min(1, { message: "Squad username is required" }),
 });
 
+// const commentSchema = z.object({
+//     text:z.string()
+//     .min(1,{ message: "Comment must be minimum of 1 character "})
+// })
+
 async function getUserRole(userId: string) {
     const user = await prisma.user.findUnique({
         where: {
@@ -265,11 +270,11 @@ export async function createSquadPost(prevState: any, formData: FormData) {
     }
 }
 
-export async function handleVote(formData:FormData){
-    const {getUser} = getKindeServerSession();
+export async function handleVote(formData: FormData) {
+    const { getUser } = getKindeServerSession();
     const user = await getUser();
 
-    if(!user){
+    if (!user) {
         return redirect('/api/auth/login');
     }
 
@@ -277,42 +282,70 @@ export async function handleVote(formData:FormData){
     const voteDirection = formData.get("voteDirection") as TypeOfVote;
 
     const vote = await prisma.vote.findFirst({
-        where:{
-            squadPostId:squadPostId,
-            userId:user.id,
+        where: {
+            squadPostId: squadPostId,
+            userId: user.id,
         }
     });
 
-    if(vote){
-        if(vote.voteType === voteDirection){
+    if (vote) {
+        if (vote.voteType === voteDirection) {
             await prisma.vote.delete({
-                where:{
-                    id:vote.id
+                where: {
+                    id: vote.id
                 }
             });
 
-            return revalidatePath('/' , "page");
-        }else{
+            return revalidatePath('/', "page");
+        } else {
             await prisma.vote.update({
-                where:{
-                    id:vote.id
+                where: {
+                    id: vote.id
                 },
-                data:{
-                    voteType:voteDirection,
+                data: {
+                    voteType: voteDirection,
                 }
             });
 
-            return revalidatePath('/' , "page");
+            return revalidatePath('/', "page");
         }
     }
 
     await prisma.vote.create({
-        data:{
-            voteType:voteDirection,
-            userId:user.id,
-            squadPostId:squadPostId,
+        data: {
+            voteType: voteDirection,
+            userId: user.id,
+            squadPostId: squadPostId,
         }
     });
 
-    return revalidatePath('/' , "page");
+    return revalidatePath('/', "page");
+}
+
+export async function createComment( formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return redirect('/api/auth/login');
+    }
+
+    const comment = formData.get("comment") as string;
+    const squadPostId = formData.get("squadPostId") as string;
+
+    const data = await prisma.comment.create({
+        data: {
+            text: comment,
+            userId: user.id,
+            squadPostId:squadPostId,
+        }
+    })
+
+    revalidatePath(`/squadpost/${squadPostId}`);
+
+    const state: State = {
+        status: "success",
+        message: "Your Comment has been created successfully",
+    };
+    return state;
 }

@@ -37,7 +37,7 @@ export function SquadCard({
                     fill
                     className="object-cover w-full rounded-lg border"
                 />
-                <p className="absolute z-10 right-2 top-2 border-2 border-primary rounded-lg pb-[2px] px-2 bg-primary/50 animate-pulse">Popular</p>
+                <p className="absolute z-0 right-2 top-2 border-2 border-primary rounded-lg pb-[2px] px-2 bg-primary/50 animate-pulse">Popular</p>
             </div>
             <h1 className="text-2xl font-bold line-clamp-2">{name}</h1>
             <div className="flex gap-2 items-center">

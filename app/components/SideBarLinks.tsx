@@ -1,39 +1,56 @@
-"use client"
-import { cn } from "@/lib/utils";
-import { File, Home, Users } from "lucide-react";
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AiFillHome } from "react-icons/ai";
+import { FaDev, FaExternalLinkSquareAlt, FaFileCode } from "react-icons/fa";
+import { motion } from "framer-motion";
 
+// Define your nav items
 export const navItems = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Resources", href: "/resources/all", icon: Home }, // Update href to /resources/all
-    { name: "Code Review", href: "/codereview", icon: Home },
-    { name: "DevSquads", href: "/squads", icon: Users },
-    { name: "Projects", href: "/projects", icon: File },
+    { name: "Home", href: "/", icon: AiFillHome },
+    { name: "Resources", href: "/resources/all", icon: FaExternalLinkSquareAlt },
+    { name: "DevSquads", href: "/squads", icon: FaDev },
+    { name: "Projects", href: "/projects", icon: FaFileCode },
 ];
 
 export function SideBarLinks() {
     const pathname = usePathname();
+
+    // Define animation variants
+    const variants = {
+        active: {
+            backgroundColor: "#241639", // Equivalent to bg-primary/60
+            color: "#3B82F6", // Equivalent to text-primary
+            borderLeft: "4px solid #6527C6", // Border on active tab
+            paddingLeft: "6px", // Equivalent to pl-3
+        },
+        inactive: {
+            backgroundColor: "transparent",
+            color: "#64748b", // Equivalent to text-slate-400
+            borderLeft: "4px solid transparent", // No border on inactive tab
+            paddingLeft: "6px",
+        }
+    };
+
     return (
         <div className='px-3 grid items-start gap-2'>
-            {
-                navItems.map((item, index) => {
-                    const isActive =  (item.name === "Resources" && pathname.startsWith("/resources")) || (item.name === "DevSquads" && pathname.startsWith("/squads")) || pathname === item.href ;
-                    return (
-                        <Link key={index} href={item.href}>
-                            <span
-                                className={cn(
-                                    "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-primary/20 hover:text-accent-foreground",
-                                    isActive ? "bg-primary/20 border-l-4 border-primary text-primary pl-2" : "bg-transparent"
-                                )}
-                            >
-                                <item.icon className="mr-2 h-4 w-4 text-primary" />
-                                <span>{item.name}</span>
-                            </span>
-                        </Link>
-                    )
-                })
-            }
+            {navItems.map((item, index) => {
+                const isActive = (item.name === "Resources" && pathname.startsWith("/resources")) || (item.name === "DevSquads" && pathname.startsWith("/squads")) || pathname === item.href;
+
+                return (
+                    <Link key={index} href={item.href}>
+                        <motion.span
+                            className="group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all"
+                            initial={false} // Allows us to skip initial animation
+                            animate={isActive ? "active" : "inactive"}
+                            variants={variants}
+                        >
+                            <item.icon className={`mr-2 h-4 w-4 ${isActive ? "text-primary" : "text-slate-400"}`} />
+                            <span className={isActive ? "text-primary" : "text-slate-400"}>{item.name}</span>
+                        </motion.span>
+                    </Link>
+                );
+            })}
         </div>
-    )
+    );
 }
