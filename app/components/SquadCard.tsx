@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewSquad } from "./SubmitButtons";
 
 // Define the User type to describe the user object
 interface User {
@@ -62,9 +63,7 @@ export function SquadCard({
             <p className="text-slate-500 line-clamp-3">{description}</p>
 
             <Link href={`/squads/${id}`}>
-                <Button className="absolute bottom-2 right-2 left-2">
-                    View Squad
-                </Button>
+                <ViewSquad title="view squad"/>
             </Link>
 
         </div>
