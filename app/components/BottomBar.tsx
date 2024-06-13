@@ -41,7 +41,7 @@ export default function BottomBar() {
     }, [activeTab]);
 
     return (
-        <div className="fixed bottom-0 w-full bg-card py-3 flex md:hidden px-3 border-t-2 border-card">
+        <div className="fixed bottom-0 w-full bg-card py-3 flex md:hidden px-3 border-t-2 ">
             <div className="relative flex justify-between w-full items-center">
                 {TABS.map((tab, index) => (
                     <Link href={tab.href} key={index} passHref>

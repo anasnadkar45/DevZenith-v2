@@ -28,7 +28,10 @@ export async function Navbar() {
 
 
       <div className="flex items-center gap-x-2 ms-auto md:col-span-3">
-        <FeedBack />
+        <div>
+          <FeedBack />
+        </div>
+
         <ModeToggle />
         {user ? (
           <UserNav

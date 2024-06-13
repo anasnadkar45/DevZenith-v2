@@ -10,7 +10,7 @@ export const navItems = [
     { name: "Home", href: "/", icon: AiFillHome },
     { name: "Resources", href: "/resources/all", icon: FaExternalLinkSquareAlt },
     { name: "DevSquads", href: "/squads", icon: FaDev },
-    { name: "Projects", href: "/projects", icon: FaFileCode },
+    { name: "ProjectCollab", href: "/project/search", icon: FaFileCode },
 ];
 
 export function SideBarLinks() {
@@ -35,7 +35,7 @@ export function SideBarLinks() {
     return (
         <div className='px-3 grid items-start gap-2'>
             {navItems.map((item, index) => {
-                const isActive = (item.name === "Resources" && pathname.startsWith("/resources")) || (item.name === "DevSquads" && pathname.startsWith("/squads")) || pathname === item.href;
+                const isActive = (item.name === "Resources" && pathname.startsWith("/resources")) || (item.name === "ProjectCollab" && pathname.startsWith("/project")) || (item.name === "DevSquads" && pathname.startsWith("/squads")) || pathname === item.href;
 
                 return (
                     <Link key={index} href={item.href}>

@@ -26,6 +26,7 @@ model User {
   SquadPosts    SquadPost[]
   Vote          Vote[]
   Comment       Comment[]
+  Projects      Project[]
 }
 
 model Resource {
@@ -86,6 +87,18 @@ model Comment {
   userId      String?
   SquadPost   SquadPost? @relation(fields: [squadPostId], references: [id])
   squadPostId String?
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  logo        String?
+  tags        String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 enum TypeOfVote {

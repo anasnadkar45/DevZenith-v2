@@ -28,7 +28,7 @@ export function FeedBack() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost"><TbMessage2Heart size={25} /></Button>
+                <Button variant="ghost" size={"icon"}><TbMessage2Heart size={25} /></Button>
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>

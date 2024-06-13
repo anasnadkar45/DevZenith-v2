@@ -10,7 +10,7 @@ export async function SideBar() {
     const user = await getUser();
 
     return (
-        <nav className='pt-6  border-r h-full flex-col gap-y-4 fixed w-[240px]'>
+        <nav className='pt-6  border-r h-full flex-col gap-y-4 fixed w-[200px]'>
 
             <div className=''>
                 <SideBarLinks />
@@ -18,7 +18,7 @@ export async function SideBar() {
                 <div className='fixed bottom-0 ml-3 mb-5 '>
                     
                     {user ? (
-                        <Button className='w-[215.2px]'>
+                        <Button className='w-[175.2px]'>
                             <LogoutLink>Log out</LogoutLink>
                         </Button>
                     ) : (

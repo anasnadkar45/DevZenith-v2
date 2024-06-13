@@ -39,11 +39,11 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <div className="h-screen grid flex-1 md:grid-cols-[240px_1fr] pt-14">
-              <aside className="hidden w-[240px] h-full flex-col md:flex">
+            <div className="h-screen grid flex-1 md:grid-cols-[200px_1fr] pt-14">
+              <aside className="hidden w-[200px] h-full flex-col md:flex">
                 <SideBar />
               </aside>
-              <div className="m-3 pb-32 lg:pb-0 lg:m-6 ">
+              <div className="m-3 pb-32 lg:pb-0 lg:m-4 ">
                 {children}
               </div>
               <BottomBar />
