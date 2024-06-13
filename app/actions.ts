@@ -15,6 +15,21 @@ export type State = {
     message?: string | null;
 };
 
+
+async function getUserRole(userId: string) {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            role: true,
+        }
+    });
+
+    return user?.role;
+}
+
+// Resources
 const resourceSchema = z.object({
     name: z
         .string()
@@ -32,54 +47,6 @@ const resourceSchema = z.object({
         .string()
         .min(1, { message: "URL is required" }),
 });
-
-const squadSchema = z.object({
-    name: z
-        .string()
-        .min(3, { message: "The name has to be a minimum character length of 3" }),
-    username: z
-        .string()
-        .min(5, { message: "The username has to be a minimum character length of 5" }),
-    description: z
-        .string()
-        .min(10, { message: "Description has to be a minimum character length of 3" }),
-    image: z
-        .string()
-        .min(1, { message: "image is required" }),
-})
-
-const squadPostSchema = z.object({
-    title: z
-        .string()
-        .min(3, { message: "The title has to be a minimum character length of 3" }),
-    thumbnail: z
-        .string()
-        .min(1, { message: "image is required" }),
-    description: z
-        .any()
-        .refine((value) => typeof value === "object" && value !== null, { message: "Description must be a valid JSON object" }),
-    squadUsername: z
-        .string()
-        .min(1, { message: "Squad username is required" }),
-});
-
-// const commentSchema = z.object({
-//     text:z.string()
-//     .min(1,{ message: "Comment must be minimum of 1 character "})
-// })
-
-async function getUserRole(userId: string) {
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId
-        },
-        select: {
-            role: true,
-        }
-    });
-
-    return user?.role;
-}
 
 export async function AddResource(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
@@ -144,6 +111,21 @@ export async function AddResource(prevState: any, formData: FormData) {
 
 
 // create Squad
+const squadSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The name has to be a minimum character length of 3" }),
+    username: z
+        .string()
+        .min(5, { message: "The username has to be a minimum character length of 5" }),
+    description: z
+        .string()
+        .min(10, { message: "Description has to be a minimum character length of 3" }),
+    image: z
+        .string()
+        .min(1, { message: "image is required" }),
+})
+
 export async function createSquad(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -201,6 +183,21 @@ export async function createSquad(prevState: any, formData: FormData) {
     return state;
 }
 
+// Squadpost
+const squadPostSchema = z.object({
+    title: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    thumbnail: z
+        .string()
+        .min(1, { message: "image is required" }),
+    description: z
+        .any()
+        .refine((value) => typeof value === "object" && value !== null, { message: "Description must be a valid JSON object" }),
+    squadUsername: z
+        .string()
+        .min(1, { message: "Squad username is required" }),
+});
 
 export async function createSquadPost(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
@@ -270,6 +267,7 @@ export async function createSquadPost(prevState: any, formData: FormData) {
     }
 }
 
+// handlevotes
 export async function handleVote(formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -322,7 +320,8 @@ export async function handleVote(formData: FormData) {
     return revalidatePath('/', "page");
 }
 
-export async function createComment( formData: FormData) {
+// handel comments
+export async function createComment(formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
@@ -337,7 +336,7 @@ export async function createComment( formData: FormData) {
         data: {
             text: comment,
             userId: user.id,
-            squadPostId:squadPostId,
+            squadPostId: squadPostId,
         }
     })
 
@@ -346,6 +345,57 @@ export async function createComment( formData: FormData) {
     const state: State = {
         status: "success",
         message: "Your Comment has been created successfully",
+    };
+    return state;
+}
+
+// Projects 
+const projectSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    logo: z
+        .string()
+        .min(1, { message: "image is required" }),
+    description: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+})
+
+export async function createProject(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return redirect('/api/auth/login')
+    }
+
+    const validateFields = projectSchema.safeParse({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        logo: formData.get('logo'),
+    })
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+        return state;
+    }
+
+    const data = await prisma.project.create({
+        data: {
+            name: validateFields.data.name,
+            description: validateFields.data.description,
+            logo: validateFields.data.logo,
+        }
+    })
+
+    const state: State = {
+        status: "success",
+        message: "Your SquadPost has been created successfully",
     };
     return state;
 }
