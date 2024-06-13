@@ -1,7 +1,8 @@
-export default function MyProject(){
-    return(
-        <div>
-            MyProject
+
+export default function MyProject() {
+    return (
+        <div className="text-right">
+            myprojet
         </div>
     )
 }
