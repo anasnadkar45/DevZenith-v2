@@ -32,18 +32,23 @@ export function ProjectCard({
     profileImage
 }: iAppProps) {
     return (
-        <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 md:shadow-xl">
+        <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
             <DotPattern
                 className={cn(
                     "[mask-image:radial-gradient(200px_circle_at_center,white,transparent)]",
                 )}
             />
+
             <div className="flex justify-between">
                 <div className="flex items-center gap-2">
                     <Image src={logo as string} alt="" width={40} height={40}
                         className="border-2 border-primary bg-primary rounded-md object-fill"
                     />
-                    <p className="text-lg font-bold">{name}</p>
+                    <div>
+                        <p className="text-lg font-bold">{name}</p>
+                        <p className="text-slate-400 text-xs leading-tight ">Created By :- @{firstName}{lastName}</p>
+                    </div>
+
                 </div>
                 <div className="flex items-center gap-1">
                     <BsHeartFill />
@@ -65,7 +70,7 @@ export function ProjectCard({
                 <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
                 <Button className="rounded-full gap-2">
                     <p>Join</p>
-                    <ArrowUpRight size={20}/>
+                    <ArrowUpRight size={20} />
                 </Button>
             </div>
         </div>

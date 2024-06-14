@@ -30,7 +30,7 @@ export function SquadCard({
     User,
 }: iAppProps) {
     return (
-        <div className="bg-card p-2 border rounded-lg min-h-[400px] space-y-2 relative ">
+        <div className="bg-card p-2 border rounded-lg min-h-[400px] space-y-2 relative shadow-xl">
             <div className="relative h-[150px]">
                 <Image
                     alt="squad image"

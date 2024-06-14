@@ -34,8 +34,13 @@ export default async function SearchPage() {
     const data = await getData();
     return (
         <div className="mt-2">
-            <div className="w-full flex justify-between gap-2">
-                <div className="relative w-full">
+            <div className="w-full flex flex-wrap justify-between gap-2">
+                <div className="flex">
+                    <h1 className="text-2xl font-bold"><span className="text-primary font-bold">Search</span> Project's</h1>
+                </div>
+
+                
+                <div className="relative w-[70%]">
                     <BiSearch className="absolute left-2.5 top-[9px] h-6 w-6 mr-3 text-muted-foreground" />
                     <Input
                         type="search"

@@ -39,7 +39,7 @@ export function SquadPostCard({
     User
 }: iAppProps) {
     return (
-        <div className="bg-card p-2 border rounded-lg min-h-[340px] relative">
+        <div className="bg-card p-2 border rounded-lg min-h-[340px] shadow-xl relative">
             <Link href={`/squadpost/${id}`}>
                 <div className="space-y-2">
                     <div className="flex gap-2 items-center">

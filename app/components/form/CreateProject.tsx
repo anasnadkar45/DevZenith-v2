@@ -97,7 +97,7 @@ export default function CreateProject() {
                                         toast.error("Something went wrong, try again");
                                     }}
                                 />
-                                {/* {image && (
+                                {image && (
                                     <div className="flex w-full justify-center">
                                         <Image
                                             src={image}
@@ -107,7 +107,7 @@ export default function CreateProject() {
                                             className="rounded"
                                         />
                                     </div>
-                                )} */}
+                                )}
                             </div>
                             <div className="flex flex-col gap-y-2">
                                 <Label>Tags</Label>
@@ -124,7 +124,7 @@ export default function CreateProject() {
                                     {tags.map((tag, index) => (
                                         <div
                                             key={index}
-                                            className="bg-card rounded-full px-4 py-1 text-sm flex items-center gap-2"
+                                            className="bg-card border rounded-full px-4 py-1 text-sm flex items-center gap-2"
                                         >
                                             {tag}
                                             <button
