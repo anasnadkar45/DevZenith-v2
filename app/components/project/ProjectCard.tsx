@@ -1,6 +1,12 @@
 "use client"
 
 import Image from "next/image";
+import DotPattern from "../dot-pattern";
+import { cn } from "@/lib/utils";
+import { BsHeartFill } from "react-icons/bs";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 interface iAppProps {
     id: string;
@@ -8,39 +14,60 @@ interface iAppProps {
     logo: string | null;
     tags: [string];
     url: string;
+    description: string;
     firstName: string;
     lastName: string;
     profileImage: string;
 }
+
 export function ProjectCard({
     id,
     name,
     logo,
     tags,
     url,
+    description,
     firstName,
     lastName,
     profileImage
 }: iAppProps) {
     return (
-        <div className="min-h-[300px] rounded-lg bg-card py-3 px-4 border">
-            <div className="flex gap-2">
-                <Image src={logo as string} alt="" width={70} height={70} className="border rounded-lg" />
-                <div>
+        <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 md:shadow-xl">
+            <DotPattern
+                className={cn(
+                    "[mask-image:radial-gradient(200px_circle_at_center,white,transparent)]",
+                )}
+            />
+            <div className="flex justify-between">
+                <div className="flex items-center gap-2">
+                    <Image src={logo as string} alt="" width={40} height={40}
+                        className="border-2 border-primary bg-primary rounded-md object-fill"
+                    />
                     <p className="text-lg font-bold">{name}</p>
-                    <div className="flex flex-wrap gap-2 mt-2 w-[300px]">
-                        {tags.map((tag, index) => (
-                            <div
-                                key={index}
-                                className="bg-primary/50 border border-primary animate-pulse rounded-full px-3 pb-[2px] text-sm flex items-center gap-2"
-                            >
-                                {tag}
-                            </div>
-                        ))}
-                    </div>
+                </div>
+                <div className="flex items-center gap-1">
+                    <BsHeartFill />
+                    <p className="mb-[1px]">45</p>
                 </div>
             </div>
-
+            <div className="flex flex-wrap gap-2 mt-2 mb-2">
+                {tags.map((tag, index) => (
+                    <div
+                        key={index}
+                        className="bg-primary/50 border animate-pulse rounded-full px-3 pb-[2px] text-xs flex items-center gap-2"
+                    >
+                        {tag}
+                    </div>
+                ))}
+            </div>
+            <p className="text-slate-400 line-clamp-2 mb-2 flex-grow">{description}</p>
+            <div className="w-full flex justify-between items-center border-t pt-3 mt-auto">
+                <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
+                <Button className="rounded-full gap-2">
+                    <p>Join</p>
+                    <ArrowUpRight size={20}/>
+                </Button>
+            </div>
         </div>
     )
 }

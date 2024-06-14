@@ -53,6 +53,7 @@ export default async function SearchPage() {
                         id={project.id}
                         name={project.name}
                         tags={project.tags as [string]}
+                        description={project.description}
                         logo={project.logo}
                         url={project.url}
                         firstName={project.User?.firstName as string}
