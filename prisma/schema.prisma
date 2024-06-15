@@ -15,18 +15,19 @@ datasource db {
 }
 
 model User {
-  id            String      @id @unique
-  email         String
-  firstName     String
-  lastName      String
-  profileImage  String
-  role          Role        @default(USER)
-  resource      Resource[]
-  createdSquads Squad[]
-  SquadPosts    SquadPost[]
-  Vote          Vote[]
-  Comment       Comment[]
-  Projects      Project[]
+  id                 String              @id @unique
+  email              String
+  firstName          String
+  lastName           String
+  profileImage       String
+  role               Role                @default(USER)
+  resource           Resource[]
+  createdSquads      Squad[]
+  SquadPosts         SquadPost[]
+  Vote               Vote[]
+  Comment            Comment[]
+  Projects           Project[]
+  MembershipRequests MembershipRequest[]
 }
 
 model Resource {
@@ -90,16 +91,34 @@ model Comment {
 }
 
 model Project {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  logo        String?
-  url         String
-  tags        String[] @default([])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?
+  id                 String              @id @default(uuid())
+  name               String
+  description        String
+  logo               String?
+  url                String
+  tags               String[]            @default([])
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  User               User?               @relation(fields: [userId], references: [id])
+  userId             String?
+  MembershipRequests MembershipRequest[]
+}
+
+model MembershipRequest {
+  id        String        @id @default(uuid())
+  status    RequestStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  Project   Project?      @relation(fields: [projectId], references: [id])
+  projectId String?
+  User      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum TypeOfVote {

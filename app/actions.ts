@@ -419,3 +419,80 @@ export async function createProject(prevState: any, formData: FormData) {
         };
     }
 }
+
+export async function CreateMembershipRequest(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a project.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+
+    const project = await prisma.project.findUnique({
+        where: {
+            id: projectId,
+        },
+        select: {
+            userId: true,
+        }
+    });
+
+    if (!project) {
+        return {
+            status: "error",
+            message: "Project not found.",
+        };
+    }
+
+    if (user.id === project.userId) {
+        return {
+            status: "error",
+            message: "Project creators cannot create membership requests for their own projects.",
+        };
+    }
+
+    // checking if request already exists
+    const existingRequest = await prisma.membershipRequest.findFirst({
+        where: {
+            userId: user.id,
+            projectId: projectId,
+        },
+        select: {
+            status: true,
+        }
+    })
+
+    if (existingRequest) {
+        return {
+            status: "error",
+            message: `You already have a ${existingRequest.status.toLowerCase()} request for this project.`,
+            requestStatus: existingRequest.status,
+        };
+    }
+
+    const data = await prisma.membershipRequest.create({
+        data: {
+            userId: user.id,
+            projectId: projectId,
+        }
+    })
+
+    if (data) {
+        return {
+            status: "success",
+            message: "Your request has been created successfully.",
+            requestStatus: "PENDING",
+        };
+    }
+
+    const state: State = {
+        status: "success",
+        message: "Your Request has been created successfully",
+    };
+    return state;
+}

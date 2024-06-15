@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import DotPattern from "../dot-pattern";
@@ -7,6 +7,7 @@ import { BsHeartFill } from "react-icons/bs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
+import { JoinRequest } from "./JoinRequest";
 
 interface iAppProps {
     id: string;
@@ -18,6 +19,7 @@ interface iAppProps {
     firstName: string;
     lastName: string;
     profileImage: string;
+    status: string;
 }
 
 export function ProjectCard({
@@ -29,7 +31,8 @@ export function ProjectCard({
     description,
     firstName,
     lastName,
-    profileImage
+    profileImage,
+    status
 }: iAppProps) {
     return (
         <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
@@ -48,7 +51,6 @@ export function ProjectCard({
                         <p className="text-lg font-bold">{name}</p>
                         <p className="text-slate-400 text-xs leading-tight ">Created By :- @{firstName}{lastName}</p>
                     </div>
-
                 </div>
                 <div className="flex items-center gap-1">
                     <BsHeartFill />
@@ -68,10 +70,7 @@ export function ProjectCard({
             <p className="text-slate-400 line-clamp-2 mb-2 flex-grow">{description}</p>
             <div className="w-full flex justify-between items-center border-t pt-3 mt-auto">
                 <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
-                <Button className="rounded-full gap-2">
-                    <p>Join</p>
-                    <ArrowUpRight size={20} />
-                </Button>
+                <JoinRequest projectId={id} status={status} />
             </div>
         </div>
     )
