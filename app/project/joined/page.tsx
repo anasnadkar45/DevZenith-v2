@@ -3,8 +3,11 @@ import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import Image from "next/image";
 import { Key } from "react";
+import NoSearchFound from "@/public/Search.svg";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-export async function getData(userId: string ) {
+export async function getData(userId: string) {
     const membershipRequests = await prisma.membershipRequest.findMany({
         where: {
             userId: userId,
@@ -13,7 +16,7 @@ export async function getData(userId: string ) {
         select: {
             Project: {
                 select: {
-                    id: true, 
+                    id: true,
                     name: true,
                     description: true,
                     logo: true,
@@ -49,13 +52,24 @@ export default async function JoinedPage() {
     }
 
     if (!data.length) {
-        return <p>You have not joined any projects yet.</p>;
+        return (
+            <div className="w-full h-[82vh] flex-col justify-center items-center space-y-8">
+                <Image src={NoSearchFound} alt="" className="w-[400px] mx-auto" />
+                <p className="text-center font-bold text-3xl mx-auto max-w-[400px]">You have not joined any projects yet.</p>
+                <div className="w-[300px] mx-auto">
+                    <Link href={'/project/search'}>
+                        <Button className="w-[300px] mx-auto">Join Project</Button>
+                    </Link>
+                </div>
+
+            </div>
+        );
     }
 
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
-            
+
             {data.map((project) => (
                 <div key={project.Project?.name} className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
                     <div className="flex items-center gap-2">
@@ -68,7 +82,7 @@ export default async function JoinedPage() {
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2 mb-2">
-                        {project.Project?.tags.map((tag: string , index: Key) => (
+                        {project.Project?.tags.map((tag: string, index: Key) => (
                             <div key={index} className="bg-primary/50 border animate-pulse rounded-full px-3 pb-[2px] text-xs flex items-center gap-2">
                                 {tag}
                             </div>
