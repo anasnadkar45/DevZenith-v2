@@ -6,6 +6,8 @@ import { Key } from "react";
 import NoSearchFound from "@/public/Search.svg";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import DotPattern from "@/app/components/dot-pattern";
+import { cn } from "@/lib/utils";
 
 export async function getData(userId: string) {
     const membershipRequests = await prisma.membershipRequest.findMany({
@@ -69,9 +71,13 @@ export default async function JoinedPage() {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
-
             {data.map((project) => (
                 <div key={project.Project?.name} className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
+                    <DotPattern
+                        className={cn(
+                            "[mask-image:radial-gradient(200px_circle_at_center,white,transparent)]",
+                        )}
+                    />
                     <div className="flex items-center gap-2">
                         <Image src={project.Project?.logo as string} alt="" width={40} height={40} className="border-2 border-primary bg-primary rounded-md object-fill" />
                         <div>

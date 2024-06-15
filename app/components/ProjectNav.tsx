@@ -15,7 +15,7 @@ export function ProjectNav() {
                     {
                         TabLinks.map((link , index) => (
                             <Link href={link.href}>
-                                <TabsTrigger value={link.name}>{link.name}</TabsTrigger>
+                                <TabsTrigger className="shadow-lg" value={link.name}>{link.name}</TabsTrigger>
                             </Link>
                         ))
                     }
