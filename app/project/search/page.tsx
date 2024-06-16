@@ -70,7 +70,7 @@ export default async function SearchPage() {
                 <CreateProject />
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
                 {data.map((project) => (
                     <ProjectCard
                         key={project.id}
