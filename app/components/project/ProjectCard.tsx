@@ -57,7 +57,7 @@ export function ProjectCard({
                     <p className="mb-[1px]">45</p>
                 </div>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2 mb-2">
+            <div className="flex flex-wrap gap-2 mt-2">
                 {tags.map((tag, index) => (
                     <div
                         key={index}
@@ -68,7 +68,7 @@ export function ProjectCard({
                 ))}
             </div>
             <p className="text-slate-400 line-clamp-2 mb-2 flex-grow">{description}</p>
-            <div className="w-full flex justify-between items-center border-t pt-3 mt-auto">
+            <div className="w-full flex justify-between items-center border-t pt-3">
                 <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
                 <JoinRequest projectId={id} status={status} />
             </div>

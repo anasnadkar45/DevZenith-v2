@@ -2,7 +2,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { Role, TypeOfVote, type CategoryTypes } from "@prisma/client";
+import { RequestStatus, Role, TypeOfVote, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
@@ -489,6 +489,46 @@ export async function CreateMembershipRequest(prevState: any, formData: FormData
             requestStatus: "PENDING",
         };
     }
+
+    const state: State = {
+        status: "success",
+        message: "Your Request has been created successfully",
+    };
+    return state;
+}
+
+export async function updateMembershipRequest(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a project.",
+        };
+    }
+
+    // const projectId = formData.get('projectId') as string;
+    const membershipRequestId = formData.get('membershipRequestId') as string;
+    const status = formData.get('status') as string;
+
+    if (!['ACCEPTED', 'REJECTED'].includes(status)) {
+        return {
+            status: "error",
+            message: "Invalid status value.",
+        };
+    }
+
+    const updatedRequest = await prisma.membershipRequest.update({
+        where: {
+            id: membershipRequestId
+        },
+        data: {
+            status : status as RequestStatus
+        }
+    });
+
+    revalidatePath(`/project/myproject/${membershipRequestId}`);
 
     const state: State = {
         status: "success",

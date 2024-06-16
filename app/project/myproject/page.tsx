@@ -8,6 +8,9 @@ export async function getData(userId: string) {
         where: {
             userId: userId,
         },
+        orderBy: {
+            createdAt: "desc"
+        },
         select: {
             id: true,
             name: true,

@@ -1,3 +1,4 @@
+import { MembershipRequest } from "@/app/components/project/MembershipRequest";
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -10,7 +11,11 @@ async function getData(id: string) {
             id: true,
             name: true,
             MembershipRequests: {
+                orderBy: {
+                    createdAt: "desc"
+                },
                 select: {
+                    id: true,
                     User: {
                         select: {
                             firstName: true,
@@ -36,24 +41,34 @@ export default async function MyProjectRoute({
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData(params.id);
+
     return (
-        <div>
+        <div className="flex justify-between">
             <h1>{data?.name}</h1>
-            <h2>Membership Requests</h2>
-            {data?.MembershipRequests.length as number > 0 ? (
-                <ul>
-                    {data?.MembershipRequests.map((request, index) => (
-                        <li key={index}>
-                            <img src={request.User?.profileImage} alt={`${request.User?.firstName}'s profile`} width={50} height={50} />
-                            <p>{request.User?.firstName} {request.User?.lastName}</p>
-                            <p>{request.User?.email}</p>
-                            <p>Status: {request.status}</p>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No membership requests found.</p>
-            )}
+
+            <div className="bg-card border p-3 rounded-lg space-y-2 shadow-md">
+                <h2 className="text-2xl font-bold">Membership Requests</h2>
+                {data?.MembershipRequests.length as number > 0 ? (
+                    <ul>
+                        {
+                            data?.MembershipRequests.map((request, index) => (
+                                <MembershipRequest
+                                    key={request?.id}
+                                    id={request?.id}
+                                    status={request?.status}
+                                    firstName={request?.User?.firstName as string}
+                                    lastName={request?.User?.lastName as string}
+                                    email={request?.User?.email as string}
+                                    profileImage={request?.User?.profileImage as string}
+                                />
+                            ))
+                        }
+                    </ul>
+
+                ) : (
+                    <p>No membership requests found.</p>
+                )}
+            </div>
         </div>
     )
 }

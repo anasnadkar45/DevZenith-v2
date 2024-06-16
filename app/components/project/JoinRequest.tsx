@@ -39,7 +39,7 @@ export function JoinRequest({ projectId, status }: iAppProps) {
     };
 
     return (
-        <form action={formAction} className="mt-5">
+        <form action={formAction}>
             <input type="hidden" name="projectId" value={projectId} />
             <Button className="rounded-full gap-2" disabled={status === "PENDING" || status === "ACCEPTED"}>
                 <p>{getButtonText()}</p>
