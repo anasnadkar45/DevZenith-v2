@@ -69,7 +69,7 @@ export function MyProjectCard({
             <p className="text-slate-400 line-clamp-2 mb-2 flex-grow">{description}</p>
             <div className="w-full flex justify-between items-center border-t pt-3 mt-auto">
                 <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
-                <Link href={`/project/myproject/${id}`}>
+                <Link href={`/project/myproject/${id}/dashboard`}>
                     <SubmitButton title="View Project"/>
                 </Link>
             </div>

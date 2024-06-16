@@ -47,7 +47,7 @@ export default async function MyProjectRoute({
             <h1>{data?.name}</h1>
 
             <div className="bg-card border p-3 rounded-lg space-y-2 shadow-md">
-                <h2 className="text-2xl font-bold">Membership Requests</h2>
+                <h2 className="text-xl font-bold">Membership Requests</h2>
                 {data?.MembershipRequests.length as number > 0 ? (
                     <ul>
                         {
