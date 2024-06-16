@@ -55,9 +55,9 @@ export function MembershipRequest({
                     </div>
                     <div>
                         {(status === "PENDING" || status === "REJECTED") ? (
-                            <p className="text-red-600">{status}</p>
+                            <p className="text-red-600 text-xs">{status}</p>
                         ) : (
-                            <p className="text-green-500">{status}</p>
+                            <p className="text-green-500 text-xs">{status}</p>
                         )}
                     </div>
                 </div>

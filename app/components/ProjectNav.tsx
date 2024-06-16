@@ -9,7 +9,7 @@ export const TabLinks = [
 
 export function ProjectNav() {
     return (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center -mt-2">
             <Tabs defaultValue="Search" className=" border rounded-md">
                 <TabsList className="grid w-full grid-cols-3 bg-card " >
                     {

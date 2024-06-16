@@ -1,19 +1,23 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { TbDashboard } from "react-icons/tb";
+import { MdDashboard } from "react-icons/md";
 import { FaExternalLinkSquareAlt, FaTasks } from "react-icons/fa";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // For collapse button
 
 // Define your nav items without the hardcoded project ID
 const navItems = [
-    { name: "Dashboard", icon: TbDashboard },
-    { name: "Resources", icon: FaExternalLinkSquareAlt },
-    { name: "Tasks", icon: FaTasks },
+    { name: "Dashboard", icon: MdDashboard, tooltip: "Dashboard" },
+    { name: "Resources", icon: FaExternalLinkSquareAlt, tooltip: "Resources" },
+    { name: "Tasks", icon: FaTasks, tooltip: "Tasks" },
 ];
 
 export function Sidebar() {
+    const [collapsed, setCollapsed] = useState(false);
     const pathname = usePathname();
 
     // Extract the project ID from the pathname
@@ -37,26 +41,44 @@ export function Sidebar() {
     };
 
     return (
-        <div className='grid items-start gap-2 '>
-            {navItems.map((item, index) => {
-                // Construct href dynamically using the extracted project ID
-                const href = `/project/myproject/${projectId}/${item.name.toLowerCase()}`;
-                const isActive = pathname === href;
+        <TooltipProvider>
+            <div className={`flex flex-col ${collapsed ? "" : ""} h-full transition-all duration-300`}>
+                <button
+                    onClick={() => setCollapsed(!collapsed)}
+                    className="p-2 focus:outline-none "
+                    aria-label="Toggle sidebar"
+                >
+                    {collapsed ? <FiChevronRight size={25} className="border-2 rounded-full" /> : <FiChevronLeft size={25} className="border-2 rounded-full" />}
+                </button>
+                <div className='flex flex-col items-start gap-2 px-2'>
+                    {navItems.map((item, index) => {
+                        // Construct href dynamically using the extracted project ID
+                        const href = `/project/myproject/${projectId}/${item.name.toLowerCase()}`;
+                        const isActive = pathname === href;
 
-                return (
-                    <Link key={index} href={href}>
-                        <motion.span
-                            className="group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all"
-                            initial={false} // Allows us to skip initial animation
-                            animate={isActive ? "active" : "inactive"}
-                            variants={variants}
-                        >
-                            <item.icon className={`mr-2 h-4 w-4 ${isActive ? "text-primary" : "text-slate-400"}`} />
-                            <span className={isActive ? "text-primary" : "text-slate-400"}>{item.name}</span>
-                        </motion.span>
-                    </Link>
-                );
-            })}
-        </div>
+                        return (
+                            <Link key={index} href={href}>
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <motion.span
+                                            className="group flex items-center rounded-md px-2 py-2 text-sm font-medium transition-all"
+                                            initial={false} // Allows us to skip initial animation
+                                            animate={isActive ? "active" : "inactive"}
+                                            variants={variants}
+                                        >
+                                            <item.icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-slate-400"}`} />
+                                            {!collapsed && <span className={`ml-2 ${isActive ? "text-primary" : "text-slate-400"}`}>{item.name}</span>}
+                                        </motion.span>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-background border-2">
+                                        <p>{item.tooltip}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </div>
+        </TooltipProvider>
     );
 }
