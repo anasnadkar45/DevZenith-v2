@@ -48,7 +48,7 @@ export function Sidebar() {
                     className="p-2 focus:outline-none "
                     aria-label="Toggle sidebar"
                 >
-                    {collapsed ? <FiChevronRight size={25} className="border-2 rounded-full" /> : <FiChevronLeft size={25} className="border-2 rounded-full" />}
+                    {collapsed ? <FiChevronLeft size={25} className="border-2 rounded-full" /> : <FiChevronRight size={25} className="border-2 rounded-full" />}
                 </button>
                 <div className='flex flex-col items-start gap-2 px-2'>
                     {navItems.map((item, index) => {

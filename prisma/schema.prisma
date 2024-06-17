@@ -28,6 +28,7 @@ model User {
   Comment            Comment[]
   Projects           Project[]
   MembershipRequests MembershipRequest[]
+  ProjectResources   ProjectResource[]
 }
 
 model Resource {
@@ -102,6 +103,7 @@ model Project {
   User               User?               @relation(fields: [userId], references: [id])
   userId             String?
   MembershipRequests MembershipRequest[]
+  ProjectResources   ProjectResource[]
 }
 
 model MembershipRequest {
@@ -112,6 +114,18 @@ model MembershipRequest {
   Project   Project?      @relation(fields: [projectId], references: [id])
   projectId String?
   User      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model ProjectResource {
+  id        String   @id @default(uuid())
+  name      String
+  category  String
+  link      String?
+  file      String?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  User      User?    @relation(fields: [userId], references: [id])
   userId    String?
 }
 

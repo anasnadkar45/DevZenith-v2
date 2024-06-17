@@ -407,10 +407,19 @@ export async function createProject(prevState: any, formData: FormData) {
 
         revalidatePath('/projects');
 
-        return {
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project has been created successfully",
+            };
+        }
+
+        const state: State = {
             status: "success",
-            message: "Your Project has been created successfully",
+            message: "Your Request has been created successfully",
         };
+        return state;
+
     } catch (error) {
         console.error("Error creating project:", error);
         return {
@@ -524,7 +533,7 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
             id: membershipRequestId
         },
         data: {
-            status : status as RequestStatus
+            status: status as RequestStatus
         }
     });
 
@@ -535,4 +544,79 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
         message: "Your Request has been created successfully",
     };
     return state;
+}
+
+// Project Resource
+const projectResourceSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    category: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+        link: z.string().optional(),
+        file: z.string().optional(),
+})
+
+export async function AddProjectResource(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a project.",
+        };
+    }
+
+    const validateFields = projectResourceSchema.safeParse({
+        name: formData.get('name'),
+        category: formData.get('category'),
+        link: formData.get('link'),
+        file: JSON.parse(formData.get("file") as string),
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.projectResource.create({
+            data: {
+                name: validateFields.data.name,
+                category: validateFields.data.category,
+                link: validateFields.data.link,
+                file: validateFields.data.file,
+                projectId : projectId,
+                userId: user?.id ?? null,
+            },
+        });
+
+        revalidatePath(`/project/myproject/${projectId}/resources`);
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project Resource has been added successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Resource has been added successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error adding Project Resource:", error);
+        return {
+            status: "error",
+            message: "An error occurred while adding the project resource. Please try again later.",
+        };
+    }
 }
