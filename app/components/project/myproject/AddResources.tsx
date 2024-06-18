@@ -62,7 +62,7 @@ export default function AddResources({ id }: AddResourcesProps) {
                                 <Input name="link" type="text" placeholder="https://github.com/" />
                             </div>
                             <div className="flex flex-col gap-y-2">
-                                <input type="hidden" name="file" value={JSON.stringify(file)} />
+                            <input type="hidden" name="file" value={file !== null ? JSON.stringify(file) : ''} />
                                 <Label>Resource File</Label>
                                 <UploadDropzone
                                     className="border-accent"

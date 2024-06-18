@@ -1,7 +1,12 @@
-export default function TasksPage(){
-    return(
+import AssignTask from "@/app/components/project/myproject/AssignTask";
+
+export default function TasksPage() {
+    return (
         <div>
-            TasksPage
+            <div className="flex justify-between">
+                <p className="text-2xl font-bold">Task's</p>
+                <AssignTask />
+            </div>
         </div>
     )
 }

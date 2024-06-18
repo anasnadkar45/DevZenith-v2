@@ -50,7 +50,7 @@ export function Sidebar() {
                 >
                     {collapsed ? <FiChevronLeft size={25} className="border-2 rounded-full" /> : <FiChevronRight size={25} className="border-2 rounded-full" />}
                 </button>
-                <div className='flex flex-col items-start gap-2 px-2'>
+                <div className='flex flex-col items-start gap-2 px-1'>
                     {navItems.map((item, index) => {
                         // Construct href dynamically using the extracted project ID
                         const href = `/project/myproject/${projectId}/${item.name.toLowerCase()}`;

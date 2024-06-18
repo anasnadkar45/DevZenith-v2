@@ -573,9 +573,10 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
         name: formData.get('name'),
         category: formData.get('category'),
         link: formData.get('link'),
-        file: JSON.parse(formData.get("file") as string),
+        file: formData.get("file") ? JSON.parse(formData.get("file") as string) : "",
     });
-
+    
+    // Validate the fields
     if (!validateFields.success) {
         return {
             status: "error",
@@ -583,6 +584,9 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
             message: "Oops, I think there is a mistake with your inputs.",
         };
     }
+    
+    // Check if file is provided
+    const fileUrl = validateFields.data.file;
 
     const projectId = formData.get('projectId') as string;
     try {
@@ -591,7 +595,7 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
                 name: validateFields.data.name,
                 category: validateFields.data.category,
                 link: validateFields.data.link,
-                file: validateFields.data.file,
+                file: fileUrl,
                 projectId : projectId,
                 userId: user?.id ?? null,
             },
