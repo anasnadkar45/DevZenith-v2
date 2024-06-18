@@ -6,6 +6,7 @@ import { RequestStatus, Role, TypeOfVote, type CategoryTypes } from "@prisma/cli
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
+import { isValid, parseISO } from "date-fns";
 
 export type State = {
     status: "error" | "success" | undefined;
@@ -443,6 +444,16 @@ const taskSchema = z.object({
     priority: z
         .string()
         .min(1, { message: "Priority is required" }),
+    type: z
+        .string()
+        .min(1, { message: "Yype is required" }),
+    date: z
+        .string()
+        .refine((date) => {
+            const parsedDate = parseISO(date);
+            return isValid(parsedDate);
+        }, { message: "Invalid date" })
+        .optional(),
     projectId: z
         .string()
         .min(1, { message: "Project ID is required" }),
@@ -463,6 +474,8 @@ export async function assignTask(prevState: any, formData: FormData) {
         title: formData.get('title'),
         description: formData.get('description'),
         priority: formData.get('priority'),
+        type: formData.get('type'),
+        date: formData.get('date'),
         userId: formData.get('userId'),
         projectId: formData.get('projectId'),
     });
@@ -477,6 +490,7 @@ export async function assignTask(prevState: any, formData: FormData) {
 
     const projectId = validateFields.data.projectId;
     const assigneeId = validateFields.data.userId;
+    const date = validateFields.data.date;
 
     const project = await prisma.project.findUnique({
         where: {
@@ -521,6 +535,8 @@ export async function assignTask(prevState: any, formData: FormData) {
                 title: validateFields.data.title,
                 description: validateFields.data.description,
                 priority: validateFields.data.priority,
+                type: validateFields.data.type,
+                date: date ? new Date(date) : null,
                 userId: assigneeId ?? null,
                 projectId: projectId,
             }
