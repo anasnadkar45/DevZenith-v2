@@ -2,82 +2,35 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 
-export function AssigneeSelector() {
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+export function PrioritySelector() {
+    const [selectedPriority, setSelectedPriority] = useState<string | null>(null);
 
     return (
         <div>
-            <input type="hidden" name="category" value={selectedCategory || ""} />
-            <Select onValueChange={(value) => setSelectedCategory(value)}>
+            <input type="hidden" name="category" value={selectedPriority || ""} />
+            <Select onValueChange={(value) => setSelectedPriority(value)}>
                 <SelectTrigger className="">
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder="Select Priority" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-card">
                     <SelectGroup>
                         <SelectItem
                             key={1}
-                            value={"anas"}
+                            value={"high"}
                         >
-                            Anas Nadkar
+                            <p className="bg-red-600 px-4 pb-[3px] rounded-full border border-red-700">High</p>
                         </SelectItem>
                         <SelectItem
                             key={1}
-                            value={"sara"}
+                            value={"normal"}
                         >
-                            Sara Nadkar
+                            <p className="bg-yellow-600 px-4 pb-[3px] rounded-full border border-yellow-700">Normal</p>
                         </SelectItem>
                         <SelectItem
                             key={1}
-                            value={"shakila"}
+                            value={"low"}
                         >
-                            Shakila Nadkar
-                        </SelectItem><SelectItem
-                            key={1}
-                            value={"shadab"}
-                        >
-                            Shadab Nadkar
-                        </SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-        </div>
-    );
-}
-
-export function StatusSelector() {
-    const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
-    return (
-        <div>
-            <input type="hidden" name="category" value={selectedStatus || ""} />
-            <Select onValueChange={(value) => setSelectedStatus(value)}>
-                <SelectTrigger className="">
-                    <SelectValue placeholder="Select assignee" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectItem
-                            key={1}
-                            value={"anas"}
-                        >
-                            Anas Nadkar
-                        </SelectItem>
-                        <SelectItem
-                            key={1}
-                            value={"sara"}
-                        >
-                            Sara Nadkar
-                        </SelectItem>
-                        <SelectItem
-                            key={1}
-                            value={"shakila"}
-                        >
-                            Shakila Nadkar
-                        </SelectItem><SelectItem
-                            key={1}
-                            value={"shadab"}
-                        >
-                            Shadab Nadkar
+                            <p className="bg-green-600 px-4 pb-[3px] rounded-full border border-green-700">Low</p>
                         </SelectItem>
                     </SelectGroup>
                 </SelectContent>

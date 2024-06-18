@@ -29,6 +29,8 @@ model User {
   Projects           Project[]
   MembershipRequests MembershipRequest[]
   ProjectResources   ProjectResource[]
+  ProjectMemberships ProjectMembership[]
+  tasks              Task[]
 }
 
 model Resource {
@@ -104,6 +106,8 @@ model Project {
   userId             String?
   MembershipRequests MembershipRequest[]
   ProjectResources   ProjectResource[]
+  ProjectMemberships ProjectMembership[]
+  tasks              Task[]
 }
 
 model MembershipRequest {
@@ -127,6 +131,27 @@ model ProjectResource {
   projectId String?
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Project     Project? @relation(fields: [projectId], references: [id])
+  projectId   String?
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model ProjectMembership {
+  id        String   @id @default(uuid())
+  joinedAt  DateTime @default(now())
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
 }
 
 enum RequestStatus {

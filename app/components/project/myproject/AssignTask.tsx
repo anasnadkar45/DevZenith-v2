@@ -1,3 +1,5 @@
+// app/components/project/myproject/AssignTask.tsx
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,38 +15,38 @@ import {
     SheetTrigger,
     SheetFooter,
 } from "@/components/ui/sheet";
-import { AddProjectResource } from "@/app/actions";
+import { assignTask } from "@/app/actions";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import { UploadDropzone } from "@/app/lib/uploadthing";
-import { CalendarIcon, FileText } from "lucide-react";
-import { AssigneeSelector, StatusSelector } from "./AssigneeSelector";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns"
-import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Image from "next/image";
+import { PrioritySelector } from "./AssigneeSelector";
 
-interface AddResourcesProps {
-    id: string;
+
+interface AssignTaskProps {
+    projectId: string;
+    members: any[];
 }
 
-export default function AssignTask() {
-    // const initialState = { message: "", status: undefined };
-    // const [state, formAction] = useFormState(AddProjectResource, initialState);
-    const [date, setDate] = useState<Date>()
+export default function AssignTask({ projectId, members }: AssignTaskProps) {
+    const initialState = { message: "", status: undefined };
+    const [state, formAction] = useFormState(assignTask, initialState);
+    // const [date, setDate] = useState<Date>()
+    const [selectedAssignee, setSelectedAssignee] = useState<string | null>(null); // State to hold members data
 
-    // useEffect(() => {
-    //     if (state.status === "success") {
-    //         toast.success(state.message);
-    //     } else if (state.status === "error") {
-    //         toast.error(state.message);
-    //     }
-    // }, [state]);
+
+    useEffect(() => {
+        if (state.status === "success") {
+            toast.success(state.message);
+        } else if (state.status === "error") {
+            toast.error(state.message);
+        }
+    }, [state]);
 
     return (
         <div>
-            <Sheet >
+            <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="default" size={"sm"}>Assign Task</Button>
                 </SheetTrigger>
@@ -52,57 +54,41 @@ export default function AssignTask() {
                     <SheetHeader>
                         <SheetTitle className="text-2xl font-bold">Assign new task</SheetTitle>
                     </SheetHeader>
-                    <form>
-                        {/* <input type="hidden" name="projectId" value={id} /> */}
+                    <form action={formAction}>
+                        <input type="hidden" name="projectId" value={projectId} />
                         <div className="grid gap-4 py-4">
                             <div className="grid items-center gap-4">
                                 <Label htmlFor="title" className="text-left">Title</Label>
                                 <Input id="title" name="title" placeholder="Todo SideBar" />
                             </div>
+
                             <div className="flex flex-col gap-y-2">
                                 <Label>Assignee</Label>
-                                <AssigneeSelector />
+                                <input type="hidden" name="userId" value={selectedAssignee || ""} />
+                                <Select onValueChange={(value) => setSelectedAssignee(value)}>
+                                    <SelectTrigger className="">
+                                        <SelectValue placeholder="Select assignee" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-card">
+                                        <SelectGroup>
+                                            {members.map(member => (
+                                                <SelectItem
+                                                    key={member.id}
+                                                    value={member.id}
+                                                >
+                                                    <div className="flex gap-2 items-center">
+                                                        <Image src={member.profileImage} alt="" width={30} height={30} className="rounded-md border" />
+                                                        <p className="mb-1">{`${member.firstName} ${member.lastName}`}</p>
+                                                    </div>
+
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                             </div>
-                            <div className="flex flex-col gap-y-2">
-                                <Label>Target Date</Label>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                                "w-[280px] justify-start text-left font-normal",
-                                                !date && "text-muted-foreground"
-                                            )}
-                                        >
-                                            <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0">
-                                        <Calendar
-                                            mode="single"
-                                            selected={date}
-                                            onSelect={setDate}
-                                            initialFocus
-                                            className="bg-card"
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-                            <div className="w-full grid grid-cols-3 gap-1">
-                                <div className="flex flex-col gap-y-2">
-                                    <Label>Status</Label>
-                                    <StatusSelector />
-                                </div>
-                                <div className="flex flex-col gap-y-2">
-                                    <Label>Priority</Label>
-                                    <StatusSelector />
-                                </div>
-                                <div className="flex flex-col gap-y-2">
-                                    <Label>Type</Label>
-                                    <StatusSelector />
-                                </div>
-                            </div>
+
+                            <PrioritySelector />
 
                             <div className="grid items-center gap-4">
                                 <Label htmlFor="description" className="text-left">Description</Label>
@@ -111,7 +97,7 @@ export default function AssignTask() {
                         </div>
                         <SheetFooter>
                             <SheetClose asChild>
-                                <Button type="submit">Add Resource</Button>
+                                <Button type="submit">Assign Task</Button>
                             </SheetClose>
                         </SheetFooter>
                     </form>

@@ -429,18 +429,50 @@ export async function createProject(prevState: any, formData: FormData) {
     }
 }
 
-export async function CreateMembershipRequest(prevState: any, formData: FormData) {
+// Task
+const taskSchema = z.object({
+    title: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    description: z
+        .string()
+        .min(1, { message: "Description is required" }),
+    userId: z
+        .string()
+        .optional(),
+    projectId: z
+        .string()
+        .min(1, { message: "Project ID is required" }),
+});
+
+export async function assignTask(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to create a project.",
+            message: "User not found. Please log in to assign a task.",
         };
     }
 
-    const projectId = formData.get('projectId') as string;
+    const validateFields = taskSchema.safeParse({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        userId: formData.get('userId'),
+        projectId: formData.get('projectId'),
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    const projectId = validateFields.data.projectId;
+    const assigneeId = validateFields.data.userId;
 
     const project = await prisma.project.findUnique({
         where: {
@@ -458,52 +490,101 @@ export async function CreateMembershipRequest(prevState: any, formData: FormData
         };
     }
 
-    if (user.id === project.userId) {
+    if (user.id !== project.userId) {
         return {
             status: "error",
-            message: "Project creators cannot create membership requests for their own projects.",
+            message: "Only the project creator can assign tasks.",
         };
     }
 
-    // checking if request already exists
-    const existingRequest = await prisma.membershipRequest.findFirst({
+    const isMember = await prisma.projectMembership.findFirst({
         where: {
-            userId: user.id,
+            userId: assigneeId,
             projectId: projectId,
-        },
-        select: {
-            status: true,
         }
-    })
+    });
 
-    if (existingRequest) {
+    if (!isMember) {
         return {
             status: "error",
-            message: `You already have a ${existingRequest.status.toLowerCase()} request for this project.`,
-            requestStatus: existingRequest.status,
+            message: "Assignee is not a member of this project.",
         };
     }
 
-    const data = await prisma.membershipRequest.create({
-        data: {
-            userId: user.id,
-            projectId: projectId,
-        }
-    })
+    try {
+        const data = await prisma.task.create({
+            data: {
+                title: validateFields.data.title,
+                description: validateFields.data.description,
+                userId: assigneeId ?? null,
+                projectId: projectId,
+            }
+        });
 
-    if (data) {
+        revalidatePath(`/project/${projectId}/tasks`);
+
         return {
             status: "success",
-            message: "Your request has been created successfully.",
-            requestStatus: "PENDING",
+            message: "Task has been assigned successfully",
+        };
+    } catch (error) {
+        console.error("Error assigning task:", error);
+        return {
+            status: "error",
+            message: "An error occurred while assigning the task. Please try again later.",
+        };
+    }
+}
+
+// Membership request
+export async function createMembershipRequest(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a membership request.",
         };
     }
 
-    const state: State = {
-        status: "success",
-        message: "Your Request has been created successfully",
-    };
-    return state;
+    const projectId = formData.get("projectId") as string;
+
+    try {
+        const existingRequest = await prisma.membershipRequest.findFirst({
+            where: {
+                userId: user.id,
+                projectId: projectId,
+                status: 'PENDING',
+            }
+        });
+
+        if (existingRequest) {
+            return {
+                status: "error",
+                message: "You already have a pending membership request for this project.",
+            };
+        }
+
+        await prisma.membershipRequest.create({
+            data: {
+                projectId: projectId,
+                userId: user.id,
+                status: "PENDING",
+            }
+        });
+
+        return {
+            status: "success",
+            message: "Membership request has been created successfully",
+        };
+    } catch (error) {
+        console.error("Error creating membership request:", error);
+        return {
+            status: "error",
+            message: "An error occurred while creating the membership request. Please try again later.",
+        };
+    }
 }
 
 export async function updateMembershipRequest(prevState: any, formData: FormData) {
@@ -513,13 +594,12 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to create a project.",
+            message: "User not found. Please log in to update the membership request.",
         };
     }
 
-    // const projectId = formData.get('projectId') as string;
     const membershipRequestId = formData.get('membershipRequestId') as string;
-    const status = formData.get('status') as string;
+    const status = formData.get('status') as RequestStatus;
 
     if (!['ACCEPTED', 'REJECTED'].includes(status)) {
         return {
@@ -528,22 +608,74 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
         };
     }
 
-    const updatedRequest = await prisma.membershipRequest.update({
-        where: {
-            id: membershipRequestId
-        },
-        data: {
-            status: status as RequestStatus
+    try {
+        const updatedRequest = await prisma.membershipRequest.update({
+            where: {
+                id: membershipRequestId
+            },
+            data: {
+                status
+            },
+            select: {
+                projectId:true,
+                userId:true
+            }
+        });
+
+        if (status === "ACCEPTED") {
+            await createProjectMembership(updatedRequest.projectId as string, updatedRequest.userId as string);
         }
-    });
 
-    revalidatePath(`/project/myproject/${membershipRequestId}`);
+        revalidatePath(`/project/${updatedRequest.projectId}/requests`);
 
-    const state: State = {
-        status: "success",
-        message: "Your Request has been created successfully",
-    };
-    return state;
+        return {
+            status: "success",
+            message: "Membership request updated successfully.",
+        };
+    } catch (error) {
+        console.error("Error updating membership request:", error);
+        return {
+            status: "error",
+            message: "An error occurred while updating the membership request. Please try again later.",
+        };
+    }
+}
+
+export async function createProjectMembership(projectId: string, userId: string) {
+    try {
+        const existingMembership = await prisma.projectMembership.findFirst({
+            where: {
+                userId,
+                projectId
+            }
+        });
+
+        if (existingMembership) {
+            return {
+                status: "error",
+                message: "User is already a member of this project.",
+            };
+        }
+
+        const membership = await prisma.projectMembership.create({
+            data: {
+                userId,
+                projectId,
+            },
+        });
+
+        return {
+            status: "success",
+            message: "Project membership created successfully.",
+            membership,
+        };
+    } catch (error) {
+        console.error("Error creating project membership:", error);
+        return {
+            status: "error",
+            message: "An error occurred while creating project membership. Please try again later.",
+        };
+    }
 }
 
 // Project Resource
@@ -554,8 +686,8 @@ const projectResourceSchema = z.object({
     category: z
         .string()
         .min(3, { message: "The title has to be a minimum character length of 3" }),
-        link: z.string().optional(),
-        file: z.string().optional(),
+    link: z.string().optional(),
+    file: z.string().optional(),
 })
 
 export async function AddProjectResource(prevState: any, formData: FormData) {
@@ -575,7 +707,7 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
         link: formData.get('link'),
         file: formData.get("file") ? JSON.parse(formData.get("file") as string) : "",
     });
-    
+
     // Validate the fields
     if (!validateFields.success) {
         return {
@@ -584,7 +716,7 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
             message: "Oops, I think there is a mistake with your inputs.",
         };
     }
-    
+
     // Check if file is provided
     const fileUrl = validateFields.data.file;
 
@@ -596,7 +728,7 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
                 category: validateFields.data.category,
                 link: validateFields.data.link,
                 file: fileUrl,
-                projectId : projectId,
+                projectId: projectId,
                 userId: user?.id ?? null,
             },
         });

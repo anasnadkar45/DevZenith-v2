@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ArrowUpRight } from "lucide-react";
-import { CreateMembershipRequest, State } from "@/app/actions";
+import {  State, createMembershipRequest } from "@/app/actions";
 import { useFormState } from "react-dom";
 
 interface iAppProps {
@@ -13,7 +13,7 @@ interface iAppProps {
 
 export function JoinRequest({ projectId, status }: iAppProps) {
     const initialState: State = { message: "", status: undefined };
-    const [state, formAction] = useFormState(CreateMembershipRequest, initialState);
+    const [state, formAction] = useFormState(createMembershipRequest, initialState);
     const ref = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
