@@ -440,6 +440,9 @@ const taskSchema = z.object({
     userId: z
         .string()
         .optional(),
+    priority: z
+        .string()
+        .min(1, { message: "Priority is required" }),
     projectId: z
         .string()
         .min(1, { message: "Project ID is required" }),
@@ -459,6 +462,7 @@ export async function assignTask(prevState: any, formData: FormData) {
     const validateFields = taskSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
+        priority: formData.get('priority'),
         userId: formData.get('userId'),
         projectId: formData.get('projectId'),
     });
@@ -516,6 +520,7 @@ export async function assignTask(prevState: any, formData: FormData) {
             data: {
                 title: validateFields.data.title,
                 description: validateFields.data.description,
+                priority: validateFields.data.priority,
                 userId: assigneeId ?? null,
                 projectId: projectId,
             }
@@ -523,10 +528,17 @@ export async function assignTask(prevState: any, formData: FormData) {
 
         revalidatePath(`/project/${projectId}/tasks`);
 
-        return {
+        if (data) {
+            return {
+                status: "success",
+                message: "Task has been assigned successfully",
+            };
+        }
+        const state: State = {
             status: "success",
             message: "Task has been assigned successfully",
         };
+        return state;
     } catch (error) {
         console.error("Error assigning task:", error);
         return {
@@ -617,8 +629,8 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
                 status
             },
             select: {
-                projectId:true,
-                userId:true
+                projectId: true,
+                userId: true
             }
         });
 

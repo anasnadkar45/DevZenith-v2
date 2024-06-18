@@ -137,6 +137,7 @@ model Task {
   id          String   @id @default(uuid())
   title       String
   description String
+  priority    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   Project     Project? @relation(fields: [projectId], references: [id])
