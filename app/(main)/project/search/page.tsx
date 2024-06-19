@@ -30,6 +30,15 @@ async function getData(userId: string | undefined) {
                     status: true,
                 }
             },
+            ProjectMemberships: {
+                select: {
+                    User: {
+                        select: {
+                            _count: true
+                        }
+                    }
+                }
+            },
             createdAt: true,
         }
     });
@@ -37,7 +46,7 @@ async function getData(userId: string | undefined) {
     return data.map(project => ({
         ...project,
         membershipRequestStatus: project.MembershipRequests.length > 0
-            ? project.MembershipRequests[0].status
+            ? project.MembershipRequests[0].status && project.ProjectMemberships[0].User?._count
             : null
     }));
 }

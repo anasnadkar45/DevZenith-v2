@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import DotPattern from "../dot-pattern";
 import { cn } from "@/lib/utils";
@@ -49,7 +48,7 @@ export function ProjectCard({
                     />
                     <div>
                         <p className="text-lg font-bold">{name}</p>
-                        <p className="text-slate-400 text-xs leading-tight ">Created By :- @{firstName}{lastName}</p>
+                        <p className="text-slate-400 text-xs leading-tight ">Created By: @{firstName} {lastName}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -73,5 +72,5 @@ export function ProjectCard({
                 <JoinRequest projectId={id} status={status} />
             </div>
         </div>
-    )
+    );
 }

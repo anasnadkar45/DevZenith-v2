@@ -1,4 +1,4 @@
-import { ProjectNav } from "../components/ProjectNav";
+import { ProjectNav } from "../../components/ProjectNav";
 
 export default async function ProjectLayout({
     children,

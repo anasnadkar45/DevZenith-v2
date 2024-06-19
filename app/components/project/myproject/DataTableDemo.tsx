@@ -69,7 +69,7 @@ export const columns: ColumnDef<Resource>[] = [
         accessorKey: "link",
         header: "Link",
         cell: ({ row }) => (
-            <a href={row.getValue("link")} target="_blank" rel="noopener noreferrer">
+            <a className="border-b pb-0.5 border-primary" href={row.getValue("link")} target="_blank" rel="noopener noreferrer">
                 {row.getValue("link")}
             </a>
         ),
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Resource>[] = [
         accessorKey: "file",
         header: "File",
         cell: ({ row }) => (
-            <a href={row.getValue("file")} target="_blank" rel="noopener noreferrer">
+            <a className="border-b pb-0.5 border-primary" href={row.getValue("file")} target="_blank" rel="noopener noreferrer">
                 {row.getValue("file")}
             </a>
         ),

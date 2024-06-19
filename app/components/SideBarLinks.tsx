@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 // Define your nav items
 export const navItems = [
-    { name: "Home", href: "/", icon: AiFillHome },
+    { name: "Dashboard", href: "/dashboard", icon: AiFillHome },
     { name: "Resources", href: "/resources/all", icon: FaExternalLinkSquareAlt },
     { name: "DevSquads", href: "/squads", icon: FaDev },
     { name: "ProjectCollab", href: "/project/search", icon: FaFileCode },

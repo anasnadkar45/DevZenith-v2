@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import prisma from "../lib/db";
+import prisma from "../../lib/db";
 import Image from "next/image";
 import Link from "next/link";
-import { SquadCard } from "../components/SquadCard";
+import { SquadCard } from "../../components/SquadCard";
 
 
 // Function to get squad data

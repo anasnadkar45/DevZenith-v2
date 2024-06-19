@@ -579,6 +579,37 @@ export async function createMembershipRequest(prevState: any, formData: FormData
     const projectId = formData.get("projectId") as string;
 
     try {
+        const project = await prisma.project.findUnique({
+            where: {
+                id: projectId
+            },
+            select: {
+                userId: true
+            }
+        })
+
+        if (project?.userId === user.id) {
+            return {
+                status: "error",
+                message: "You cannot request to join a project you created.",
+            };
+        }
+
+        const existingMembership = await prisma.membershipRequest.findFirst({
+            where: {
+                userId: user.id,
+                projectId: projectId,
+                status: "ACCEPTED"
+            }
+        })
+
+        if (existingMembership) {
+            return {
+                status: "error",
+                message: "You are already a member of this project.",
+            };
+        }
+
         const existingRequest = await prisma.membershipRequest.findFirst({
             where: {
                 userId: user.id,
@@ -594,7 +625,7 @@ export async function createMembershipRequest(prevState: any, formData: FormData
             };
         }
 
-        await prisma.membershipRequest.create({
+        const data = await prisma.membershipRequest.create({
             data: {
                 projectId: projectId,
                 userId: user.id,
@@ -602,10 +633,19 @@ export async function createMembershipRequest(prevState: any, formData: FormData
             }
         });
 
-        return {
+        if (data) {
+            return {
+                status: "success",
+                message: "Membership request has been created successfully",
+            };
+        }
+
+        const state: State = {
             status: "success",
             message: "Membership request has been created successfully",
         };
+        return state;
+
     } catch (error) {
         console.error("Error creating membership request:", error);
         return {
