@@ -2,7 +2,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { RequestStatus, Role, TypeOfVote, type CategoryTypes } from "@prisma/client";
+import { RequestStatus, Role, TaskStatus, TypeOfVote, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
@@ -560,6 +560,48 @@ export async function assignTask(prevState: any, formData: FormData) {
         return {
             status: "error",
             message: "An error occurred while assigning the task. Please try again later.",
+        };
+    }
+}
+
+
+export async function updateTaskStatus(prevState: any, formData: FormData) {
+    const taskId = formData.get('taskId') as string;
+    const newStatus = formData.get('status') as TaskStatus; 
+    const projectId = formData.get('projectId') as string;
+
+    if (!taskId || !newStatus) {
+        return {
+            status: "error",
+            message: "Task ID or status is missing.",
+        };
+    }
+
+    try {
+        const data = await prisma.task.update({
+            where: { id: taskId },
+            data: { status: newStatus },
+        });
+
+        revalidatePath(`/project/joined/${projectId}/tasks`);
+        if (data) {
+            return {
+                status: "success",
+                message: "Task status updated successfully.",
+            };
+        }
+        
+        const state: State = {
+            status: "success",
+            message: "Task status updated successfully.",
+        };
+        return state;
+        
+    } catch (error) {
+        console.error("Error updating task status:", error);
+        return {
+            status: "error",
+            message: "An error occurred while updating the task status. Please try again later.",
         };
     }
 }

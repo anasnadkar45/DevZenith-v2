@@ -134,17 +134,18 @@ model ProjectResource {
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
   description String
   priority    String
   type        String
   date        DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Project     Project? @relation(fields: [projectId], references: [id])
+  status      TaskStatus @default(TODO) // Add status field here
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Project     Project?   @relation(fields: [projectId], references: [id])
   projectId   String?
-  User        User?    @relation(fields: [userId], references: [id])
+  User        User?      @relation(fields: [userId], references: [id])
   userId      String?
 }
 
@@ -177,4 +178,11 @@ enum CategoryTypes {
 enum Role {
   USER
   ADMIN
+}
+
+// Add the TaskStatus enum here
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
 }
