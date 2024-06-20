@@ -10,7 +10,7 @@ export default async function ProjectLayout({
             <div className=" h-[85vh] w-full border rounded-lg p-2">
                 {children}
             </div>
-            <div className="h-[85vh] bg-card border rounded-lg p-1">
+            <div className="h-[85vh] bg-card border rounded-lg p-1 hidden flex-col md:flex">
                 <Sidebar />
             </div>
         </div>

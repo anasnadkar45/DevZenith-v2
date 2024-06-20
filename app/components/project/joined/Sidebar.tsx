@@ -42,7 +42,7 @@ export function Sidebar() {
 
     return (
         <TooltipProvider>
-            <div className={`flex flex-col ${collapsed ? "" : ""} h-full transition-all duration-300`}>
+            <div className={`flex flex-col ${collapsed ? "" : ""} h-full w-full transition-all duration-300`}>
                 <button
                     onClick={() => setCollapsed(!collapsed)}
                     className="p-2 focus:outline-none "
@@ -50,7 +50,7 @@ export function Sidebar() {
                 >
                     {collapsed ? <FiChevronLeft size={25} className="border-2 rounded-full" /> : <FiChevronRight size={25} className="border-2 rounded-full" />}
                 </button>
-                <div className='flex flex-col items-start gap-2 px-1'>
+                <div className='flex flex-col items-start gap-2 px-1 w-full'>
                     {navItems.map((item, index) => {
                         // Construct href dynamically using the extracted project ID
                         const href = `/project/joined/${projectId}/${item.name.toLowerCase()}`;
@@ -61,7 +61,7 @@ export function Sidebar() {
                                 <Tooltip>
                                     <TooltipTrigger>
                                         <motion.span
-                                            className="group flex items-center rounded-md px-2 py-2 text-sm font-medium transition-all"
+                                            className="group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium transition-all"
                                             initial={false} // Allows us to skip initial animation
                                             animate={isActive ? "active" : "inactive"}
                                             variants={variants}

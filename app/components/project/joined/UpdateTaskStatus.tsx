@@ -34,16 +34,16 @@ export function UpdateTaskStatus({ status, taskId , projectId }: StatusProps) {
     }, [state]);
 
     return (
-        <div className="flex gap-1">
+        <div className="grid grid-cols-3 gap-1">
             <form onSubmit={(e) => {
                 handleSubmit(e, 'TODO')}}>
-                <Button size={"sm"} type="submit">TODO</Button>
+                <Button size={"sm"} variant={"secondary"} className="w-full text-xs" type="submit">TODO</Button>
             </form>
             <form onSubmit={(e) => handleSubmit(e, 'IN_PROGRESS')}>
-                <Button size={"sm"} type="submit">IN_PROGRESS</Button>
+                <Button size={"sm"} variant={"secondary"} className="w-full text-xs" type="submit">IN_PROGRESS</Button>
             </form>
             <form onSubmit={(e) => handleSubmit(e, 'DONE')}>
-                <Button size={"sm"} type="submit">DONE</Button>
+                <Button size={"sm"} variant={"secondary"} className="w-full text-xs" type="submit">DONE</Button>
             </form>
         </div>
     );
