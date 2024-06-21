@@ -736,6 +736,15 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
             await createProjectMembership(updatedRequest.projectId as string, updatedRequest.userId as string);
         }
 
+        if (status === "REJECTED"){
+            const updatedResponse = await prisma.projectMembership.deleteMany({
+                where: {
+                    userId: updatedRequest.userId,
+                    projectId: updatedRequest.projectId,
+                }
+            });
+        }
+
         revalidatePath(`/project/${updatedRequest.projectId}/requests`);
 
         return {
