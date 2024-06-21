@@ -51,6 +51,8 @@ export default async function TaskPage({
                         priority={task.priority}
                         status={task.status}
                         description={task.description}
+                        date={task.date ? new Date(task.date) : null} // Ensure date is Date or null
+                        createdAt={new Date(task.createdAt)} // Ensure createdAt is Date
                     />
                 ))}
             </div>
@@ -66,6 +68,8 @@ export default async function TaskPage({
                         priority={task.priority}
                         status={task.status}
                         description={task.description}
+                        date={task.date ? new Date(task.date) : null} // Ensure date is Date or null
+                        createdAt={new Date(task.createdAt)} // Ensure createdAt is Date
                     />
                 ))}
             </div>
@@ -81,6 +85,8 @@ export default async function TaskPage({
                         priority={task.priority}
                         status={task.status}
                         description={task.description}
+                        date={task.date ? new Date(task.date) : null} // Ensure date is Date or null
+                        createdAt={new Date(task.createdAt)} // Ensure createdAt is Date
                     />
                 ))}
             </div>

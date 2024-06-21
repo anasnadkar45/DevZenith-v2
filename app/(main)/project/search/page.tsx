@@ -46,7 +46,7 @@ async function getData(userId: string | undefined) {
     return data.map(project => ({
         ...project,
         membershipRequestStatus: project.MembershipRequests.length > 0
-            ? project.MembershipRequests[0].status && project.ProjectMemberships[0].User?._count
+            ? project.MembershipRequests[0].status
             : null
     }));
 }

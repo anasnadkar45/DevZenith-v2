@@ -23,13 +23,17 @@ export function UpdateTaskStatus({ status, taskId , projectId }: StatusProps) {
         formData.set('taskId', taskId); 
         formData.set('projectId', projectId);
         formAction(formData);
+        
     };
 
     useEffect(() => {
-        if (state.status === "success") {
-            toast.success(state.message);
-        } else if (state.status === "error") {
-            toast.error(state.message);
+        // if (state.status === "success") {
+        //     toast.success(state.message);
+        // } else if (state.status === "error") {
+        //     toast.error(state.message);
+        // }
+        if(status === 'DONE'){
+            toast.success("task finished successfully")
         }
     }, [state]);
 
@@ -43,7 +47,7 @@ export function UpdateTaskStatus({ status, taskId , projectId }: StatusProps) {
                 <Button size={"sm"} variant={"secondary"} className="w-full text-xs" type="submit">IN_PROGRESS</Button>
             </form>
             <form onSubmit={(e) => handleSubmit(e, 'DONE')}>
-                <Button size={"sm"} variant={"secondary"} className="w-full text-xs" type="submit">DONE</Button>
+                <Button size={"sm"} className="w-full text-xs font-bold bg-green-400 hover:bg-green-500 transition-all duration-75 text-black" type="submit">DONE</Button>
             </form>
         </div>
     );
