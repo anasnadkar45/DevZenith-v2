@@ -36,11 +36,7 @@ export function MembershipRequest({
     }, [state]);
 
     return (
-        <div className="space-y-2">
-            <div className="flex justify-between">
-                <p className="text-slate-400">You will like</p>
-                <p className="text-primary">View all</p>
-            </div>
+        <div className="space-y-2 ">
             <li key={id} className="space-y-2 min-h-[90px]">
                 <div className="flex justify-between items-center">
                     <div className="flex gap-2 items-center">

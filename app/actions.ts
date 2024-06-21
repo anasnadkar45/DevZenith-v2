@@ -567,7 +567,7 @@ export async function assignTask(prevState: any, formData: FormData) {
 
 export async function updateTaskStatus(prevState: any, formData: FormData) {
     const taskId = formData.get('taskId') as string;
-    const newStatus = formData.get('status') as TaskStatus; 
+    const newStatus = formData.get('status') as TaskStatus;
     const projectId = formData.get('projectId') as string;
 
     if (!taskId || !newStatus) {
@@ -590,13 +590,13 @@ export async function updateTaskStatus(prevState: any, formData: FormData) {
                 message: "Task status updated successfully.",
             };
         }
-        
+
         const state: State = {
             status: "success",
             message: "Task status updated successfully.",
         };
         return state;
-        
+
     } catch (error) {
         console.error("Error updating task status:", error);
         return {
@@ -736,7 +736,7 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
             await createProjectMembership(updatedRequest.projectId as string, updatedRequest.userId as string);
         }
 
-        if (status === "REJECTED"){
+        if (status === "REJECTED") {
             const updatedResponse = await prisma.projectMembership.deleteMany({
                 where: {
                     userId: updatedRequest.userId,
@@ -744,13 +744,20 @@ export async function updateMembershipRequest(prevState: any, formData: FormData
                 }
             });
         }
-
         revalidatePath(`/project/${updatedRequest.projectId}/requests`);
 
-        return {
+        if (updatedRequest) {
+            return {
+                status: "success",
+                message: "Membership request updated successfully.",
+            };
+        }
+        const state: State = {
             status: "success",
-            message: "Membership request updated successfully.",
+            message: "Your Project Resource has been added successfully",
         };
+        return state;
+
     } catch (error) {
         console.error("Error updating membership request:", error);
         return {

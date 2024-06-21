@@ -60,35 +60,35 @@ export default async function MyProjectRoute({
 
     return (
         <div className="grid grid-cols-8 grid-rows-6 gap-1">
-            <h1 className="col-span-6 row-span-2 border rounded-md">{data?.name}</h1>
+            <h1 className="max-lg:col-span-8 xl:col-span-6 xl:row-span-3 border rounded-md">{data?.name}</h1>
 
             <Calendar
                 mode="single"
-                className="rounded-md border col-span-2 row-span-3 h-full"
+                className="rounded-md border xl:col-span-2 xl:row-span-3 h-full"
             />
 
-            <div className="col-span-3 row-span-3 border h-full rounded-md">
+            <div className="xl:col-span-3 xl:row-span-3 border h-full rounded-md">
 
             </div>
 
-            <div className="col-span-3 row-span-3 border h-full rounded-md p-2">
+            <div className="xl:col-span-3 xl:row-span-3 border h-full rounded-md p-2">
                 <h1 className="font-bold text-xl mb-3">Project Team</h1>
                 {data?.ProjectMemberships.map((member) => (
                     <div key={member.User?.id}>
                         <div className="flex gap-2 items-center">
                             <Image src={member.User?.profileImage as string} alt="" width={50} height={50}
-                                className="rounded-full border"
+                                className="rounded-md border"
                             />
-                            <p className="font-bold">{member.User?.firstName} {member.User?.lastName}</p>
+                            <p >{member.User?.firstName} {member.User?.lastName}</p>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="bg-card border p-3 h-full rounded-lg space-y-2 shadow-md col-span-2 row-span-2">
+            <div className="bg-card border p-3 h-full rounded-lg space-y-2 shadow-md xl:col-span-2 xl:row-span-3">
                 <h2 className="text-xl font-bold">Membership Requests</h2>
                 {data?.MembershipRequests.length as number > 0 ? (
-                    <ul>
+                    <ul className="h-[40vh] overflow-y-scroll scroll-smooth">
                         {
                             data?.MembershipRequests.map((request, index) => (
                                 <MembershipRequest
