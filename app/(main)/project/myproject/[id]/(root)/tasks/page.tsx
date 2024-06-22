@@ -1,17 +1,60 @@
 // app/project/myproject/[id]/tasks/page.tsx
 
-import AssignTask from "@/app/components/project/myproject/AssignTask";
-import prisma from "@/app/lib/db";
-import { Button } from "@/components/ui/button";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { TaskPage } from '@/app/components/project/joined/TaskPage';
+import AssignTask from '@/app/components/project/myproject/AssignTask';
+import prisma from '@/app/lib/db';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
-export async function getProjectData(id: string) {
+interface Task {
+    id: string;
+    title: string;
+    priority: string;
+    status: string;
+    User: {
+        firstName: string;
+        lastName: string;
+        profileImage: string;
+    } | null;
+}
+
+interface ProjectMembership {
+    User: {
+        id: string;
+        profileImage: string;
+        firstName: string;
+        lastName: string;
+    } | null;
+}
+
+interface ProjectData {
+    id: string;
+    tasks: Task[];
+    ProjectMemberships: ProjectMembership[];
+}
+
+
+export async function getProjectData(id: string): Promise<ProjectData | null> {
     const project = await prisma.project.findUnique({
         where: {
             id: id,
         },
         select: {
             id: true,
+            tasks: {
+                select: {
+                    id: true,
+                    title: true,
+                    priority: true,
+                    status: true,
+                    User: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            profileImage: true,
+                        },
+                    },
+                },
+            },
             ProjectMemberships: {
                 select: {
                     User: {
@@ -20,11 +63,11 @@ export async function getProjectData(id: string) {
                             profileImage: true,
                             firstName: true,
                             lastName: true,
-                        }
-                    }
-                }
-            }
-        }
+                        },
+                    },
+                },
+            },
+        },
     });
 
     return project;
@@ -33,30 +76,15 @@ export async function getProjectData(id: string) {
 export default async function TasksPage({ params }: { params: { id: string } }) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-
     const projectData = await getProjectData(params.id);
-    const projectId = projectData?.id ?? "";
-    const members = projectData?.ProjectMemberships?.map(member => member.User) ?? [];
 
     return (
-        <div>
-            {
-                user ? (
-                    <div>
-                        <div className="flex justify-between mb-4">
-                            <p className="text-2xl font-bold">Tasks</p>
-                            <AssignTask projectId={projectId} members={members} />
-                        </div>
-                        <div className="grid grid-cols-3 grid-rows-2 gap-2 w-full h-[60vh] ">
-                            <div className="col-span-3 border rounded-lg bg-card"></div>
-                            <div className="col-span-2 border rounded-lg bg-card"></div>
-                            <div className="col-span-1 border rounded-lg bg-card"></div>
-                        </div>
-                    </div>
-                ) : (
-                    <Button>Login</Button>
-                )
-            }
+        <div className="flex flex-col h-full">
+            <div className="flex justify-between mb-2">
+                <p className="text-2xl font-bold">Tasks</p>
+                <AssignTask projectId={projectData?.id ?? ''} members={projectData?.ProjectMemberships?.map(member => member.User) ?? []} />
+            </div>
+            <TaskPage projectData={projectData} />
         </div>
     );
 }

@@ -1,7 +1,6 @@
 import { MyProjectCard } from "@/app/components/project/MyProjectCard";
-import { ProjectCard } from "@/app/components/project/ProjectCard";
 import prisma from "@/app/lib/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function getData(userId: string) {
     const data = await prisma.project.findMany({
@@ -18,6 +17,11 @@ export async function getData(userId: string) {
             logo: true,
             tags: true,
             url: true,
+            tasks: {
+                select: {
+                    status: true,
+                }
+            },
             User: {
                 select: {
                     firstName: true,
@@ -29,8 +33,6 @@ export async function getData(userId: string) {
         }
     });
 
-    // Flatten the structure to get the projects directly
-    // return membershipRequests.map(request => request.Project);
     return data;
 }
 
@@ -39,23 +41,30 @@ export default async function MyProject() {
     const user = await getUser();
     const userId = user?.id;
     const data = await getData(userId as string);
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
-            {data.map((project) => (
-                <MyProjectCard
-                    key={project.id}
-                    id={project.id}
-                    name={project.name}
-                    tags={project.tags as [string]}
-                    description={project.description}
-                    logo={project.logo}
-                    url={project.url}
-                    firstName={project.User?.firstName as string}
-                    lastName={project.User?.lastName as string}
-                    profileImage={project.User?.profileImage as string}
-                    // status={project.membershipRequestStatus as string}
-                />
-            ))}
+            {data.map((project) => {
+                const totalTasks = project.tasks.length;
+                const completedTasks = project.tasks.filter(task => task.status === 'DONE').length;
+                const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+                return (
+                    <MyProjectCard
+                        key={project.id}
+                        id={project.id}
+                        name={project.name}
+                        tags={project.tags as [string]}
+                        description={project.description}
+                        logo={project.logo || "/default-logo.png"}
+                        url={project.url}
+                        firstName={project.User?.firstName as string}
+                        lastName={project.User?.lastName as string}
+                        profileImage={project.User?.profileImage as string}
+                        progress={progressPercentage as number} // Pass progress here
+                    />
+                );
+            })}
         </div>
-    )
+    );
 }
