@@ -31,6 +31,7 @@ model User {
   ProjectResources   ProjectResource[]
   ProjectMemberships ProjectMembership[]
   tasks              Task[]
+  rooms              Room[]
 }
 
 model Resource {
@@ -156,6 +157,16 @@ model ProjectMembership {
   userId    String?
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
+}
+
+model Room {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  tags        String[]
+  githubRepo  String?
+  User        User     @relation(fields: [userId], references: [id])
 }
 
 enum RequestStatus {

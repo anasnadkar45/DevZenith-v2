@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AiFillHome } from "react-icons/ai";
 import { FaDev, FaExternalLinkSquareAlt, FaFileCode } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { MdRoomPreferences } from "react-icons/md";
 
 // Define your nav items
 export const navItems = [
@@ -11,6 +12,7 @@ export const navItems = [
     { name: "Resources", href: "/resources/all", icon: FaExternalLinkSquareAlt },
     { name: "DevSquads", href: "/squads", icon: FaDev },
     { name: "ProjectCollab", href: "/project/search", icon: FaFileCode },
+    { name: "DevRooms", href: "/devrooms", icon: MdRoomPreferences },
 ];
 
 export function SideBarLinks() {
