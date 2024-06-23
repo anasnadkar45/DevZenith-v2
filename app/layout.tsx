@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lato, Urbanist,Titillium_Web,Amaranth } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,11 @@ import { Navbar } from "./components/Navbar";
 import BottomBar from "./components/BottomBar";
 import NextTopLoader from 'nextjs-toploader';
 
-const inter = Inter({ subsets: ["latin"] });
+
+const lato = Lato({ weight:"400", subsets: ["latin"] });
+const urbanist = Urbanist({ weight:"400", subsets: ["latin"] });
+const titillium_Web = Titillium_Web({ weight:"400", subsets: ["latin"] });
+export const amaranth = Amaranth({ weight:"400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,7 +32,7 @@ export default async function RootLayout({
   const { isAuthenticated } = getKindeServerSession();
   return (
     <html lang="en">
-      <body>
+      <body className={titillium_Web.className}>
         <main className="custom-scrollbar">
           <NextSSRPlugin
             routerConfig={extractRouterConfig(ourFileRouter)}

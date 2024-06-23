@@ -8,6 +8,8 @@ import CreateRoom from "@/app/components/dev-rooms/CreateRoom";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/app/lib/db";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { amaranth } from "@/app/layout";
 
 export async function getRoomData() {
     const data = await prisma.room.findMany({
@@ -36,7 +38,7 @@ export default async function BrowsePage() {
     return (
         <div>
             <div className="w-full flex justify-between my-2">
-                <h1 className="text-2xl font-bold "><span className="text-primary">Browse</span> DevRooms</h1>
+                <h1 className={cn(amaranth.className , "text-2xl font-bold")}><span className="text-primary">Browse</span> DevRooms</h1>
                 <CreateRoom />
             </div>
             <div className="flex items-center max-w-md mx-auto">
