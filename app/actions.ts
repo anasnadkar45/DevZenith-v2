@@ -882,3 +882,78 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
         };
     }
 }
+
+const DevRoomSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    url: z
+        .string()
+        .min(1, { message: "URL is required" }),
+    description: z
+        .string()
+        .min(3, { message: "The description has to be a minimum character length of 3" }),
+    tags: z.array(z.string()).optional(),
+});
+
+export async function createDevRoom(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a project.",
+        };
+    }
+
+    const validateFields = projectSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        url: formData.get('url'),
+        tags: JSON.parse(formData.get('tags') as string)
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    try {
+        const data = await prisma.project.create({
+            data: {
+                name: validateFields.data.name,
+                description: validateFields.data.description,
+                url: validateFields.data.url,
+                logo: validateFields.data.logo,
+                tags: validateFields.data.tags ?? [],
+                userId: user.id,
+            },
+        });
+
+        revalidatePath('/projects');
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project has been created successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Request has been created successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error creating project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while creating the project. Please try again later.",
+        };
+    }
+}
