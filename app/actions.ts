@@ -903,11 +903,11 @@ export async function createDevRoom(prevState: any, formData: FormData) {
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to create a project.",
+            message: "User not found. Please log in to create a DevRoom.",
         };
     }
 
-    const validateFields = projectSchema.safeParse({
+    const validateFields = DevRoomSchema.safeParse({
         name: formData.get('name'),
         description: formData.get('description'),
         url: formData.get('url'),
@@ -923,37 +923,36 @@ export async function createDevRoom(prevState: any, formData: FormData) {
     }
 
     try {
-        const data = await prisma.project.create({
+        const data = await prisma.room.create({
             data: {
                 name: validateFields.data.name,
                 description: validateFields.data.description,
                 url: validateFields.data.url,
-                logo: validateFields.data.logo,
                 tags: validateFields.data.tags ?? [],
                 userId: user.id,
             },
         });
 
-        revalidatePath('/projects');
+        revalidatePath('/devrooms/browse');
 
         if (data) {
             return {
                 status: "success",
-                message: "Your Project has been created successfully",
+                message: "Your DevRoom has been created successfully",
             };
         }
 
         const state: State = {
             status: "success",
-            message: "Your Request has been created successfully",
+            message: "Your DevRoom has been created successfully",
         };
         return state;
 
     } catch (error) {
-        console.error("Error creating project:", error);
+        console.error("Error creating DevRoom:", error);
         return {
             status: "error",
-            message: "An error occurred while creating the project. Please try again later.",
+            message: "An error occurred while creating the DevRoom. Please try again later.",
         };
     }
 }

@@ -15,7 +15,7 @@ import {
 import { TbMessage2Heart } from "react-icons/tb";
 import { Textarea } from "@/components/ui/textarea"
 import { SubmitButton } from "@/app/components/SubmitButtons"
-import { State, createProject } from "@/app/actions"
+import { State, createDevRoom, } from "@/app/actions"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useFormState } from "react-dom"
@@ -23,7 +23,7 @@ import Image from "next/image"
 
 export default function CreateRoom() {
     const initialState: State = { message: "", status: undefined };
-    const [state, formAction] = useFormState(createProject, initialState);
+    const [state, formAction] = useFormState(createDevRoom, initialState);
     const [tags, setTags] = useState<string[]>([]); // Added state for tags
     const [tagInput, setTagInput] = useState<string>("");
 
@@ -67,7 +67,7 @@ export default function CreateRoom() {
                             <Textarea placeholder="Working on amazing stuff, come join us" name="description" />
                         </div>
                         <div className="space-y-2">
-                            <Label>Github Project Url</Label>
+                            <Label>Github Url</Label>
                             <Input
                                 name="url"
                                 type="text"
@@ -106,7 +106,7 @@ export default function CreateRoom() {
                         </div>
                         <SheetFooter className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-end">
                             <SheetClose asChild>
-                                <Button type="submit">Create Project</Button>
+                                <SubmitButton title="Create Room"/>
                             </SheetClose>
                         </SheetFooter>
                     </form>
