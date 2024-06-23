@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Navbar } from "./components/Navbar";
 import BottomBar from "./components/BottomBar";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
           <NextSSRPlugin
             routerConfig={extractRouterConfig(ourFileRouter)}
           />
+          <NextTopLoader />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

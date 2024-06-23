@@ -1,5 +1,9 @@
+import ResumeAnalyzerApp from "@/app/components/resume-review/ResumeAnalyzerApp";
+
 export default async function Dashboard(){
     return(
-        <div>Dashboard</div>
+        <div>
+            <ResumeAnalyzerApp />
+        </div>
     )
 }

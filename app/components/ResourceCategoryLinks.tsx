@@ -1,7 +1,9 @@
 "use client"
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation"
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export const categoryLinks = [
     {
@@ -26,24 +28,47 @@ export const categoryLinks = [
     },
 ]
 
+interface TabProps {
+    name: string;
+    href: string;
+    selected: boolean;
+    setSelected: (href: string) => void;
+}
+
+const Tab = ({ name, href, selected, setSelected }: TabProps) => {
+    return (
+        <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={cn(
+                selected
+                    ? 'bg-card border-primary rounded-lg text-white'
+                    : 'hover:bg-card hover:bg-opacity-75',
+                'group text-sm flex items-center px-5 py-1 border-2 font-medium rounded-md transition-colors cursor-pointer'
+            )}
+            onClick={() => setSelected(href)}
+        >
+            {name}
+        </motion.div>
+    );
+};
+
 export function ResourceCategoryLinks() {
     const location = usePathname();
+    const [selectedTab, setSelectedTab] = useState<string>(location);
+
     return (
         <div className="hidden md:flex justify-center items-center col-span-6 gap-x-2">
             {categoryLinks.map((item) => (
-                <Link
-                    href={item.href}
-                    key={item.id}
-                    className={cn(
-                        location === item.href
-                            ? "bg-card border-primary rounded-lg"
-                            : "hover:bg-card hover:bg-opacity-75",
-                        "group text-sm flex items-center px-5 py-1 border-2 font-medium rounded-md  "
-                    )}
-                >
-                    {item.name}
+                <Link href={item.href} key={item.id}>
+                    <Tab
+                        name={item.name}
+                        href={item.href}
+                        selected={selectedTab === item.href}
+                        setSelected={setSelectedTab}
+                    />
                 </Link>
             ))}
         </div>
-    )
+    );
 }

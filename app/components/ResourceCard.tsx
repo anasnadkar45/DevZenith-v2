@@ -25,7 +25,7 @@ export function ResourceCard({
     image,
 }: iAppProps) {
     return (
-        <div className="bg-card border-2 p-2 shadow-xl -z-10 border-primary/25 rounded-lg min-h-[265px] relative">
+        <div className="bg-card border-2 p-2 shadow-xl z-[1px] border-primary/25 rounded-lg min-h-[265px] relative">
             <div className="flex items-center gap-3">
                 <Image
                     src={image}
@@ -56,7 +56,7 @@ export function ResourceCard({
             <p className="line-clamp-2">{description}</p>
             <div className="grid grid-cols-2 gap-2 absolute bottom-2 right-2 left-2">
                 <Button variant={"secondary"}
-                    className="space-x-2"
+                    className="flex justify-between"
                     onClick={() => {
                         copy(url);
                         toast.success("Link copied")
@@ -65,7 +65,7 @@ export function ResourceCard({
                     <CopyIcon />
                 </Button>
                 <Button
-                    className="space-x-2"
+                    className="flex justify-between"
                     onClick={() => window.open(url, '_blank')}
                 >
                     <p>Visit</p>
