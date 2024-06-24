@@ -30,6 +30,39 @@ async function getUserRole(userId: string) {
     return user?.role;
 }
 
+const tokenSchema = z.object({
+    userId: z.string(),
+    role: z.enum([Role.USER, Role.ADMIN]), // Adjust as per your user roles
+  });
+  
+  export async function generateStreamToken(userId: string): Promise<string> {
+    // Fetch user details and validate if needed
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, role: true },
+    });
+  
+    if (!user) {
+      throw new Error("User not found");
+    }
+  
+    // Validate user role if necessary (optional)
+    const validateUser = tokenSchema.safeParse({
+      userId: user.id,
+      role: user.role,
+    });
+  
+    if (!validateUser.success) {
+      throw new Error("User validation failed");
+    }
+  
+    // Example: Generate or fetch token using your own logic
+    const streamToken = `generate_token_for_${user.id}`;
+  
+    // Return the generated token
+    return streamToken;
+  }
+
 // Resources
 const resourceSchema = z.object({
     name: z

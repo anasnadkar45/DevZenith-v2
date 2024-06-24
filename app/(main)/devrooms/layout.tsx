@@ -6,7 +6,7 @@ export default async function ProjectLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div>
+        <div className="w-full">
             <DevRoomNav />
             {children}
         </div>
