@@ -11,7 +11,7 @@ import {
     StreamVideoClient,
     User,
 } from '@stream-io/video-react-sdk';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Room } from "@prisma/client";
 import { generateTokenAction } from "./actions";
@@ -32,6 +32,7 @@ const apiKey = process.env.NEXT_PUBLIC_GET_STREAM_API_KEY!;
 export const DevZenithVideo = ({ room, session }: DevZenithVideoProps) => {
     const [client, setClient] = useState<StreamVideoClient | null>(null);
     const [call, setCall] = useState<Call | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (!room) return;
@@ -68,7 +69,7 @@ export const DevZenithVideo = ({ room, session }: DevZenithVideoProps) => {
                     <StreamTheme>
                         <SpeakerLayout />
                         <CallControls onLeave={() => {
-                            redirect("/devrooms/browse");
+                            router.push("/devrooms/browse");
                         }} />
                         <CallParticipantsList onClose={() => undefined} />
                     </StreamTheme>

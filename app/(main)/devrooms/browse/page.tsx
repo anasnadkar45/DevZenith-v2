@@ -1,16 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input";
-import { ArrowRightIcon, GithubIcon, SearchIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import CreateRoom from "@/app/components/dev-rooms/CreateRoom";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/app/lib/db";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { amaranth } from "@/app/layout";
 import { DevRoomCard } from "@/app/components/dev-rooms/DevRoomCard";
+import { SearchIcon } from "lucide-react";
 
 export async function getRoomData() {
     const data = await prisma.room.findMany({
