@@ -31,26 +31,22 @@ async function getUserRole(userId: string) {
     return user?.role;
 }
 
-const tokenSchema = z.object({
-    userId: z.string(),
-    role: z.enum([Role.USER, Role.ADMIN]), // Adjust as per your user roles
-  });
-  
-  export async function generateTokenAction() {
-    const {getUser} = getKindeServerSession();
+
+export async function generateTokenAction() {
+    const { getUser } = getKindeServerSession();
     const user = await getUser();
-  
+
     if (!user) {
-      throw new Error("No session found");
+        throw new Error("No session found");
     }
-  
+
     const api_key = process.env.NEXT_PUBLIC_GET_STREAM_API_KEY!;
     const api_secret = process.env.GET_STREAM_SECRET_KEY!;
     const serverClient = StreamChat.getInstance(api_key, api_secret);
     const token = serverClient.createToken(user.id);
     console.log("token", token);
     return token;
-  }
+}
 
 // Resources
 const resourceSchema = z.object({
@@ -975,6 +971,46 @@ export async function createDevRoom(prevState: any, formData: FormData) {
         return {
             status: "error",
             message: "An error occurred while creating the DevRoom. Please try again later.",
+        };
+    }
+}
+
+export async function deleteDevRoom(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a DevRoom.",
+        };
+    }
+
+    const roomId = formData.get('roomId') as string;
+    try{
+        const data = await prisma.room.delete({
+            where:{
+                id:roomId
+            }
+        })
+
+        revalidatePath('/devrooms/ypur-rooms');
+        if (data) {
+            return {
+                status: "success",
+                message: "Your DevRoom has been deleted successfully",
+            };
+        }
+        const state: State = {
+            status: "success",
+            message: "Your DevRoom has been deleted successfully",
+        };
+        return state;
+
+    }catch(err) {
+        return {
+            status: "error",
+            message: "An error occurred while deleting the DevRoom. Please try again later.",
         };
     }
 }

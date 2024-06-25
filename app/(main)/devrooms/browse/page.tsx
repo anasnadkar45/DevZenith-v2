@@ -9,6 +9,7 @@ import { DevRoomCard } from "@/app/components/dev-rooms/DevRoomCard";
 import { SearchIcon } from "lucide-react";
 import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import { unstable_noStore } from "next/cache";
+import { Suspense } from "react";
 
 export async function getRoomData(search: string) {
     // Split the search term by spaces to allow multi-word searches.
@@ -17,7 +18,7 @@ export async function getRoomData(search: string) {
     const data = await prisma.room.findMany({
         where: {
             OR: [
-                
+
                 {
                     name: {
                         contains: search,
@@ -76,19 +77,21 @@ export default async function BrowsePage({
             </div>
             <SearchBar />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                {RoomData.map((room) => (
-                    <DevRoomCard
-                        key={room.id}
-                        id={room.id as string}
-                        name={room.name}
-                        tags={room.tags as [string]}
-                        description={room.description as string}
-                        url={room.url as string}
-                        firstName={room.User?.firstName as string}
-                        lastName={room.User?.lastName as string}
-                        profileImage={room.User?.profileImage as string}
-                    />
-                ))}
+                <Suspense fallback={<p>Loading feed...</p>}>
+                    {RoomData.map((room) => (
+                        <DevRoomCard
+                            key={room.id}
+                            id={room.id}
+                            name={room.name}
+                            tags={room.tags as [string]} // Cast to string[]
+                            description={room.description ?? "No description available"}
+                            url={room.url ?? ""}
+                            firstName={room.User?.firstName ?? ""}
+                            lastName={room.User?.lastName ?? ""}
+                            profileImage={room.User?.profileImage ?? ""}
+                        />
+                    ))}
+                </Suspense>
             </div>
         </div>
     );

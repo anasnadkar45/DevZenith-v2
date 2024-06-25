@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -23,6 +23,7 @@ const formSchema = z.object({
 export function SearchBar() {
     const router = useRouter();
     const query = useSearchParams();
+    const pathname = usePathname();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -40,11 +41,19 @@ export function SearchBar() {
     }, [search, form]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (values.search) {
-            router.push(`/devrooms/browse?search=${values.search}`);
+        const newSearchQuery = values.search ? `?search=${values.search}` : '';
+
+        let newPath;
+        if (pathname.startsWith(`/devrooms/browse`)) {
+            newPath = `/devrooms/browse${newSearchQuery}`;
+        } else if (pathname.startsWith(`/devrooms/your-rooms`)) {
+            newPath = `/devrooms/your-rooms${newSearchQuery}`;
         } else {
-            router.push("/devrooms/browse");
+            newPath = pathname; // Default to current path if no match
         }
+
+        router.push(newPath);
+
     }
 
     return (
@@ -58,7 +67,7 @@ export function SearchBar() {
                             <FormControl>
                                 <Input
                                     {...field}
-                                    className="w-[440px]"
+                                    className="w-[250px] sm:w-[440px]"
                                     placeholder="Filter rooms by keywords, such as typescript, next.js, python"
                                 />
                             </FormControl>

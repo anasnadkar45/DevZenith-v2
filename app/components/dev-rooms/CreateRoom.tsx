@@ -19,7 +19,6 @@ import { State, createDevRoom, } from "@/app/actions"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useFormState } from "react-dom"
-import Image from "next/image"
 
 export default function CreateRoom() {
     const initialState: State = { message: "", status: undefined };
