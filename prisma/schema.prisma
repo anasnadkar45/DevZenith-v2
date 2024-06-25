@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -167,6 +168,7 @@ model Room {
   tags        String[]
   url         String?
   User        User     @relation(fields: [userId], references: [id])
+
 }
 
 enum RequestStatus {

@@ -14,7 +14,7 @@ import {
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Room } from "@prisma/client";
-import { generateTokenAction } from "./actions";
+import { generateTokenAction } from "@/app/actions";
 
 interface SessionProps {
     id: string;

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
 import { isValid, parseISO } from "date-fns";
+import { StreamChat } from "stream-chat";
 
 export type State = {
     status: "error" | "success" | undefined;
@@ -35,32 +36,20 @@ const tokenSchema = z.object({
     role: z.enum([Role.USER, Role.ADMIN]), // Adjust as per your user roles
   });
   
-  export async function generateStreamToken(userId: string): Promise<string> {
-    // Fetch user details and validate if needed
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, role: true },
-    });
+  export async function generateTokenAction() {
+    const {getUser} = getKindeServerSession();
+    const user = await getUser();
   
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("No session found");
     }
   
-    // Validate user role if necessary (optional)
-    const validateUser = tokenSchema.safeParse({
-      userId: user.id,
-      role: user.role,
-    });
-  
-    if (!validateUser.success) {
-      throw new Error("User validation failed");
-    }
-  
-    // Example: Generate or fetch token using your own logic
-    const streamToken = `generate_token_for_${user.id}`;
-  
-    // Return the generated token
-    return streamToken;
+    const api_key = process.env.NEXT_PUBLIC_GET_STREAM_API_KEY!;
+    const api_secret = process.env.GET_STREAM_SECRET_KEY!;
+    const serverClient = StreamChat.getInstance(api_key, api_secret);
+    const token = serverClient.createToken(user.id);
+    console.log("token", token);
+    return token;
   }
 
 // Resources
