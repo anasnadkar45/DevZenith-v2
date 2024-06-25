@@ -19,7 +19,7 @@ export async function Navbar() {
         {
           user ? (
             <Link href="/dashboard">
-              <h1 className="text-3xl font-bold ">
+              <h1 className="text-3xl font-[900] ">
                 Dev<span className="text-primary">Zenith</span>
               </h1>
             </Link>
