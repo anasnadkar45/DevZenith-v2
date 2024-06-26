@@ -901,6 +901,85 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
     }
 }
 
+// Project Meetings
+const MeetingSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    url: z
+        .string()
+        .min(1, { message: "URL is required" }),
+    description: z
+        .string()
+        .min(3, { message: "The description has to be a minimum character length of 3" }),
+    tags: z.array(z.string()).optional(),
+});
+
+export async function createMeeting(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a Meeting.",
+        };
+    }
+
+    const validateFields = MeetingSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        url: formData.get('url'),
+        tags: JSON.parse(formData.get('tags') as string)
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.projectMeet.create({
+            data: {
+                name: validateFields.data.name,
+                description: validateFields.data.description,
+                url: validateFields.data.url,
+                tags: validateFields.data.tags ?? [],
+                userId: user.id,
+                projectId:projectId
+            },
+        });
+
+        revalidatePath(`/project/myproject/${projectId}/meet`);
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project Meeting has been created successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Meeting has been created successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error creating Project Meeting:", error);
+        return {
+            status: "error",
+            message: "An error occurred while creating the Project Meeting. Please try again later.",
+        };
+    }
+}
+
+
+// Devrooms
 const DevRoomSchema = z.object({
     name: z
         .string()
@@ -1014,3 +1093,4 @@ export async function deleteDevRoom(prevState: any, formData: FormData) {
         };
     }
 }
+

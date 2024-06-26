@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -33,6 +33,7 @@ model User {
   ProjectMemberships ProjectMembership[]
   tasks              Task[]
   rooms              Room[]
+  meetings           ProjectMeet[]
 }
 
 model Resource {
@@ -110,6 +111,7 @@ model Project {
   ProjectResources   ProjectResource[]
   ProjectMemberships ProjectMembership[]
   tasks              Task[]
+  meetings           ProjectMeet[]
 }
 
 model MembershipRequest {
@@ -151,6 +153,18 @@ model Task {
   userId      String?
 }
 
+model ProjectMeet {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  tags        String[]
+  url         String?
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  Project     Project? @relation(fields: [projectId], references: [id])
+  projectId   String?
+}
+
 model ProjectMembership {
   id        String   @id @default(uuid())
   joinedAt  DateTime @default(now())
@@ -168,7 +182,6 @@ model Room {
   tags        String[]
   url         String?
   User        User     @relation(fields: [userId], references: [id])
-
 }
 
 enum RequestStatus {
