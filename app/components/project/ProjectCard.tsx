@@ -51,10 +51,10 @@ export function ProjectCard({
                         <p className="text-slate-400 text-xs leading-tight ">Created By: @{firstName} {lastName}</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-1">
+                {/* <div className="flex items-center gap-1">
                     <BsHeartFill />
                     <p className="mb-[1px]">45</p>
-                </div>
+                </div> */}
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
                 {tags.map((tag, index) => (

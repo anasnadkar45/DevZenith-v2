@@ -1,12 +1,15 @@
-"use client";
-
 import Image from "next/image";
 import DotPattern from "../dot-pattern";
 import { cn } from "@/lib/utils";
-import { BsHeartFill } from "react-icons/bs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "../SubmitButtons";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { FaLink } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci";
+import { Trash } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { FiSettings } from "react-icons/fi";
 
 interface MyProjectCardProps {
     id: string;
@@ -57,10 +60,26 @@ export function MyProjectCard({
                         </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-1">
-                    <BsHeartFill />
-                    <p className="mb-[1px]">45</p>
-                </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger >
+                        <CiMenuKebab className="rounded-lg h-full w-10 p-2" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="space-y-2 mt-1 bg-card">
+                        <DropdownMenuItem>
+                            <FaLink className="mr-2" />
+                            Copy Link
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <FiSettings className="mr-2" />
+                            Settings
+                        </DropdownMenuItem>
+                        <Separator />
+                        <DropdownMenuItem className="text-red-600">
+                            <Trash size={17} className="mr-2 text-red-600" />
+                            Delete Project
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
             <div className="flex flex-wrap gap-2 mt-2 mb-2">
                 {tags.map((tag, index) => (
@@ -81,7 +100,11 @@ export function MyProjectCard({
                 <div className="text-sm">{progress.toFixed(2)}%</div>
             </div>
             <div className="w-full flex justify-between items-center border-t pt-3 mt-auto">
-                <Button className="underline" variant={"link"} onClick={() => window.open(url, '_blank')}>Github</Button>
+                <a href={url} target="_blank" rel="noopener noreferrer" className="no-underline">
+                    <Button className="underline" variant="link">
+                        GitHub
+                    </Button>
+                </a>
                 <Link href={`/project/myproject/${id}/dashboard`}>
                     <SubmitButton title="View Project" />
                 </Link>
