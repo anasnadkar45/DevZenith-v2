@@ -448,6 +448,7 @@ export async function createProject(prevState: any, formData: FormData) {
     }
 }
 
+// delete project
 export async function deleteProject(prevState:any, formData:FormData){
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -455,7 +456,7 @@ export async function deleteProject(prevState:any, formData:FormData){
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to create a project.",
+            message: "User not found. Please log in to delete a project.",
         };
     }
 
@@ -469,6 +470,67 @@ export async function deleteProject(prevState:any, formData:FormData){
 
         revalidatePath('/project/myproject');
 
+
+        const state: State = {
+            status: "success",
+            message: "Your Request has been deleted successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while deleting the project. Please try again later.",
+        };
+    }
+}
+
+export async function updateProject(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to update a project.",
+        };
+    }
+
+    const validateFields = projectSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        url: formData.get('url'),
+        logo: JSON.parse(formData.get("logo") as string),
+        tags: JSON.parse(formData.get('tags') as string)
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.project.update({
+            where:{
+                id: projectId,
+            },
+            data: {
+                name: validateFields.data.name,
+                description: validateFields.data.description,
+                url: validateFields.data.url,
+                logo: validateFields.data.logo,
+                tags: validateFields.data.tags ?? [],
+                userId: user.id,
+            },
+        });
+
+        revalidatePath(`/project/myproject/${projectId}/settings`);
+
         if (data) {
             return {
                 status: "success",
@@ -478,15 +540,15 @@ export async function deleteProject(prevState:any, formData:FormData){
 
         const state: State = {
             status: "success",
-            message: "Your Request has been created successfully",
+            message: "Your Request has been updated successfully",
         };
         return state;
 
     } catch (error) {
-        console.error("Error creating project:", error);
+        console.error("Error updating project:", error);
         return {
             status: "error",
-            message: "An error occurred while creating the project. Please try again later.",
+            message: "An error occurred while updating the project. Please try again later.",
         };
     }
 }

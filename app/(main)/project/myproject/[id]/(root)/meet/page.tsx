@@ -60,7 +60,7 @@ export default async function ProjectMeetPage({
                 <h1 className={cn(amaranth.className, "text-2xl font-bold")}><span className="text-primary">Project</span> Meeting</h1>
                 <CreateProjectMeet projectId={projectId} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
                 <Suspense fallback={<p>Loading feed...</p>}>
                     {meetingData.map((meeting) => (
                         <ProjectMeetCard

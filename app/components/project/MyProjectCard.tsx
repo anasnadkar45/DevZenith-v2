@@ -84,21 +84,19 @@ export function MyProjectCard({
                         <CiMenuKebab className="rounded-lg h-full w-10 p-2" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="space-y-2 mt-1 bg-card">
-                        <DropdownMenuItem>
-                            <FaLink className="mr-2" />
-                            Copy Link
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <FiSettings className="mr-2" />
-                            Settings
-                        </DropdownMenuItem>
+                        <Link href={`/project/myproject/${id}/settings`}>
+                            <DropdownMenuItem>
+                                <FiSettings className="mr-2" />
+                                Settings
+                            </DropdownMenuItem>
+                        </Link>
                         <Separator />
                         <form action={formAction}>
                             <input type="hidden" name="projectId" value={id} />
-                            <DropdownMenuItem className="text-red-600">
-                                <Button variant={"ghost"} size={"sm"} className="hover:bg-transparent hover:text-red-600 text-red-600">
+                            <DropdownMenuItem >
+                                <Button variant={"ghost"} size={"sm"}>
                                     <Trash size={17} className="mr-2 text-red-600" />
-                                    Delete
+                                    <p className="text-red-600 hover:text-red-600">Delete</p>
                                 </Button>
                             </DropdownMenuItem>
                         </form>
