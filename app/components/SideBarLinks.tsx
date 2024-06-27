@@ -21,13 +21,13 @@ export function SideBarLinks() {
     // Define animation variants
     const variants = {
         active: {
-            backgroundColor: "#241639", // Equivalent to bg-primary/60
+            // backgroundColor: "#241639", // Equivalent to bg-primary/60
             color: "#3B82F6", // Equivalent to text-primary
             borderLeft: "4px solid #6527C6", // Border on active tab
             paddingLeft: "6px", // Equivalent to pl-3
         },
         inactive: {
-            backgroundColor: "transparent",
+            // backgroundColor: "transparent",
             color: "#64748b", // Equivalent to text-slate-400
             borderLeft: "4px solid transparent", // No border on inactive tab
             paddingLeft: "6px",

@@ -1,4 +1,3 @@
-// "use client"
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Image from "next/image";
@@ -87,7 +86,7 @@ export default async function JoinedPage() {
                                 <div className="flex justify-center items-center w-10 h-10 border-2 border-primary bg-primary rounded-md overflow-hidden">
                                     <Image
                                         src={project?.logo || "/default-logo.png"} // Fallback logo
-                                        alt={`${name} Logo`}
+                                        alt={`${project?.name} Logo`}
                                         width={40}
                                         height={40}
                                         className="object-cover" // Ensure all images have the same size
