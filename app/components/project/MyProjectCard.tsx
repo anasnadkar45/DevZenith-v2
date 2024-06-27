@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import DotPattern from "../dot-pattern";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,10 @@ import { CiMenuKebab } from "react-icons/ci";
 import { Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { FiSettings } from "react-icons/fi";
+import { State, deleteProject } from "@/app/actions";
+import { useFormState } from "react-dom";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface MyProjectCardProps {
     id: string;
@@ -36,6 +41,18 @@ export function MyProjectCard({
     profileImage,
     progress
 }: MyProjectCardProps) {
+    const initialState: State = { message: "", status: undefined };
+    const [state, formAction] = useFormState(deleteProject, initialState);
+
+    useEffect(() => {
+        console.log("State updated:", state);
+        if (state.status === "success") {
+            toast.success(state.message);
+        } else if (state.status === "error") {
+            toast.error(state.message);
+        }
+    }, [state]);
+
     return (
         <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
             <DotPattern
@@ -46,13 +63,15 @@ export function MyProjectCard({
 
             <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                    <Image
-                        src={logo || "/default-logo.png"} // Add fallback logo
-                        alt={`${name} Logo`}
-                        width={40}
-                        height={40}
-                        className="border-2 border-primary bg-primary rounded-md object-fill"
-                    />
+                    <div className="flex justify-center items-center w-10 h-10 border-2 border-primary bg-primary rounded-md overflow-hidden">
+                        <Image
+                            src={logo || "/default-logo.png"} // Fallback logo
+                            alt={`${name} Logo`}
+                            width={40}
+                            height={40}
+                            className="object-cover" // Ensure all images have the same size
+                        />
+                    </div>
                     <div>
                         <p className="text-lg font-bold">{name}</p>
                         <p className="text-slate-400 text-xs leading-tight">
@@ -74,10 +93,16 @@ export function MyProjectCard({
                             Settings
                         </DropdownMenuItem>
                         <Separator />
-                        <DropdownMenuItem className="text-red-600">
-                            <Trash size={17} className="mr-2 text-red-600" />
-                            Delete Project
-                        </DropdownMenuItem>
+                        <form action={formAction}>
+                            <input type="hidden" name="projectId" value={id} />
+                            <DropdownMenuItem className="text-red-600">
+                                <Button variant={"ghost"} size={"sm"} className="hover:bg-transparent hover:text-red-600 text-red-600">
+                                    <Trash size={17} className="mr-2 text-red-600" />
+                                    Delete
+                                </Button>
+                            </DropdownMenuItem>
+                        </form>
+
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

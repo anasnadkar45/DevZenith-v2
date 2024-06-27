@@ -43,9 +43,15 @@ export function ProjectCard({
 
             <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                    <Image src={logo as string} alt="" width={40} height={40}
-                        className="border-2 border-primary bg-primary rounded-md object-fill"
-                    />
+                    <div className="flex justify-center items-center w-10 h-10 border-2 border-primary bg-primary rounded-md overflow-hidden">
+                        <Image
+                            src={logo || "/default-logo.png"} // Fallback logo
+                            alt={`${name} Logo`}
+                            width={40}
+                            height={40}
+                            className="object-cover" // Ensure all images have the same size
+                        />
+                    </div>
                     <div>
                         <p className="text-lg font-bold">{name}</p>
                         <p className="text-slate-400 text-xs leading-tight ">Created By: @{firstName} {lastName}</p>

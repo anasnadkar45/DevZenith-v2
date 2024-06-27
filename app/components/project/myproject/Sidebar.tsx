@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { MdDashboard, MdVideoCall } from "react-icons/md";
 import { FaExternalLinkSquareAlt, FaTasks } from "react-icons/fa";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // For collapse button
+import { FiChevronLeft, FiChevronRight, FiSettings } from "react-icons/fi"; // For collapse button
 
 // Define your nav items without the hardcoded project ID
 const navItems = [
@@ -15,6 +15,7 @@ const navItems = [
     { name: "Resources", icon: FaExternalLinkSquareAlt, tooltip: "Resources" },
     { name: "Tasks", icon: FaTasks, tooltip: "Tasks" },
     { name: "Meet", icon: MdVideoCall, tooltip: "Meet" },
+    { name: "Settings", icon: FiSettings, tooltip: "Seetings" },
 ];
 
 export function Sidebar() {

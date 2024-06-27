@@ -448,6 +448,49 @@ export async function createProject(prevState: any, formData: FormData) {
     }
 }
 
+export async function deleteProject(prevState:any, formData:FormData){
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a project.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.project.delete({
+            where:{
+                id:projectId
+            },
+        });
+
+        revalidatePath('/project/myproject');
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project has been updated successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Request has been created successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error creating project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while creating the project. Please try again later.",
+        };
+    }
+}
+
 // Task
 const taskSchema = z.object({
     title: z
