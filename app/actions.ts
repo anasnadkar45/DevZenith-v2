@@ -1228,7 +1228,8 @@ const JobSchema = z.object({
     duration: z
         .string()
         .min(3, { message: "The duration has to be a minimum character length of 3" }),
-})
+});
+
 
 export async function postDevJob(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
@@ -1241,27 +1242,37 @@ export async function postDevJob(prevState: any, formData: FormData) {
         };
     }
 
-    const description = formData.get('description');
+    const roledescription = formData.get('roledescription');
     let parsedDescription;
     try {
-        parsedDescription = JSON.parse(description as string);
+        parsedDescription = JSON.parse(roledescription as string);
     } catch (error) {
-        const state: State = {
+        return {
             status: "error",
             message: "Description must be valid JSON.",
         };
-        return state;
     }
+
+    let batches = [];
+    try {
+        batches = JSON.parse(formData.get('batches') as string);
+    } catch (error) {
+        return {
+            status: "error",
+            message: "Batches must be a valid JSON array of strings.",
+        };
+    }
+
     const validateFields = JobSchema.safeParse({
         name: formData.get('name'),
         location: formData.get('location'),
         logo: formData.get('logo'),
-        batches: JSON.parse(formData.get('batches') as string),
+        batches: batches,
         role: formData.get('role'),
-        roledescription:parsedDescription,
+        roledescription: parsedDescription,
         jobtype: formData.get('jobtype'),
-        salary: formData.get('salary'),
-        link:formData.get('link'),
+        salary: formData.get('salary') || undefined,
+        link: formData.get('link'),
         duration: formData.get('duration'),
     });
 
@@ -1278,19 +1289,26 @@ export async function postDevJob(prevState: any, formData: FormData) {
             data: {
                 name: validateFields.data.name,
                 location: validateFields.data.location,
-                logo:validateFields.data.logo,
+                logo: validateFields.data.logo,
                 batches: validateFields.data.batches ?? [],
-                role:validateFields.data.role,
-                roledescription:validateFields.data.roledescription,
-                jobtype:validateFields.data.jobtype as JobType,
-                salary:validateFields.data.salary,
+                role: validateFields.data.role,
+                roledescription: validateFields.data.roledescription,
+                jobtype: validateFields.data.jobtype as JobType,
+                salary: validateFields.data.salary,
                 link: validateFields.data.link,
-                duration:validateFields.data.duration,
+                duration: validateFields.data.duration,
                 userId: user.id,
             },
         });
 
         revalidatePath('/devjobs');
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Job has been posted successfully",
+            };
+        }
 
         const state: State = {
             status: "success",
@@ -1299,13 +1317,12 @@ export async function postDevJob(prevState: any, formData: FormData) {
         return state;
 
     } catch (error) {
-        console.error("Error posting Job:", error);
+        console.error("Database error:", error);
         return {
             status: "error",
             message: "An error occurred while posting the Job. Please try again later.",
         };
     }
 }
-
 
 

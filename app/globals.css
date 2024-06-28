@@ -41,7 +41,7 @@
 
 /* Apply white text color to Tiptap editor content */
 .prose-white {
-  color: #ffffff; /* White color */
+  color: #858585; /* White color */
 }
 
 .prose-white p,
@@ -54,13 +54,13 @@
 .prose-white strong,
 .prose-white em,
 .prose-white a {
-  color: inherit;
+  color: #858585;
 }
 
 /* Editor container styles */
 .editor-container {
   background-color: transparent; /* Dark background for the editor */
-  color: #d4d4d4; /* Light text color */
+  color: #858585; /* Light text color */
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #282828; /* Contrast border */
@@ -76,7 +76,7 @@
 }
 
 .editor-content h1, .editor-content h2, .editor-content h3 {
-  color: #ffffff; /* White for headings */
+  color: #858585; /* White for headings */
 }
 
 /* Code block styles */

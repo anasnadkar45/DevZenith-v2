@@ -1,8 +1,9 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Sheet,
     SheetClose,
@@ -11,31 +12,27 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet"
-import { TbMessage2Heart } from "react-icons/tb";
-import { Textarea } from "@/components/ui/textarea"
-import { SubmitButton } from "@/app/components/SubmitButtons"
-import { State, postDevJob} from "@/app/actions"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
-import { useFormState } from "react-dom"
-import { UploadDropzone } from "@/app/lib/uploadthing"
-import Image from "next/image"
-import { JSONContent } from "@tiptap/react"
-import { Tiptap } from "../Tiptap"
-import { SelectJobType } from "./SelectJobType"
-
+} from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
+import { SubmitButton } from "@/app/components/SubmitButtons";
+import { State, postDevJob } from "@/app/actions";
+import { toast } from "sonner";
+import { useFormState } from "react-dom";
+import { UploadDropzone } from "@/app/lib/uploadthing";
+import Image from "next/image";
+import { JSONContent } from "@tiptap/react";
+import { Tiptap } from "../Tiptap";
+import { SelectJobType } from "./SelectJobType";
 
 export default function PostJob() {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(postDevJob, initialState);
-    const [batches, setBatches] = useState<string[]>([]); // Added state for tags
+    const [batches, setBatches] = useState<string[]>([]);
     const [batchInput, setBatchInput] = useState<string>("");
     const [image, setImage] = useState<string>();
     const [json, setJson] = useState<null | JSONContent>(null);
 
     useEffect(() => {
-        console.log("State updated:", state);
         if (state.status === "success") {
             toast.success(state.message);
         } else if (state.status === "error") {
@@ -58,7 +55,7 @@ export default function PostJob() {
         <div>
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="default" size={"sm"}>Post Job</Button>
+                    <Button variant="default" size="sm">Post Job</Button>
                 </SheetTrigger>
                 <SheetContent className="w-full sm:w-[500px] max-h-[100vh] overflow-y-auto p-4">
                     <SheetHeader>
@@ -66,15 +63,15 @@ export default function PostJob() {
                     </SheetHeader>
                     <form action={formAction} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name" className="text-left">Company Name</Label>
+                            <Label htmlFor="name">Company Name</Label>
                             <Input id="name" name="name" placeholder="Google" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="name" className="text-left">Company Location</Label>
-                            <Input id="location" name="location" placeholder="Banglore" />
+                            <Label htmlFor="location">Company Location</Label>
+                            <Input id="location" name="location" placeholder="Bangalore" />
                         </div>
                         <div className="flex flex-col gap-y-2">
-                            <input type="hidden" name="logo" value={JSON.stringify(image)} />
+                            <input type="hidden" name="logo" value={image} />
                             <Label>Company Logo</Label>
                             <UploadDropzone
                                 className="border-accent"
@@ -129,7 +126,7 @@ export default function PostJob() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="role" className="text-left">Job Role</Label>
+                            <Label htmlFor="role">Job Role</Label>
                             <Input id="role" name="role" placeholder="Frontend Developer" />
                         </div>
                         <div className="flex flex-col gap-y-2">
@@ -151,15 +148,15 @@ export default function PostJob() {
                             <SelectJobType />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="duration" className="text-left">Duration</Label>
+                            <Label htmlFor="duration">Duration</Label>
                             <Input id="duration" name="duration" placeholder="Fulltime" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="salary" className="text-left">Salary</Label>
+                            <Label htmlFor="salary">Salary</Label>
                             <Input id="salary" name="salary" placeholder="5-10 LPA" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="link" className="text-left">Link</Label>
+                            <Label htmlFor="link">Link</Label>
                             <Input
                                 name="link"
                                 type="text"
@@ -170,7 +167,7 @@ export default function PostJob() {
                         </div>
 
                         <SheetFooter className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-end">
-                            <SheetClose asChild>
+                            <SheetClose asChild type="submit">
                                 <SubmitButton title="Post Job" />
                             </SheetClose>
                         </SheetFooter>
@@ -178,5 +175,5 @@ export default function PostJob() {
                 </SheetContent>
             </Sheet>
         </div>
-    )
+    );
 }

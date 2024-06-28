@@ -197,7 +197,7 @@ model Job {
   logo            String
   batches         String[]
   role            String
-  roledescription String
+  roledescription Json?
   jobtype         JobType
   salary          String?
   link            String
