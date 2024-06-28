@@ -18,7 +18,7 @@ function LoadMore({ search }: { search: string }) {
         setPage((prevPage) => prevPage + 1); // Increment the page number
       });
     }
-  }, [inView, search, page]); // Trigger effect when inView, search, or page changes
+  }, [inView, search]); // Trigger effect when inView, search, or page changes
 
   return (
     <>

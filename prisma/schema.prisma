@@ -43,7 +43,6 @@ model Resource {
   image       String
   url         String
   category    CategoryTypes
-
   createdAt DateTime @default(now())
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
@@ -131,6 +130,8 @@ model ProjectResource {
   category  String
   link      String?
   file      String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
   User      User?    @relation(fields: [userId], references: [id])
@@ -159,6 +160,8 @@ model ProjectMeet {
   description String?
   tags        String[]
   url         String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   User        User?    @relation(fields: [userId], references: [id])
   userId      String?
   Project     Project? @relation(fields: [projectId], references: [id])
@@ -181,6 +184,8 @@ model Room {
   description String?
   tags        String[]
   url         String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   User        User     @relation(fields: [userId], references: [id])
 }
 
