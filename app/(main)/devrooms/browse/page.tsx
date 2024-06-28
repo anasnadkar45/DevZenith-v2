@@ -1,61 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import CreateRoom from "@/app/components/dev-rooms/CreateRoom";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/app/lib/db";
 import { cn } from "@/lib/utils";
 import { amaranth } from "@/app/layout";
-import { DevRoomCard } from "@/app/components/dev-rooms/DevRoomCard";
+import { DevRoomCard, iRoomProps } from "@/app/components/dev-rooms/DevRoomCard";
 import { SearchIcon } from "lucide-react";
 import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import { unstable_noStore } from "next/cache";
 import { Suspense } from "react";
-
-export async function getRoomData(search: string) {
-    // Split the search term by spaces to allow multi-word searches.
-    const searchWords = search.split(" ").filter(word => word);
-
-    const data = await prisma.room.findMany({
-        where: {
-            OR: [
-
-                {
-                    name: {
-                        contains: search,
-                        mode: 'insensitive',
-                    },
-                },
-                {
-                    description: {
-                        contains: search,
-                        mode: 'insensitive',
-                    },
-                },
-                {
-                    tags: {
-                        hasSome: searchWords,
-                    },
-                },
-            ],
-        },
-        select: {
-            id: true,
-            name: true,
-            description: true,
-            url: true,
-            tags: true,
-            User: {
-                select: {
-                    firstName: true,
-                    lastName: true,
-                    profileImage: true,
-                },
-            },
-        },
-    });
-    return data;
-}
-
+import LoadMore from "@/app/(main)/devrooms/browse/LoadMore";
+import { getRoomData } from "./action";
 
 export default async function BrowsePage({
     searchParams,
@@ -67,7 +21,7 @@ export default async function BrowsePage({
     unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    const RoomData = await getRoomData(searchParams.search || "");
+    const data = await getRoomData(searchParams.search || "",0,3);
 
     return (
         <div>
@@ -78,21 +32,12 @@ export default async function BrowsePage({
             <SearchBar />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 <Suspense fallback={<p>Loading feed...</p>}>
-                    {RoomData.map((room) => (
-                        <DevRoomCard
-                            key={room.id}
-                            id={room.id}
-                            name={room.name}
-                            tags={room.tags as [string]} // Cast to string[]
-                            description={room.description ?? "No description available"}
-                            url={room.url ?? ""}
-                            firstName={room.User?.firstName ?? ""}
-                            lastName={room.User?.lastName ?? ""}
-                            profileImage={room.User?.profileImage ?? ""}
-                        />
+                    {data.map((item:iRoomProps , index:number) => (
+                        <DevRoomCard key={item.id} room={item} index={index}/>
                     ))}
                 </Suspense>
             </div>
+            <LoadMore search={searchParams.search || ""} />
         </div>
     );
 }
