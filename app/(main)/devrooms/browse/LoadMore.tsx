@@ -23,9 +23,11 @@ function LoadMore({ search }: { search: string }) {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {data.map((item: iRoomProps, index: number) => (
-          <DevRoomCard key={item.id} room={item} index={index} />
-        ))}
+        <Suspense fallback={<p>Loading feed...</p>}>
+          {data.map((item: iRoomProps, index: number) => (
+            <DevRoomCard key={item.id} room={item} index={index} />
+          ))}
+        </Suspense>
       </div>
       <section className="flex justify-center items-center w-full h-20">
         <div ref={ref}>

@@ -5,6 +5,7 @@ import prisma from "../../lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import { SquadCard } from "../../components/SquadCard";
+import { Suspense } from "react";
 
 
 // Function to get squad data
@@ -45,18 +46,20 @@ export default async function Squads() {
                         </Button>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4">
-                        {data.map((squad) => (
-                            <SquadCard
-                                key={squad.id}
-                                id={squad.username}
-                                name={squad.name}
-                                image={squad.image}
-                                description={squad.description}
-                                createdAt={squad.createdAt}
-                                username={squad.username}
-                                User={squad.User} // Pass User, which can be null
-                            />
-                        ))}
+                        <Suspense fallback={<p>Loading feed...</p>}>
+                            {data.map((squad) => (
+                                <SquadCard
+                                    key={squad.id}
+                                    id={squad.username}
+                                    name={squad.name}
+                                    image={squad.image}
+                                    description={squad.description}
+                                    createdAt={squad.createdAt}
+                                    username={squad.username}
+                                    User={squad.User} // Pass User, which can be null
+                                />
+                            ))}
+                        </Suspense>
                     </div>
                 </div>
 
