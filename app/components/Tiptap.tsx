@@ -66,7 +66,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
 };
 
 // TipTapEditor component
-export function TipTapEditor({ setJson, json }: { setJson: (json: JSONContent) => void, json: JSONContent | null }) {
+export function Tiptap({ setJson, json }: { setJson: (json: JSONContent) => void, json: JSONContent | null }) {
   const editor = useEditor({
     extensions: [
       StarterKit,

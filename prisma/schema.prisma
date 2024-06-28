@@ -34,6 +34,7 @@ model User {
   tasks              Task[]
   rooms              Room[]
   meetings           ProjectMeet[]
+  jobs               Job[]
 }
 
 model Resource {
@@ -43,9 +44,9 @@ model Resource {
   image       String
   url         String
   category    CategoryTypes
-  createdAt DateTime @default(now())
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  createdAt   DateTime      @default(now())
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Squad {
@@ -130,8 +131,8 @@ model ProjectResource {
   category  String
   link      String?
   file      String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   Project   Project? @relation(fields: [projectId], references: [id])
   projectId String?
   User      User?    @relation(fields: [userId], references: [id])
@@ -160,8 +161,8 @@ model ProjectMeet {
   description String?
   tags        String[]
   url         String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   User        User?    @relation(fields: [userId], references: [id])
   userId      String?
   Project     Project? @relation(fields: [projectId], references: [id])
@@ -184,9 +185,31 @@ model Room {
   description String?
   tags        String[]
   url         String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   User        User     @relation(fields: [userId], references: [id])
+}
+
+model Job {
+  id              String   @id @default(uuid())
+  name            String
+  location        String
+  logo            String
+  batches         String[]
+  role            String
+  roledescription String
+  jobtype         JobType
+  salary          String?
+  link            String
+  duration        String
+  User            User?    @relation(fields: [userId], references: [id])
+  userId          String?
+}
+
+enum JobType {
+  Intern
+  FullTime
+  Contract
 }
 
 enum RequestStatus {

@@ -2,7 +2,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { RequestStatus, Role, TaskStatus, TypeOfVote, type CategoryTypes } from "@prisma/client";
+import { JobType, RequestStatus, Role, TaskStatus, TypeOfVote, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
@@ -449,7 +449,7 @@ export async function createProject(prevState: any, formData: FormData) {
 }
 
 // delete project
-export async function deleteProject(prevState:any, formData:FormData){
+export async function deleteProject(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
@@ -463,8 +463,8 @@ export async function deleteProject(prevState:any, formData:FormData){
     const projectId = formData.get('projectId') as string;
     try {
         const data = await prisma.project.delete({
-            where:{
-                id:projectId
+            where: {
+                id: projectId
             },
         });
 
@@ -516,7 +516,7 @@ export async function updateProject(prevState: any, formData: FormData) {
     const projectId = formData.get('projectId') as string;
     try {
         const data = await prisma.project.update({
-            where:{
+            where: {
                 id: projectId,
             },
             data: {
@@ -1055,7 +1055,7 @@ export async function createMeeting(prevState: any, formData: FormData) {
                 url: validateFields.data.url,
                 tags: validateFields.data.tags ?? [],
                 userId: user.id,
-                projectId:projectId
+                projectId: projectId
             },
         });
 
@@ -1171,10 +1171,10 @@ export async function deleteDevRoom(prevState: any, formData: FormData) {
     }
 
     const roomId = formData.get('roomId') as string;
-    try{
+    try {
         const data = await prisma.room.delete({
-            where:{
-                id:roomId
+            where: {
+                id: roomId
             }
         })
 
@@ -1191,11 +1191,121 @@ export async function deleteDevRoom(prevState: any, formData: FormData) {
         };
         return state;
 
-    }catch(err) {
+    } catch (err) {
         return {
             status: "error",
             message: "An error occurred while deleting the DevRoom. Please try again later.",
         };
     }
 }
+
+const JobSchema = z.object({
+    name: z
+        .string()
+        .min(3, { message: "The name has to be a minimum character length of 3" }),
+    location: z
+        .string()
+        .min(3, { message: "The location has to be a minimum character length of 3" }),
+    logo: z
+        .string()
+        .min(1, { message: "URL is required" }),
+    batches: z.array(z.string()),
+    role: z
+        .string()
+        .min(3, { message: "The role has to be a minimum character length of 3" }),
+    roledescription: z
+        .any()
+        .refine((value) => typeof value === "object" && value !== null, { message: "Description must be a valid JSON object" }),
+    jobtype: z
+        .string()
+        .min(1, { message: "Job type is required" }),
+    salary: z
+        .string()
+        .optional(),
+    link: z
+        .string()
+        .min(3, { message: "The link is required" }),
+    duration: z
+        .string()
+        .min(3, { message: "The duration has to be a minimum character length of 3" }),
+})
+
+export async function postDevJob(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a DevRoom.",
+        };
+    }
+
+    const description = formData.get('description');
+    let parsedDescription;
+    try {
+        parsedDescription = JSON.parse(description as string);
+    } catch (error) {
+        const state: State = {
+            status: "error",
+            message: "Description must be valid JSON.",
+        };
+        return state;
+    }
+    const validateFields = JobSchema.safeParse({
+        name: formData.get('name'),
+        location: formData.get('location'),
+        logo: formData.get('logo'),
+        batches: JSON.parse(formData.get('batches') as string),
+        role: formData.get('role'),
+        roledescription:parsedDescription,
+        jobtype: formData.get('jobtype'),
+        salary: formData.get('salary'),
+        link:formData.get('link'),
+        duration: formData.get('duration'),
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    try {
+        const data = await prisma.job.create({
+            data: {
+                name: validateFields.data.name,
+                location: validateFields.data.location,
+                logo:validateFields.data.logo,
+                batches: validateFields.data.batches ?? [],
+                role:validateFields.data.role,
+                roledescription:validateFields.data.roledescription,
+                jobtype:validateFields.data.jobtype as JobType,
+                salary:validateFields.data.salary,
+                link: validateFields.data.link,
+                duration:validateFields.data.duration,
+                userId: user.id,
+            },
+        });
+
+        revalidatePath('/devjobs');
+
+        const state: State = {
+            status: "success",
+            message: "Your Job has been posted successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error posting Job:", error);
+        return {
+            status: "error",
+            message: "An error occurred while posting the Job. Please try again later.",
+        };
+    }
+}
+
+
 

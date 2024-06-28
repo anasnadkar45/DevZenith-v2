@@ -59,11 +59,11 @@
 
 /* Editor container styles */
 .editor-container {
-  background-color: #1e1e1e; /* Dark background for the editor */
+  background-color: transparent; /* Dark background for the editor */
   color: #d4d4d4; /* Light text color */
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #3c3c3c; /* Contrast border */
+  border: 1px solid #282828; /* Contrast border */
 }
 
 /* Editor content styles */
@@ -72,7 +72,7 @@
   padding: 10px;
   font-size: 1rem; /* Base font size */
   line-height: 1.5;
-  color: #d4d4d4; /* Light text color for content */
+  color: #858585; /* Light text color for content */
 }
 
 .editor-content h1, .editor-content h2, .editor-content h3 {
@@ -108,7 +108,7 @@ code {
 
 /* Button styles */
 .button {
-  background-color: #3c3c3c;
+  background-color: #020202;
   color: #d4d4d4;
   border: 1px solid #5a5a5a;
   border-radius: 3px;
@@ -122,7 +122,7 @@ code {
 }
 
 .button.is-active {
-  background-color: #0d0d0d;
+  background-color: #6c2cff;
   color: #ffffff;
 }
 

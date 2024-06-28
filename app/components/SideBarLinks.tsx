@@ -5,6 +5,7 @@ import { AiFillHome } from "react-icons/ai";
 import { FaDev, FaExternalLinkSquareAlt, FaFileCode } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdRoomPreferences } from "react-icons/md";
+import { BriefcaseBusiness } from "lucide-react";
 
 // Define your nav items
 export const navItems = [
@@ -13,6 +14,7 @@ export const navItems = [
     { name: "DevSquads", href: "/squads", icon: FaDev },
     { name: "ProjectCollab", href: "/project/search", icon: FaFileCode },
     { name: "DevRooms", href: "/devrooms/browse", icon: MdRoomPreferences },
+    { name: "DevJobs", href: "/devjobs", icon: BriefcaseBusiness },
 ];
 
 export function SideBarLinks() {

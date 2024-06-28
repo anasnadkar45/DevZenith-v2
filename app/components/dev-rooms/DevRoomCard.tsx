@@ -26,7 +26,7 @@ interface Prop {
 
 export function DevRoomCard({room}:Prop) {
     return (
-        <Card key={room.id} className="min-h-[300px] relative">
+        <Card key={room.id} className="min-h-[250px] relative">
             <CardHeader>
                 <CardTitle className="font-bold">{room.name}</CardTitle>
                 <CardDescription className="line-clamp-3">

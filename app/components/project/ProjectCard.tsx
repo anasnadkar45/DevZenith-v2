@@ -34,7 +34,7 @@ export function ProjectCard({
     status
 }: iAppProps) {
     return (
-        <div className="relative flex flex-col h-full w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
+        <div className="relative flex flex-col min-h-[230px] w-full overflow-hidden rounded-lg border bg-card p-3 shadow-xl">
             <DotPattern
                 className={cn(
                     "[mask-image:radial-gradient(200px_circle_at_center,white,transparent)]",

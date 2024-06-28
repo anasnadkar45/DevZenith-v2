@@ -1,7 +1,7 @@
 "use client"
 import { State, createSquadPost } from "@/app/actions";
 import { SubmitButton } from "@/app/components/SubmitButtons";
-import { TipTapEditor } from "@/app/components/Tiptap";
+import { Tiptap } from "@/app/components/Tiptap";
 import { UploadDropzone } from "@/app/lib/uploadthing";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -88,7 +88,7 @@ export default function CreatePostRoute({
                                 value={json ? JSON.stringify(json) : ""}
                             />
                             <Label>Description</Label>
-                            <TipTapEditor json={json} setJson={setJson} />
+                            <Tiptap json={json} setJson={setJson} />
                             {state?.errors?.["description"]?.[0] && (
                                 <p className="text-destructive">
                                     {state?.errors?.["description"]?.[0]}

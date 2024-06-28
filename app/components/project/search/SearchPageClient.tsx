@@ -7,7 +7,7 @@ import CreateProject from "@/app/components/form/CreateProject";
 import { ProjectCard } from "@/app/components/project/ProjectCard";
 import { Input } from "@/components/ui/input";
 
-export default function SearchPageClient({ projects } : any) {
+export default function SearchPageClient({ projects }: any) {
     const [searchQuery, setSearchQuery] = useState("");
 
     // Filter projects based on search query
@@ -24,20 +24,18 @@ export default function SearchPageClient({ projects } : any) {
                 <div className="flex">
                     <h1 className="text-2xl font-bold"><span className="text-primary font-bold">Search</span> Projects</h1>
                 </div>
-
-                <div className="relative w-[70%]">
-                    <BiSearch className="absolute left-2.5 top-[9px] h-6 w-6 mr-3 text-muted-foreground" />
-                    <Input
-                        type="search"
-                        placeholder="Search..."
-                        className="w-full rounded-lg bg-background pl-10"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
                 <CreateProject />
             </div>
-
+            <div className="relative w-[70%]">
+                <BiSearch className="absolute left-2.5 top-[9px] h-6 w-6 mr-3 text-muted-foreground" />
+                <Input
+                    type="search"
+                    placeholder="Search..."
+                    className="w-full rounded-lg bg-background pl-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
                 {filteredProjects.map((project: { id: Key | null | undefined; name: string; tags: [string]; description: string; logo: string | null; url: string; User: { firstName: string; lastName: string; profileImage: string; }; membershipRequestStatus: string; }) => (
                     <ProjectCard
