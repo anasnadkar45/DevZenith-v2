@@ -9,16 +9,20 @@ function LoadMore({ search }: { search: string }) {
   const { ref, inView } = useInView();
   const [data, setData] = useState<iRoomProps[]>([]);
   const [page, setPage] = useState(1); // Keep track of the current page
+  const [hasMore, setHasMore] = useState(true); // Track if more data is available
 
   useEffect(() => {
-    if (inView) {
+    if (inView && hasMore) {
       // Fetch next page
       getRoomData(search, page * 3, 3).then((res) => {
         setData((prevData) => [...prevData, ...res]); // Append new data
         setPage((prevPage) => prevPage + 1); // Increment the page number
+        if (res.length < 3) {
+          setHasMore(false); // No more data to load if fewer than expected items are fetched
+        }
       });
     }
-  }, [inView, search]); // Trigger effect when inView, search, or page changes
+  }, [inView, search, hasMore]); // Trigger effect when inView, search, or page changes
 
   return (
     <>
@@ -30,9 +34,13 @@ function LoadMore({ search }: { search: string }) {
         </Suspense>
       </div>
       <section className="flex justify-center items-center w-full h-20">
-        <div ref={ref}>
-          <FaSpinner className="animate-spin text-3xl text-primary" />
-        </div>
+        {hasMore ? (
+          <div ref={ref}>
+            <FaSpinner className="animate-spin text-3xl text-primary" />
+          </div>
+        ) : (
+          <p>Nothing to load</p>
+        )}
       </section>
     </>
   );

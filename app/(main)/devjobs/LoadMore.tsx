@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { Suspense, useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useInView } from "react-intersection-observer";
@@ -9,30 +10,38 @@ function LoadMore({ search }: { search: string }) {
   const { ref, inView } = useInView();
   const [data, setData] = useState<iJobProps[]>([]);
   const [page, setPage] = useState(1); // Keep track of the current page
+  const [hasMore, setHasMore] = useState(true); // Track if more data is available
 
   useEffect(() => {
-    if (inView) {
+    if (inView && hasMore) {
       // Fetch next page
       getJobData(search, page * 3, 3).then((res) => {
         setData((prevData) => [...prevData, ...res]); // Append new data
         setPage((prevPage) => prevPage + 1); // Increment the page number
+        if (res.length < 3) {
+          setHasMore(false); // No more data to load if fewer than expected items are fetched
+        }
       });
     }
-  }, [inView, search]); // Trigger effect when inView, search, or page changes
+  }, [inView, search, hasMore]); // Trigger effect when inView, search, or hasMore changes
 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                <Suspense fallback={<p>Loading feed...</p>}>
-                    {data.map((item: iJobProps, index: number) => (
-                        <JobCard key={item.id} job={item} index={index} />
-                    ))}
-                </Suspense>
-            </div>
+        <Suspense fallback={<p>Loading feed...</p>}>
+          {data.map((item: iJobProps, index: number) => (
+            <JobCard key={item.id} job={item} index={index} />
+          ))}
+        </Suspense>
+      </div>
       <section className="flex justify-center items-center w-full h-20">
-        <div ref={ref}>
-          <FaSpinner className="animate-spin text-3xl text-primary" />
-        </div>
+        {hasMore ? (
+          <div ref={ref}>
+            <FaSpinner className="animate-spin text-3xl text-primary" />
+          </div>
+        ) : (
+          <p>Nothing to load</p>
+        )}
       </section>
     </>
   );

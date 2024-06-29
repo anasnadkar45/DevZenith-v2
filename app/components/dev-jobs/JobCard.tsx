@@ -41,7 +41,7 @@ interface Prop {
 
 export function JobCard({ job }: Prop) {
     return (
-        <Card key={job.id} className="min-h-[275px] relative">
+        <Card key={job.id} className="min-h-[300px] relative">
             <CardHeader >
                 <div className="flex items-center gap-2">
                     <div className="flex justify-center items-center w-14 h-14 border-2 border-primary bg-white rounded-md overflow-hidden">
@@ -61,7 +61,7 @@ export function JobCard({ job }: Prop) {
                         </div>
                     </div>
                 </div>
-                <div className="w-full space-x-2">
+                <div className="w-full flex flex-wrap gap-2">
                     {job.batches.map((batch) => (
                         <Badge className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
                     ))}
@@ -100,11 +100,11 @@ export function JobCard({ job }: Prop) {
                             <SquareMousePointer />
                         </a>
                     </Button>
-                    <Button variant={"secondary"} >
-                        <a href={`/devjobs/${job.id}`}>
+                    <Link href={`/devjobs/${job.id}`}>
+                        <Button variant={"secondary"} className="w-full">
                             Details
-                        </a>
-                    </Button>
+                        </Button>
+                    </Link>
                 </div>
             </CardFooter>
         </Card>
