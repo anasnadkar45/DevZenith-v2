@@ -2,7 +2,7 @@ import {JobCard, iJobProps } from "@/app/components/dev-jobs/JobCard";
 import PostJob from "@/app/components/dev-jobs/PostJob";
 import { amaranth } from "@/app/layout";
 import { cn } from "@/lib/utils";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, unstable_noStore } from "next/cache";
 import { Suspense } from "react";
 import { getJobData } from "./action";
 import LoadMore from "./LoadMore";
@@ -13,7 +13,7 @@ export default async function DevJobsPage({
 }: {
     params: { search: string };
 }) {
-    noStore();
+    unstable_noStore();
     const data = await getJobData(params.search || "",0,3);
     return (
         <div>

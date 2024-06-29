@@ -14,37 +14,37 @@ export async function getJobData(search: string, skip: number = 0, take: number 
                         mode: 'insensitive',
                     },
                 },
-                {
-                    roledescription: {
-                        array_contains: searchWords
-                    },
-                },
-                {
-                    duration: {
-                        startsWith: search,
-                        mode: 'insensitive'
-                    }
-                },
-                {
-                    jobtype: {
-                        equals: "Contract" || "FullTime" || "Intern"
-                    }
-                },
-                {
-                    location: {
-                        contains: search
-                    }
-                },
-                {
-                    role: {
-                        contains: search
-                    }
-                },
-                {
-                    batches: {
-                        hasSome: searchWords,
-                    },
-                },
+                // {
+                //     roledescription: {
+                //         string_contains:search,
+                //     },
+                // },
+                // {
+                //     duration: {
+                //         startsWith: search,
+                //         mode: 'insensitive'
+                //     }
+                // },
+                // {
+                //     jobtype: {
+                //         in: ["Contract", "FullTime", "Intern"],
+                //     }
+                // },
+                // {
+                //     location: {
+                //         contains: search
+                //     }
+                // },
+                // {
+                //     role: {
+                //         contains: search
+                //     }
+                // },
+                // {
+                //     batches: {
+                //         hasSome: searchWords,
+                //     },
+                // },
             ],
         },
         skip,
@@ -60,8 +60,8 @@ export async function getJobData(search: string, skip: number = 0, take: number 
             batches: true,
             role: true,
             roledescription: true,
-            jobtype:true,
-            salary:true,
+            jobtype: true,
+            salary: true,
             link: true,
             duration: true,
             User: {

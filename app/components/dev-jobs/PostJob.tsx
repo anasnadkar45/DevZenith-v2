@@ -98,12 +98,12 @@ export default function PostJob() {
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label>Batches</Label>
+                            <Label>Skill's</Label>
                             <div className="flex gap-2">
                                 <Input
                                     value={batchInput}
                                     onChange={(e) => setBatchInput(e.target.value)}
-                                    placeholder="Enter a batch like 2024, 2025, 2026"
+                                    placeholder="Enter a skill's like React.js Next.js SQL"
                                 />
                                 <Button type="button" onClick={handleAddBatch}>Add Tag</Button>
                             </div>
