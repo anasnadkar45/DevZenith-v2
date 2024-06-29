@@ -64,6 +64,7 @@ export async function getJobData(search: string, skip: number = 0, take: number 
             salary: true,
             link: true,
             duration: true,
+            createdAt:true,
             User: {
                 select: {
                     firstName: true,
