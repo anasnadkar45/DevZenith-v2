@@ -2,14 +2,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiFillHome } from "react-icons/ai";
-import { FaDev, FaExternalLinkSquareAlt, FaFileCode } from "react-icons/fa";
+import { FaDev, FaExternalLinkSquareAlt, FaFileCode, FaUserCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdRoomPreferences } from "react-icons/md";
 import { BriefcaseBusiness } from "lucide-react";
 
 // Define your nav items
 export const navItems = [
-    { name: "Dashboard", href: "/dashboard", icon: AiFillHome },
+    { name: "Profile", href: "/profile", icon: FaUserCircle },
     { name: "Resources", href: "/resources/all", icon: FaExternalLinkSquareAlt },
     { name: "DevSquads", href: "/squads", icon: FaDev },
     { name: "ProjectCollab", href: "/project/search", icon: FaFileCode },

@@ -42,7 +42,7 @@ export async function GET() {
   }
 
   if (dbUser) {
-    return NextResponse.redirect("http://localhost:3000/dashboard");
+    return NextResponse.redirect("http://localhost:3000/profile");
   } else {
     return NextResponse.redirect("http://localhost:3000");
   }

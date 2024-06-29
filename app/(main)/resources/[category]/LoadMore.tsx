@@ -10,16 +10,20 @@ function LoadMore({ category, initialData }: { category: string, initialData: iR
     const { ref, inView } = useInView();
     const [data, setData] = useState<iResourceProps[]>(initialData);
     const [page, setPage] = useState(1); // Keep track of the current page
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
-        if (inView) {
+        if (inView && hasMore) {
             // Fetch next page
             getResourceData(category, page * 3, 3).then((res) => {
                 setData((prevData) => [...prevData, ...res]); // Append new data
                 setPage((prevPage) => prevPage + 1); // Increment the page number
+                if (res.length > 3) {
+                    setHasMore(false)
+                }
             });
         }
-    }, [inView, category]); // Trigger effect when inView, search, or page changes
+    }, [inView, category, hasMore]); // Trigger effect when inView, search, or page changes
 
     return (
         <>
@@ -31,9 +35,13 @@ function LoadMore({ category, initialData }: { category: string, initialData: iR
                 </Suspense>
             </div>
             <section className="flex justify-center items-center w-full h-20">
-                <div ref={ref}>
-                    <FaSpinner className="animate-spin text-3xl text-primary" />
-                </div>
+                {hasMore ? (
+                    <div ref={ref}>
+                        <FaSpinner className="animate-spin text-3xl text-primary" />
+                    </div>
+                ) : (
+                    <p>Nothing to load</p>
+                )}
             </section>
         </>
     );

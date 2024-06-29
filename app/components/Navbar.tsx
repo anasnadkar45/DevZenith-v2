@@ -9,6 +9,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UserNav } from "./UserNav";
 import { ModeToggle } from "./ModeToggle";
 import { FeedBack } from "./form/FeedBack";
+import Logo from "../../public/logo.png";
+import Image from "next/image";
 
 export async function Navbar() {
   const { getUser } = getKindeServerSession();
@@ -18,16 +20,33 @@ export async function Navbar() {
       <div className="md:col-span-3">
         {
           user ? (
-            <Link href="/dashboard">
-              <h1 className="text-3xl font-[900] ">
-                Dev<span className="text-primary">Zenith</span>
-              </h1>
+            <Link href="/profile">
+              <div className="flex">
+                <Image
+                  src={Logo}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                />
+                <h1 className="text-3xl font-[900] ">
+                  ev<span className="text-primary">Zenith</span>
+                </h1>
+              </div>
+
             </Link>
           ) : (
             <Link href="/">
-              <h1 className="text-3xl font-bold ">
-                Dev<span className="text-primary">Zenith</span>
-              </h1>
+              <div className="flex">
+                <Image
+                  src={Logo}
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                />
+                <h1 className="text-3xl font-[900] ">
+                  ev<span className="text-primary">Zenith</span>
+                </h1>
+              </div>
             </Link>
           )
         }

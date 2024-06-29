@@ -29,19 +29,10 @@ export function UserNav({ email, name, userImage }: iAppProps) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{name}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {email}
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent className="bg-card mt-2" align="end" forceMount>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/settings">Settings</Link>
+            <Link href="/profile" className="text-primary">Profile</Link>
           </DropdownMenuItem>
           {/* <DropdownMenuItem asChild>
             <Link href="my-products">My Products</Link>
@@ -52,7 +43,7 @@ export function UserNav({ email, name, userImage }: iAppProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <LogoutLink>Log out</LogoutLink>
+          <LogoutLink className="text-primary">Log out</LogoutLink>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -21,13 +21,13 @@ export default async function CategoryPage({
             <div className="flex mt-2 gap-2">
                 <ResourceCategoryLinks />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
+            {/* <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
                 <Suspense fallback={<p>Loading feed...</p>}>
                     {initialData.map((item: iResourceProps, index: number) => (
                         <ResourceCard key={item.id} resource={item} index={index} />
                     ))}
                 </Suspense>
-            </div>
+            </div> */}
             <LoadMore category={params.category} initialData={initialData} />
         </div>
     );
