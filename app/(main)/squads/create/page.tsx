@@ -2,16 +2,26 @@
 import { State, createSquad } from "@/app/actions";
 import { SubmitButton } from "@/app/components/SubmitButtons";
 import { UploadDropzone } from "@/app/lib/uploadthing";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
-export default function squadPage() {
+export default function AddSquad() {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(createSquad, initialState);
     const [image, setImage] = useState<null | string>(null);
@@ -25,15 +35,17 @@ export default function squadPage() {
         }
     }, [state]);
     return (
-        <div className="grid grid-cols-3">
-            <form className="col-span-3 lg:col-span-2" action={formAction}>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Create Squad</CardTitle>
-                        <CardDescription>Please describe your squad in detail.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col gap-y-10">
-                        <div className="flex flex-col gap-y-2">
+        <div className="">
+            <Sheet>
+                <SheetTrigger asChild>
+                    <Button variant="default" size="sm">Create Squad</Button>
+                </SheetTrigger>
+                <SheetContent className="w-full sm:max-w-full lg:max-w-[800px] max-h-[100vh] overflow-y-auto p-4">
+                    <SheetHeader>
+                        <SheetTitle className="text-2xl font-bold">Create Squad</SheetTitle>
+                    </SheetHeader>
+                    <form action={formAction} className="space-y-4">
+                        <div className="space-y-2">
                             <Label>Name</Label>
                             <Input
                                 name="name"
@@ -43,8 +55,7 @@ export default function squadPage() {
                                 minLength={3}
                             />
                         </div>
-
-                        <div className="flex flex-col gap-y-2">
+                        <div className="space-y-2">
                             <Label>Squad Username</Label>
                             <Input
                                 name="username"
@@ -54,8 +65,7 @@ export default function squadPage() {
                                 minLength={5}
                             />
                         </div>
-
-                        <div className="flex flex-col gap-y-2">
+                        <div className="space-y-2">
                             <Label>Description</Label>
                             <Textarea
                                 name="description"
@@ -64,18 +74,6 @@ export default function squadPage() {
                                 minLength={10}
                             />
                         </div>
-
-                        {/* <div className="flex flex-col gap-y-2">
-                            <Label>URL</Label>
-                            <Input
-                                name="url"
-                                type="text"
-                                placeholder="URL of your resource"
-                                required
-                                minLength={3}
-                            />
-                        </div> */}
-
                         <div className="flex flex-col gap-y-2">
                             <input type="hidden" name="image" value={JSON.stringify(image)} />
                             <Label>Resource Logo/Icon</Label>
@@ -104,13 +102,14 @@ export default function squadPage() {
                                 </div>
                             )}
                         </div>
-
-                    </CardContent>
-                    <CardFooter className="mt-5">
-                        <SubmitButton title="Create your Squad" />
-                    </CardFooter>
-                </Card>
-            </form>
+                        <SheetFooter className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-end">
+                            <SheetClose asChild type="submit">
+                                <SubmitButton title="Create Squad" />
+                            </SheetClose>
+                        </SheetFooter>
+                    </form>
+                </SheetContent>
+            </Sheet>
         </div>
 
     )

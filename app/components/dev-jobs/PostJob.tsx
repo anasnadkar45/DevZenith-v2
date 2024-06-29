@@ -57,7 +57,7 @@ export default function PostJob() {
                 <SheetTrigger asChild>
                     <Button variant="default" size="sm">Post Job</Button>
                 </SheetTrigger>
-                <SheetContent className="w-full sm:w-[500px] max-h-[100vh] overflow-y-auto p-4">
+                <SheetContent className="w-full sm:max-w-full lg:max-w-[800px] max-h-[100vh] overflow-y-auto p-4">
                     <SheetHeader>
                         <SheetTitle className="text-2xl font-bold">Post Job</SheetTitle>
                     </SheetHeader>

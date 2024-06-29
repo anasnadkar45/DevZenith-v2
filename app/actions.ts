@@ -192,6 +192,12 @@ export async function createSquad(prevState: any, formData: FormData) {
         }
     })
 
+    if (data) {
+        return {
+            status: "success",
+            message: "Your Squad has been created successfully",
+        }
+    }
     const state: State = {
         status: "success",
         message: "Your Squad has been created successfully",

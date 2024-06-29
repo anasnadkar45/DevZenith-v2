@@ -54,7 +54,7 @@ export default function CreateProject() {
                 <SheetTrigger asChild>
                     <Button variant="default" size={"sm"}>Create Project</Button>
                 </SheetTrigger>
-                <SheetContent className="w-[500px] max-h-[100vh] overflow-y-auto">
+                <SheetContent className="w-full sm:max-w-full lg:max-w-[800px] max-h-[100vh] overflow-y-auto p-4">
                     <SheetHeader>
                         <SheetTitle className="text-2xl font-bold">Add new project</SheetTitle>
                     </SheetHeader>

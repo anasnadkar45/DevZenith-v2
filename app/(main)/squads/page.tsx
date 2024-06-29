@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SquadCard } from "../../components/SquadCard";
 import { Suspense } from "react";
+import AddSquad from "./create/page";
 
 
 // Function to get squad data
@@ -37,13 +38,9 @@ export default async function Squads() {
         <div>
             {user ? (
                 <div>
-                    <div className="flex justify-between mb-4">
-                        <h1 className="text-3xl text-primary font-bold">DevSquads</h1>
-                        <Button asChild size={"sm"}>
-                            <Link href={'/squads/create'}>
-                                Create Squad
-                            </Link>
-                        </Button>
+                    <div className="w-full flex justify-between mb-2">
+                        <h1 className="text-3xl font-bold"><span className="text-primary">Dev</span>Squads</h1>
+                        <AddSquad />
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4">
                         <Suspense fallback={<p>Loading feed...</p>}>
