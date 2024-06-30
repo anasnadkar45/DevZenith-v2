@@ -10,6 +10,8 @@ import { HiMiniArrowLeftEndOnRectangle } from "react-icons/hi2";
 import Image from "next/image";
 import Link from "next/link";
 import { SquadPostCard } from "@/app/components/SquadPostCard";
+import UpdateSquad from "../update/page";
+import { DeleteSquad } from "../delete/page";
 
 async function getData(username: string) {
     const data = await prisma.squad.findUnique({
@@ -36,8 +38,8 @@ async function getPosts(username: string) {
         where: {
             squadUsername: username
         },
-        orderBy:{
-            createdAt:"desc"
+        orderBy: {
+            createdAt: "desc"
         },
         select: {
             id: true,
@@ -64,6 +66,7 @@ export default async function SquadRoutePage({
 }) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+    const userId = user?.id as string;
     const data = await getData(params.id);
     const posts = await getPosts(params.id);
 
@@ -75,6 +78,7 @@ export default async function SquadRoutePage({
         );
     }
 
+
     return (
         <div className="mb-6 mr-3 md:mr-0">
             <div className="flex justify-between mb-4">
@@ -83,23 +87,29 @@ export default async function SquadRoutePage({
                         <HiMiniArrowLeftEndOnRectangle size={20} />
                     </Link>
                 </Button>
-                <div className="flex items-center gap-2">
-                    <Button asChild>
+                <div className="flex flex-wrap items-center gap-2">
+                    <Button size={"sm"} asChild>
                         <Link href={user?.id ? `/squads/${data?.username}/create` : "/api/auth/login"}>
                             Create Post
                         </Link>
                     </Button>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger >
-                            <CiMenuKebab className="border-2 rounded-lg h-full w-10 p-2" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="mt-1 bg-card">
-                            <DropdownMenuItem>
-                                <FaLink className="mr-2" />
-                                Invitation Link
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    {
+                        userId === data.User?.id ? (
+                            <div className="flex flex-wrap items-center gap-2">
+                                <UpdateSquad
+                                    key={data.id}
+                                    id={data.id}
+                                    name={data.name}
+                                    description={data.description}
+                                    username={data.username}
+                                    thumbnail={data.image}
+                                />
+                                <DeleteSquad id={data.id} />
+                            </div>
+                        ) : (
+                            <></>
+                        )
+                    }
                 </div>
 
             </div>

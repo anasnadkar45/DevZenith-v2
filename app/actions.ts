@@ -128,6 +128,65 @@ export async function AddResource(prevState: any, formData: FormData) {
     return state;
 }
 
+export async function deleteResource(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a DevRoom.",
+        };
+    }
+
+    const role = await getUserRole(user.id);
+
+    if (role !== Role.ADMIN) {
+        const state: State = {
+            status: "error",
+            message: "You do not have the necessary permissions to delete a resource.",
+        };
+
+        console.log(state);
+        return state;
+    }
+
+    const resourceId = formData.get('resourceId') as string;
+
+    try {
+        const data = await prisma.resource.delete({
+            where: {
+                id: resourceId,
+                userId: user.id
+            },
+        });
+
+        revalidatePath('/resources/all');
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Resource has been deleted successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Resource has been deleted successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while deleting the resource. Please try again later.",
+        };
+    }
+}
+
+
+
 
 // create Squad
 const squadSchema = z.object({
@@ -204,8 +263,116 @@ export async function createSquad(prevState: any, formData: FormData) {
     };
 
     console.log(state);
-    redirect('/squads')
+    revalidatePath('/squads')
     return state;
+}
+
+export async function updateSquad(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to update a squad.",
+        };
+    }
+
+    const validateFields = squadSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        username: formData.get('username'),
+        image: JSON.parse(formData.get("image") as string),
+    })
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        }
+        return state;
+    }
+
+    const squadId = formData.get('squadId') as string;
+    try {
+        const data = await prisma.squad.update({
+            where: {
+                id: squadId,
+                userId: user.id
+            },
+            data: {
+                name: validateFields.data.name,
+                userId: user.id,
+                description: validateFields.data.description,
+                username: validateFields.data.username,
+                image: validateFields.data.image
+            }
+        });
+
+        revalidatePath('/squads')
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Squad has been updated successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Squad has been updated successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error updating project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while updating the squad. Please try again later.",
+        };
+    }
+}
+
+export async function deleteSquad(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to delete a Squad.",
+        };
+    }
+
+    const squadId = formData.get('squadId') as string;
+    try {
+        const data = await prisma.squad.delete({
+            where: {
+                id: squadId,
+                userId:user.id
+            }
+        })
+
+        revalidatePath('/squads')
+        if (data) {
+            return {
+                status: "success",
+                message: "Your DevRoom has been deleted successfully",
+            };
+        }
+        const state: State = {
+            status: "success",
+            message: "Your DevRoom has been deleted successfully",
+        };
+        return state;
+
+    } catch (err) {
+        return {
+            status: "error",
+            message: "An error occurred while deleting the DevRoom. Please try again later.",
+        };
+    }
 }
 
 // Squadpost
@@ -289,6 +456,124 @@ export async function createSquadPost(prevState: any, formData: FormData) {
             message: "An error occurred while creating the SquadPost. Please try again later.",
         };
         return state;
+    }
+}
+
+export async function updateSquadPost(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        const state: State = {
+            status: "error",
+            message: "User not found. Please log in to create a post.",
+        };
+        return state;
+    }
+
+    const description = formData.get('description');
+    let parsedDescription;
+    try {
+        parsedDescription = JSON.parse(description as string);
+    } catch (error) {
+        const state: State = {
+            status: "error",
+            message: "Description must be valid JSON.",
+        };
+        return state;
+    }
+
+    // Validate fields
+    const validateFields = squadPostSchema.safeParse({
+        title: formData.get('title'),
+        thumbnail: JSON.parse(formData.get("thumbnail") as string),
+        description: parsedDescription,
+        squadUsername: formData.get('squadUsername'),
+    });
+
+    if (!validateFields.success) {
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+        return state;
+    }
+
+    const squadId = formData.get('squadId') as string;
+    const squadPostId = formData.get('squadPostId') as string;
+    try {
+        // Create Squad Post
+        const data = await prisma.squadPost.update({
+            where:{
+                Squad:{
+                    id:squadId,
+                },
+                id:squadPostId,
+                userId:user.id
+            },
+            data: {
+                title: validateFields.data.title,
+                thumbnail: validateFields.data.thumbnail,
+                description: validateFields.data.description,
+                squadUsername: validateFields.data.squadUsername,
+                userId: user.id,
+            }
+        });
+
+        const state: State = {
+            status: "success",
+            message: "Your SquadPost has been updated successfully",
+        };
+        return state;
+    } catch (error) {
+        console.error("Error creating SquadPost:", error);
+        const state: State = {
+            status: "error",
+            message: "An error occurred while updating the SquadPost. Please try again later.",
+        };
+        return state;
+    }
+}
+
+export async function deleteSquadPost(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to delete a Squad.",
+        };
+    }
+
+    const squadId = formData.get('squadId') as string;
+    try {
+        const data = await prisma.squad.delete({
+            where: {
+                id: squadId,
+                userId:user.id
+            }
+        })
+
+        revalidatePath('/squads')
+        if (data) {
+            return {
+                status: "success",
+                message: "Your DevRoom has been deleted successfully",
+            };
+        }
+        const state: State = {
+            status: "success",
+            message: "Your DevRoom has been deleted successfully",
+        };
+        return state;
+
+    } catch (err) {
+        return {
+            status: "error",
+            message: "An error occurred while deleting the DevRoom. Please try again later.",
+        };
     }
 }
 
@@ -1184,7 +1469,7 @@ export async function deleteDevRoom(prevState: any, formData: FormData) {
             }
         })
 
-        revalidatePath('/devrooms/ypur-rooms');
+        revalidatePath('/devrooms/your-rooms');
         if (data) {
             return {
                 status: "success",
@@ -1331,4 +1616,51 @@ export async function postDevJob(prevState: any, formData: FormData) {
     }
 }
 
+export async function deleteJob(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a DevRoom.",
+        };
+    }
+
+    const jobId = formData.get('jobId') as string;
+
+    try {
+        const data = await prisma.job.delete({
+            where: {
+                id: jobId,
+                userId: user.id
+            },
+        });
+
+        revalidatePath('/project/myproject');
+
+
+        revalidatePath('/devjobs');
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Job has been deleted successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Job has been deleted successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        return {
+            status: "error",
+            message: "An error occurred while deleting the job. Please try again later.",
+        };
+    }
+}
 

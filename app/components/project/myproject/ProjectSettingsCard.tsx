@@ -24,6 +24,7 @@ export function ProjectSettingsCard({ id, name, description, logo, url,tags: ini
     const [image, setImage] = useState<null | string>(logo);
     const [tags, setTags] = useState<string[]>(initialTags); // Added state for tags
     const [tagInput, setTagInput] = useState<string>("");
+    
 
     useEffect(() => {
         console.log("State updated:", state);

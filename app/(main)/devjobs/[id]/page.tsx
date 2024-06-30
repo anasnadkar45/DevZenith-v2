@@ -152,7 +152,7 @@ export default async function JobPage({
                         </p>
                     </div>
                     <Button className="w-full">
-                        <a className="flex gap-2 items-center">
+                        <a href={data?.link} target="_blank" className="flex gap-2 items-center justify-center w-full">
                             <p>Apply</p>
                             <SquareMousePointer />
                         </a>
@@ -211,7 +211,7 @@ export default async function JobPage({
                             </p>
                         </div>
                         <Button className="w-full">
-                            <a className="flex gap-2 items-center">
+                            <a href={data.link} target="_blank" className="flex gap-2 items-center justify-center w-full">
                                 <p>Apply</p>
                                 <SquareMousePointer />
                             </a>

@@ -16,8 +16,16 @@ export async function getResourceData(category: string, skip: number = 0, take: 
             name: true,
             url: true,
             category: true,
+            User:{
+                select:{
+                    role:true,
+                    id:true,
+                }
+            }
         },
     });
 
     return data;
 }
+
+

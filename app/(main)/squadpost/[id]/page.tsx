@@ -15,6 +15,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SquadCardBottom } from "@/app/components/SquadCardBottom";
 import { CommentForm } from "@/app/components/CommentForm";
 import { formatDistanceToNow } from "date-fns";
+import UpdateSquadPost from "./update/page";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -59,6 +61,7 @@ async function getData(id: string) {
             },
             User: {
                 select: {
+                    id: true,
                     firstName: true,
                     lastName: true,
                     profileImage: true,
@@ -71,6 +74,7 @@ async function getData(id: string) {
             },
             Squad: {
                 select: {
+                    id: true,
                     image: true,
                     description: true,
                     createdAt: true,
@@ -110,17 +114,38 @@ export default async function SquadPostRoute({
 }: {
     params: { id: string };
 }) {
+    const { getUser } = getKindeServerSession()
+    const user = await getUser()
+    const userId = user?.id as string;
     const data = await getData(params.id);
     const morePosts = await getMorePosts(data?.squadUsername as string)
     return (
         <div className="flex-col xl:grid xl:grid-cols-4 h-full space-y-4 xl:space-x-4 md:pr-0">
             <div className="lg:col-span-3 space-y-2">
                 <div className="bg-card w-full mx-auto space-y-2  rounded-lg p-2">
-                    <Link href={`/squads/${data?.squadUsername}`}>
-                        <Button variant={"outline"}>
-                            <HiMiniArrowLeftEndOnRectangle size={20} />
-                        </Button>
-                    </Link>
+                    <div className="w-full flex justify-between items-center gap-2">
+                        <Link href={`/squads/${data?.squadUsername}`}>
+                            <Button variant={"outline"}>
+                                <HiMiniArrowLeftEndOnRectangle size={20} />
+                            </Button>
+                        </Link>
+
+                        {userId === data?.User?.id ? (
+                            <div className="flex flex-wrap items-center gap-2">
+                                <UpdateSquadPost
+                                    key={data?.id}
+                                    id={data?.id as string}
+                                    squadId={data?.Squad?.id as string}
+                                    title={data?.title as string}
+                                    description={data?.description as JSONContent}
+                                    thumbnail={data?.thumbnail as string}
+                                />
+                                {/* <DeleteSquad id={data.id} /> */}
+                            </div>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                     <div className="flex items-center gap-3">
                         <Image src={data?.Squad?.image as string} alt="squad image" width={80} height={50} className="border rounded-lg" />
                         <p className="text-slate-400">{data?.squadUsername}</p>
@@ -292,7 +317,7 @@ export default async function SquadPostRoute({
                     </Button>
                 </div>
 
-                
+
                 <div className="border rounded-lg">
                     <p className="text-center border-b py-2 text-slate-400">More posts from @{data?.squadUsername}</p>
                     <div className="p-2 space-y-2">

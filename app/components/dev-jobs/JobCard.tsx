@@ -29,6 +29,7 @@ export interface iJobProps {
         lastName: string,
         profileImage: string,
     } | null,
+    
 }
 
 
@@ -95,7 +96,7 @@ export function JobCard({ job }: Prop) {
                 </p>
                 <div className="absolute bottom-6 right-6 left-6 grid grid-cols-2 gap-2">
                     <Button >
-                        <a className="flex gap-2 items-center">
+                        <a href={job.link} target="_blank" className="flex gap-2 items-center">
                             <p>Apply</p>
                             <SquareMousePointer />
                         </a>
