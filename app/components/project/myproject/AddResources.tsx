@@ -51,11 +51,11 @@ export default function AddResources({ id }: AddResourcesProps) {
                         <div className="grid gap-4 py-4">
                             <div className="grid items-center gap-4">
                                 <Label htmlFor="name" className="text-left">Name</Label>
-                                <Input id="name" name="name" placeholder="Todo App" />
+                                <Input id="name" name="name" placeholder="Name of an resource" />
                             </div>
                             <div className="grid items-center gap-4">
                                 <Label htmlFor="category" className="text-left">Category</Label>
-                                <Input id="category" name="category" placeholder="Image" />
+                                <Input id="category" name="category" placeholder="Category of an resource like zip, image, video" />
                             </div>
                             <div className="flex flex-col gap-y-2">
                                 <Label>Link</Label>

@@ -1300,6 +1300,126 @@ export async function AddProjectResource(prevState: any, formData: FormData) {
     }
 }
 
+export async function deleteProjectResource(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to delete a SquadPost.",
+        };
+    }
+
+    const projectId = formData.get('projectId') as string;
+    const resourceId = formData.get('resourceId') as string;
+    try {
+        const data = await prisma.projectResource.delete({
+            where: {
+                id:resourceId,
+                projectId: projectId,
+                userId:user.id
+            }
+        })
+
+        revalidatePath(`/project/myproject/${projectId}/resources`);
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project Resource has been deleted successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Resource has been deleted successfully",
+        };
+        return state;
+
+    } catch (err) {
+        return {
+            status: "error",
+            message: "An error occurred while deleting the project resource. Please try again later.",
+        };
+    }
+}
+
+export async function updateProjectResource(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        const state: State = {
+            status: "error",
+            message: "User not found. Please log in to update a resource.",
+        };
+        return state;
+    }
+
+
+    const validateFields = projectResourceSchema.safeParse({
+        name: formData.get('name'),
+        category: formData.get('category'),
+        link: formData.get('link'),
+        file: formData.get("file") ? JSON.parse(formData.get("file") as string) : "",
+    });
+
+    // Validate the fields
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    // Check if file is provided
+    const fileUrl = validateFields.data.file;
+
+    const projectId = formData.get('projectId') as string;
+    const resourceId = formData.get('resourceId') as string;
+    try {
+        const data = await prisma.projectResource.update({
+            where:{
+                id:resourceId,
+                projectId:projectId,
+                userId:user.id
+            },
+            data: {
+                name: validateFields.data.name,
+                category: validateFields.data.category,
+                link: validateFields.data.link,
+                file: fileUrl,
+                projectId: projectId,
+                userId: user?.id ?? null,
+            },
+        });
+
+        revalidatePath(`/project/myproject/${projectId}/resources`);
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project Resource has been updated successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Resource has been updated successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error adding Project Resource:", error);
+        return {
+            status: "error",
+            message: "An error occurred while updated the project resource. Please try again later.",
+        };
+    }
+}
+
 // Project Meetings
 const MeetingSchema = z.object({
     name: z

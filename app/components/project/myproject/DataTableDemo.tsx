@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -34,6 +34,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { IoCopyOutline } from "react-icons/io5"
+import { DeleteProjectResource } from "@/app/(main)/project/myproject/[id]/(root)/resources/delete/page"
+import UpdateProjectResource from "@/app/(main)/project/myproject/[id]/(root)/resources/update/page"
 
 // Define the Resource type
 export type Resource = {
@@ -42,6 +45,7 @@ export type Resource = {
     category: string
     link: string | null
     file: string | null
+    projectId: string | null
 }
 
 
@@ -89,27 +93,43 @@ export const columns: ColumnDef<Resource>[] = [
             const resource = row.original
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(resource?.link as string)}
-                        >
-                            Copy resource Link
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(resource?.file as string)}
-                        >
-                            Copy resource File
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex gap-2">
+                    <UpdateProjectResource
+                        id={resource.id}
+                        projectId={resource.projectId as string}
+                        name={resource.name}
+                        category={resource.category as string}
+                        link={resource.link as string}
+                        file={resource.file as string}
+                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                                onClick={() => navigator.clipboard.writeText(resource?.link as string)}
+                            >
+                                <DeleteProjectResource id={resource.id} projectId={resource.projectId as string} />
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigator.clipboard.writeText(resource?.link as string)}
+                            >
+                                <IoCopyOutline size={20} className="mr-2" /> Copy resource Link
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => navigator.clipboard.writeText(resource?.file as string)}
+                            >
+                                <IoCopyOutline size={20} className="mr-2" /> Copy resource File
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+
             )
         },
     },

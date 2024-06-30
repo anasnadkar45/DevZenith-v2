@@ -5,25 +5,26 @@ import { Button } from "@/components/ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export async function getData(id: string) {
-    const data = await prisma.project.findUnique({
-        where: {
-            id: id,
-        },
+  const data = await prisma.project.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      ProjectResources: {
         select: {
-            id: true,
-            ProjectResources: {
-                select: {
-                    id: true,
-                    name: true,
-                    category: true,
-                    file: true,
-                    link: true,
-                }
-            }
+          id: true,
+          name: true,
+          category: true,
+          file: true,
+          link: true,
+          projectId: true,
         }
-    })
+      }
+    }
+  })
 
-    return data;
+  return data;
 }
 
 export default async function ResourcesPage(
