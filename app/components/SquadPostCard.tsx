@@ -6,6 +6,7 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SquadCardBottom } from "./SquadCardBottom";
+import { formatDistanceToNow } from "date-fns";
 // Define the User type to describe the user object
 interface User {
     profileImage: string;
@@ -58,7 +59,10 @@ export function SquadPostCard({
                         )}
                         <div className="leading-[15px]">
                             <h1 className="font-bold">{firstName || "Unknown"}</h1>
-                            <p className="text-primary text-sm font-semibold">1 hour ago</p>
+                            <p className="text-sm text-slate-400">
+                                Created: {' '}
+                                {createdAt && formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+                            </p>
                         </div>
                     </div>
                     <h1 className="line-clamp-2">{title}</h1>

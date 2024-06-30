@@ -12,6 +12,7 @@ import Link from "next/link";
 import { SquadPostCard } from "@/app/components/SquadPostCard";
 import UpdateSquad from "../update/page";
 import { DeleteSquad } from "../delete/page";
+import { unstable_noStore } from "next/cache";
 
 async function getData(username: string) {
     const data = await prisma.squad.findUnique({
@@ -64,6 +65,7 @@ export default async function SquadRoutePage({
 }: {
     params: { id: string };
 }) {
+    unstable_noStore()
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id as string;

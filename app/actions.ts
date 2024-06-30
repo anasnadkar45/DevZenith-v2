@@ -521,6 +521,8 @@ export async function updateSquadPost(prevState: any, formData: FormData) {
             }
         });
 
+        revalidatePath(`/squadpost/${squadPostId}`)
+
         const state: State = {
             status: "success",
             message: "Your SquadPost has been updated successfully",
@@ -543,36 +545,37 @@ export async function deleteSquadPost(prevState: any, formData: FormData) {
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to delete a Squad.",
+            message: "User not found. Please log in to delete a SquadPost.",
         };
     }
 
+    const squadPostId = formData.get('squadPostId') as string;
     const squadId = formData.get('squadId') as string;
     try {
-        const data = await prisma.squad.delete({
+        const data = await prisma.squadPost.delete({
             where: {
-                id: squadId,
+                id: squadPostId,
                 userId:user.id
             }
         })
 
-        revalidatePath('/squads')
+        revalidatePath(`/squads/${squadId}`)
         if (data) {
             return {
                 status: "success",
-                message: "Your DevRoom has been deleted successfully",
+                message: "Your SquadPost has been deleted successfully",
             };
         }
         const state: State = {
             status: "success",
-            message: "Your DevRoom has been deleted successfully",
+            message: "Your SquadPost has been deleted successfully",
         };
         return state;
 
     } catch (err) {
         return {
             status: "error",
-            message: "An error occurred while deleting the DevRoom. Please try again later.",
+            message: "An error occurred while deleting the SquadPost. Please try again later.",
         };
     }
 }

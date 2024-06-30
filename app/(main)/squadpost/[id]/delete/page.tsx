@@ -1,5 +1,5 @@
 "use client"
-import { State, deleteSquad } from "@/app/actions";
+import { State, deleteSquadPost } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -9,17 +9,18 @@ import { toast } from "sonner";
 
 interface squadProps {
     id: string;
+    squadId: string;
 }
 
-export function DeleteSquad({ id }: squadProps) {
+export function DeleteSquadPost({ id , squadId}: squadProps) {
     const initialState: State = { message: "", status: undefined };
-    const [state, formAction] = useFormState(deleteSquad, initialState);
+    const [state, formAction] = useFormState(deleteSquadPost, initialState);
 
     useEffect(() => {
         console.log("State updated:", state);
         if (state.status === "success") {
             toast.success(state.message);
-            redirect('/squads')
+            redirect(`/squads/${squadId}`)
         } else if (state.status === "error") {
             toast.error(state.message);
         }
@@ -27,7 +28,8 @@ export function DeleteSquad({ id }: squadProps) {
     console.log(id)
     return (
         <form action={formAction} method="post">
-            <input type="hidden" name="squadId" value={id} />
+            <input type="hidden" name="squadPostId" value={id} />
+            <input type="hidden" name="squadId" value={squadId} />
             <Button type="submit" variant={"destructive"} size={"sm"} className="flex gap-2 items-center w-full">
                 <p>Delete</p>
                 <Trash />

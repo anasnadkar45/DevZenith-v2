@@ -20,9 +20,10 @@ export interface squadProps {
     description: JSONContent;
     squadId: string;
     thumbnail: string;
+    squadUsername: string;
 }
 
-export default function UpdateSquadPost({ id, title, description, squadId, thumbnail }: squadProps) {
+export default function UpdateSquadPost({ id, title, description, squadId, thumbnail,squadUsername }: squadProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(updateSquadPost, initialState);
     const [json, setJson] = useState<null | JSONContent>(description);
@@ -50,6 +51,7 @@ export default function UpdateSquadPost({ id, title, description, squadId, thumb
                     <form className="space-y-4" action={formAction}>
                         <input type="hidden" name="squadId" value={squadId} />
                         <input type="hidden" name="squadPostId" value={id} />
+                        <input type="hidden" name="squadUsername" value={squadUsername} />
                         <div className="flex flex-col gap-y-2">
                             <Label>Title</Label>
                             <Input

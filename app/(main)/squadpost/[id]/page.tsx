@@ -17,6 +17,7 @@ import { CommentForm } from "@/app/components/CommentForm";
 import { formatDistanceToNow } from "date-fns";
 import UpdateSquadPost from "./update/page";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { DeleteSquadPost } from "./delete/page";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -139,8 +140,9 @@ export default async function SquadPostRoute({
                                     title={data?.title as string}
                                     description={data?.description as JSONContent}
                                     thumbnail={data?.thumbnail as string}
+                                    squadUsername={data.squadUsername as string} 
                                 />
-                                {/* <DeleteSquad id={data.id} /> */}
+                                <DeleteSquadPost id={data.id} squadId={data?.Squad?.id as string}/>
                             </div>
                         ) : (
                             <></>

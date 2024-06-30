@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { JSONContent } from "@tiptap/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ export default function CreatePostRoute({
         console.log("State updated:", state);
         if (state.status === "success") {
             toast.success(state.message);
+            redirect(`/squads/${params.id}`)
         } else if (state.status === "error") {
             toast.error(state.message);
         }
