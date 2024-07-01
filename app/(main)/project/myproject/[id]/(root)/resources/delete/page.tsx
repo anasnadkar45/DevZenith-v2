@@ -12,7 +12,7 @@ interface resourceProps {
     projectId: string;
 }
 
-export default function DeleteProjectResource({ id, projectId }: resourceProps) {
+function DeleteProjectResource({ id, projectId }: resourceProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(deleteProjectResource, initialState);
 
@@ -37,3 +37,5 @@ export default function DeleteProjectResource({ id, projectId }: resourceProps) 
         </form>
     )
 }
+
+export default DeleteProjectResource;

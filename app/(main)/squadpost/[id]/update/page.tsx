@@ -23,7 +23,7 @@ export interface squadProps {
     squadUsername: string;
 }
 
-export default function UpdateSquadPost({ id, title, description, squadId, thumbnail,squadUsername }: squadProps) {
+function UpdateSquadPost({ id, title, description, squadId, thumbnail,squadUsername }: squadProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(updateSquadPost, initialState);
     const [json, setJson] = useState<null | JSONContent>(description);
@@ -118,3 +118,5 @@ export default function UpdateSquadPost({ id, title, description, squadId, thumb
         </div>
     );
 }
+
+export default UpdateSquadPost;

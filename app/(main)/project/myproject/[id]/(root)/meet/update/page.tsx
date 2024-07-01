@@ -22,7 +22,7 @@ interface meetingProps {
     description: string;
 }
 
-export default function UpdateProjectMeeting({ id, projectId, name, tags, url, description }: meetingProps) {
+function UpdateProjectMeeting({ id, projectId, name, tags, url, description }: meetingProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(updateMeeting, initialState);
     const [meetingTags, setMeetingTags] = useState<string[]>(tags); // Added state for tags
@@ -119,3 +119,5 @@ export default function UpdateProjectMeeting({ id, projectId, name, tags, url, d
         </Sheet>
     );
 }
+
+export default UpdateProjectMeeting;

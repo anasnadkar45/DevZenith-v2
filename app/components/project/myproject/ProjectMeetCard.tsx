@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ArrowRightIcon, GithubIcon, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DeleteProjectMeeting } from "@/app/(main)/project/myproject/[id]/(root)/meet/delete/page";
 import UpdateProjectMeeting from "@/app/(main)/project/myproject/[id]/(root)/meet/update/page";
+import DeleteProjectMeeting from "@/app/(main)/project/myproject/[id]/(root)/meet/delete/page";
 
 
 interface iAppProps {

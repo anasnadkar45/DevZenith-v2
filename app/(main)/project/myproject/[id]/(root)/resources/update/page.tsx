@@ -20,7 +20,7 @@ interface resourceProps {
     file: string;
 }
 
-export default function UpdateProjectResource({ id, projectId, name, category, link, file }: resourceProps) {
+function UpdateProjectResource({ id, projectId, name, category, link, file }: resourceProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(updateProjectResource, initialState);
     const [resourceFile, setResourceFile] = useState<null | string>(file);
@@ -100,3 +100,5 @@ export default function UpdateProjectResource({ id, projectId, name, category, l
         </Sheet>
     );
 }
+
+export default  UpdateProjectResource;

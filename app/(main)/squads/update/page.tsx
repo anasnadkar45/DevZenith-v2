@@ -28,7 +28,7 @@ export interface squadProps {
     thumbnail: string;
 }
 
-export default function UpdateSquad({id,name,description,username,thumbnail}:squadProps) {
+function UpdateSquad({id,name,description,username,thumbnail}:squadProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(updateSquad, initialState);
     const [image, setImage] = useState<null | string>(thumbnail);
@@ -125,3 +125,5 @@ export default function UpdateSquad({id,name,description,username,thumbnail}:squ
 
     )
 }
+
+export default UpdateSquad;

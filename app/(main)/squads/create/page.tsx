@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
-export default function AddSquad() {
+function AddSquad() {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(createSquad, initialState);
     const [image, setImage] = useState<null | string>(null);
@@ -114,3 +114,5 @@ export default function AddSquad() {
 
     )
 }
+
+export default AddSquad;

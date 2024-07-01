@@ -1,7 +1,7 @@
 "use client"
-import { State, deleteMeeting} from "@/app/actions";
+import { State, deleteMeeting } from "@/app/actions";
 import { Trash } from "lucide-react";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
@@ -10,7 +10,7 @@ interface resourceProps {
     projectId: string;
 }
 
-export default function DeleteProjectMeeting({ id, projectId }: resourceProps) {
+export function DeleteProjectMeeting({ id, projectId }: resourceProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(deleteMeeting, initialState);
 
@@ -22,7 +22,7 @@ export default function DeleteProjectMeeting({ id, projectId }: resourceProps) {
             toast.error(state.message);
         }
     }, [state]);
-    console.log(id)
+
     return (
         <form action={formAction} method="post">
             <input type="hidden" name="meetingId" value={id} />
@@ -31,5 +31,7 @@ export default function DeleteProjectMeeting({ id, projectId }: resourceProps) {
                 <Trash size={20} />
             </button>
         </form>
-    )
+    );
 }
+
+export default DeleteProjectMeeting;

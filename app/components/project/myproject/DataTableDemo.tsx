@@ -35,8 +35,9 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { IoCopyOutline } from "react-icons/io5"
-import { DeleteProjectResource } from "@/app/(main)/project/myproject/[id]/(root)/resources/delete/page"
+
 import UpdateProjectResource from "@/app/(main)/project/myproject/[id]/(root)/resources/update/page"
+import DeleteProjectResource from "@/app/(main)/project/myproject/[id]/(root)/resources/delete/page"
 
 // Define the Resource type
 export type Resource = {

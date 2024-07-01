@@ -11,7 +11,7 @@ interface squadProps {
     id: string;
 }
 
-export default function DeleteSquad({ id }: squadProps) {
+function DeleteSquad({ id }: squadProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(deleteSquad, initialState);
 
@@ -35,3 +35,5 @@ export default function DeleteSquad({ id }: squadProps) {
         </form>
     )
 }
+
+export default DeleteSquad;
