@@ -87,12 +87,9 @@ export default async function YourRoomsPage({
                             key={room.id}
                             id={room.id}
                             name={room.name}
-                            tags={room.tags as [string]} // Cast to string[]
+                            tags={room.tags as string[]} // Cast to string[]
                             description={room.description ?? "No description available"}
                             url={room.url ?? ""}
-                            firstName={room.User?.firstName ?? ""}
-                            lastName={room.User?.lastName ?? ""}
-                            profileImage={room.User?.profileImage ?? ""}
                         />
                     ))}
                 </Suspense>

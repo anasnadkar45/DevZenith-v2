@@ -10,12 +10,9 @@ import { revalidatePath } from "next/cache";
 interface iAppProps {
     id: string;
     name: string;
-    tags: [string];
+    tags: string[];
     url: string;
     description: string;
-    firstName: string;
-    lastName: string;
-    profileImage: string;
 }
 
 export function YourDevRoomCard({
@@ -24,9 +21,6 @@ export function YourDevRoomCard({
     tags,
     url,
     description,
-    firstName,
-    lastName,
-    profileImage,
 }: iAppProps) {
     const handleDelete = async () => {
         try {
