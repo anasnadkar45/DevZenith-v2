@@ -6,8 +6,7 @@ import prisma from "@/app/lib/db";
 import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore } from "next/cache";
-
-export async function getData(userId: string) {
+async function getData(userId: string) {
     const data = await prisma.project.findMany({
         where: {
             userId: userId,

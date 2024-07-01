@@ -34,7 +34,7 @@ interface ProjectData {
 }
 
 
-export async function getProjectData(id: string): Promise<ProjectData | null> {
+async function getProjectData(id: string): Promise<ProjectData | null> {
     const project = await prisma.project.findUnique({
         where: {
             id: id,

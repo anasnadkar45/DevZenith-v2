@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import DotPattern from "@/app/components/dot-pattern";
 import { cn } from "@/lib/utils";
 import { unstable_noStore } from "next/cache";
-
-export async function getData(userId: string) {
+async function getData(userId: string) {
     const membershipRequests = await prisma.membershipRequest.findMany({
         where: {
             userId: userId,

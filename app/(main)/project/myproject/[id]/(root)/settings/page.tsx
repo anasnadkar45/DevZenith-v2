@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore } from "next/cache";
 
-export async function getProjectData(id: string) {
+async function getProjectData(id: string) {
     const data = await prisma.project.findUnique({
         where: {
             id: id,

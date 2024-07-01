@@ -3,8 +3,7 @@ import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { TaskCard } from "@/app/components/project/joined/TaskCard";
 import { unstable_noStore } from "next/cache";
-
-export async function getTaskData(userId: string, projectId: string) {
+async function getTaskData(userId: string, projectId: string) {
     const data = await prisma.task.findMany({
         where: {
             userId: userId,
