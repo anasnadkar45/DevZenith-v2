@@ -350,7 +350,7 @@ export async function deleteSquad(prevState: any, formData: FormData) {
         const data = await prisma.squad.delete({
             where: {
                 id: squadId,
-                userId:user.id
+                userId: user.id
             }
         })
 
@@ -505,12 +505,12 @@ export async function updateSquadPost(prevState: any, formData: FormData) {
     try {
         // Create Squad Post
         const data = await prisma.squadPost.update({
-            where:{
-                Squad:{
-                    id:squadId,
+            where: {
+                Squad: {
+                    id: squadId,
                 },
-                id:squadPostId,
-                userId:user.id
+                id: squadPostId,
+                userId: user.id
             },
             data: {
                 title: validateFields.data.title,
@@ -555,7 +555,7 @@ export async function deleteSquadPost(prevState: any, formData: FormData) {
         const data = await prisma.squadPost.delete({
             where: {
                 id: squadPostId,
-                userId:user.id
+                userId: user.id
             }
         })
 
@@ -1316,9 +1316,9 @@ export async function deleteProjectResource(prevState: any, formData: FormData) 
     try {
         const data = await prisma.projectResource.delete({
             where: {
-                id:resourceId,
+                id: resourceId,
                 projectId: projectId,
-                userId:user.id
+                userId: user.id
             }
         })
 
@@ -1381,10 +1381,10 @@ export async function updateProjectResource(prevState: any, formData: FormData) 
     const resourceId = formData.get('resourceId') as string;
     try {
         const data = await prisma.projectResource.update({
-            where:{
-                id:resourceId,
-                projectId:projectId,
-                userId:user.id
+            where: {
+                id: resourceId,
+                projectId: projectId,
+                userId: user.id
             },
             data: {
                 name: validateFields.data.name,
@@ -1475,13 +1475,6 @@ export async function createMeeting(prevState: any, formData: FormData) {
 
         revalidatePath(`/project/myproject/${projectId}/meet`);
 
-        if (data) {
-            return {
-                status: "success",
-                message: "Your Project Meeting has been created successfully",
-            };
-        }
-
         const state: State = {
             status: "success",
             message: "Your Project Meeting has been created successfully",
@@ -1493,6 +1486,114 @@ export async function createMeeting(prevState: any, formData: FormData) {
         return {
             status: "error",
             message: "An error occurred while creating the Project Meeting. Please try again later.",
+        };
+    }
+}
+
+export async function deleteMeeting(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to delete a meeting.",
+        };
+    }
+
+    const meetingId = formData.get('meetingId') as string;
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.projectMeet.delete({
+            where: {
+                id: meetingId,
+                projectId: projectId,
+                userId: user.id
+            }
+        })
+
+        revalidatePath(`/project/myproject/${projectId}/meet`);
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Project Meeting has been deleted successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Meeting has been deleted successfully",
+        };
+        return state;
+
+    } catch (err) {
+        return {
+            status: "error",
+            message: "An error occurred while deleting the project Meeting. Please try again later.",
+        };
+    }
+}
+
+export async function updateMeeting(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to update a Meeting.",
+        };
+    }
+
+    const validateFields = MeetingSchema.safeParse({
+        name: formData.get('name'),
+        description: formData.get('description'),
+        url: formData.get('url'),
+        tags: JSON.parse(formData.get('tags') as string)
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+
+   const meetingId = formData.get('meetingId') as string;
+    const projectId = formData.get('projectId') as string;
+    try {
+        const data = await prisma.projectMeet.update({
+            where:{
+                id: meetingId,
+                projectId: projectId,
+                userId:user.id
+            },
+            data: {
+                name: validateFields.data.name,
+                description: validateFields.data.description,
+                url: validateFields.data.url,
+                tags: validateFields.data.tags ?? [],
+                userId: user.id,
+                projectId: projectId
+            },
+        });
+
+        revalidatePath(`/project/myproject/${projectId}/meet`);
+
+        const state: State = {
+            status: "success",
+            message: "Your Project Meeting has been updated successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Error updated Project Meeting:", error);
+        return {
+            status: "error",
+            message: "An error occurred while updating the Project Meeting. Please try again later.",
         };
     }
 }

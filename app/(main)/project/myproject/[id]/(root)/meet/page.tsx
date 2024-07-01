@@ -8,11 +8,14 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore } from "next/cache";
 import { Suspense } from "react";
 
-export async function getRoomData(userId: string,projectId:string) {
+export async function getRoomData(userId: string, projectId: string) {
     const data = await prisma.projectMeet.findMany({
         where: {
             userId: userId,
-            projectId:projectId,
+            projectId: projectId,
+        },
+        orderBy: {
+            updatedAt:"desc"
         },
         select: {
             id: true,
@@ -40,7 +43,6 @@ export default async function ProjectMeetPage({
         id: string;
     };
 }) {
-    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id as string;

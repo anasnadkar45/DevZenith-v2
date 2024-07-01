@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ArrowRightIcon, GithubIcon, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { deleteDevRoom } from "@/app/actions";
-import { toast } from "sonner";
+import { DeleteProjectMeeting } from "@/app/(main)/project/myproject/[id]/(root)/meet/delete/page";
+import UpdateProjectMeeting from "@/app/(main)/project/myproject/[id]/(root)/meet/update/page";
 
 
 interface iAppProps {
@@ -51,7 +51,21 @@ export function ProjectMeetCard({
     return (
         <Card key={id} className="min-h-[300px] relative">
             <CardHeader>
-                <CardTitle className="font-bold">{name}</CardTitle>
+                <CardTitle className="flex justify-between items-center font-bold">
+                    <p>{name}</p>
+                    <div className="flex items-center gap-2">
+                        <UpdateProjectMeeting
+                            id={id}
+                            projectId={projectId}
+                            name={name}
+                            tags={tags}
+                            url={url}
+                            description={description}
+                        />
+                        <DeleteProjectMeeting id={id as string} projectId={projectId as string} />
+                    </div>
+
+                </CardTitle>
                 <CardDescription className="line-clamp-3">
                     {description}
                 </CardDescription>
