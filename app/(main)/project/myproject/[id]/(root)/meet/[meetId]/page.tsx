@@ -59,8 +59,8 @@ export default async function Roompage({ params }: {
     };
 
     return (
-        <div className="grid grid-cols-4  gap-4 mt-2">
-            <div className="col-span-3">
+        <div className="grid  lg:grid-cols-4  gap-4 mt-2">
+            <div className="lg:col-span-3">
                 <div className="border rounded-lg p-2">
                     <DevZenithVideo
                         room={room as any}
@@ -68,7 +68,7 @@ export default async function Roompage({ params }: {
                     />
                 </div>
             </div>
-            <div className="col-span-1">
+            <div className="lg:col-span-1">
                 <div className="border rounded-lg bg-card shadow-md p-2">
                     <div className="space-y-3">
                         <h1 className="text-xl font-bold">{room.name}</h1>

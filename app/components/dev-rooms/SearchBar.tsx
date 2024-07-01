@@ -58,7 +58,7 @@ export function SearchBar() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap gap-2">
                 <FormField
                     control={form.control}
                     name="search"
@@ -83,6 +83,7 @@ export function SearchBar() {
                 {query.get("search") && (
                     <Button
                         variant="link"
+                        size={"sm"}
                         onClick={() => {
                             form.setValue("search", "");
                             router.push("/devrooms/browse");

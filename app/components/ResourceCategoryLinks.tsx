@@ -58,7 +58,7 @@ export function ResourceCategoryLinks() {
     const [selectedTab, setSelectedTab] = useState<string>(location);
 
     return (
-        <div className="hidden md:flex justify-center items-center col-span-6 gap-x-2">
+        <div className="w-full overflow-x-scroll flex justify-center items-center col-span-6 gap-x-2">
             {categoryLinks.map((item) => (
                 <Link href={item.href} key={item.id}>
                     <Tab

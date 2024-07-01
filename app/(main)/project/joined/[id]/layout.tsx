@@ -1,3 +1,4 @@
+import { SideNav } from "@/app/components/project/joined/SideNav";
 import { Sidebar } from "@/app/components/project/joined/Sidebar";
 
 export default async function ProjectLayout({
@@ -6,12 +7,15 @@ export default async function ProjectLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex justify-between h-full w-full mt-2 gap-1">
+        <div className="relative flex justify-between h-full w-full mt-2 gap-1">
             <div className=" min-h-screen w-full border rounded-lg p-2">
                 {children}
             </div>
-            <div className="h-[85vh] bg-card border rounded-lg p-1 hidden flex-col md:flex">
+            <div className="hidden md:flex h-[85vh] bg-card border rounded-lg p-1">
                 <Sidebar />
+            </div>
+            <div className="flex md:hidden absolute right-0 -top-12">
+                <SideNav />
             </div>
         </div>
     );

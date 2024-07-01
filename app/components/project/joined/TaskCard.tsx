@@ -28,7 +28,6 @@ export function TaskCard({ id, projectId, title, type, priority, status, descrip
         <div key={id} className="bg-card border rounded-lg p-2 my-2 space-y-2">
             <div className="flex justify-between items-center">
                 <p className="font-semibold">{title}</p>
-                <Edit size={20} />
             </div>
             <p className="text-sm line-clamp-1">{description}</p>
             <div className="text-xs text-slate-400">

@@ -152,7 +152,7 @@ export default async function SquadPostRoute({
                         <Image src={data?.Squad?.image as string} alt="squad image" width={80} height={50} className="border rounded-lg" />
                         <p className="text-slate-400">{data?.squadUsername}</p>
                     </div>
-                    <p className="text-2xl font-bold">{data?.title}</p>
+                    <p className="text-xl md:text-2xl font-bold">{data?.title}</p>
                     <p className="text-sm text-slate-400">
                         Created:{' '}
                         {data?.createdAt && new Date(data.createdAt).toLocaleDateString("en-US", {

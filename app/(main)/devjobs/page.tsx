@@ -22,7 +22,7 @@ export default async function DevJobsPage({
                 <PostJob />
             </div>
             <SearchBar />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 mt-2">
                 <Suspense fallback={<p>Loading feed...</p>}>
                     {data.map((item: iJobProps, index: number) => (
                         <JobCard key={item.id} job={item} index={index} />

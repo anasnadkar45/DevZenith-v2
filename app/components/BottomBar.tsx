@@ -6,13 +6,16 @@ import { FaDev, FaExternalLinkSquareAlt, FaFileCode } from "react-icons/fa";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons/lib";
+import { MdRoomPreferences } from "react-icons/md";
+import { BriefcaseBusiness } from "lucide-react";
 
 // Define your tabs
 const TABS = [
-    { name: "Home", icon: AiFillHome, href: "/" },
     { name: "Resources", icon: FaExternalLinkSquareAlt, href: "/resources/all" },
     { name: "DevSquads", icon: FaDev, href: "/squads" },
-    { name: "Projects", icon: FaFileCode, href: "/projects" },
+    { name: "Projects", icon: FaFileCode, href: "/project/search" },
+    { name: "DevRooms", icon: MdRoomPreferences, href: "/devrooms/browse" },
+    { name: "DevJobs", icon: BriefcaseBusiness, href: "/devjobs" },
 ];
 
 export default function BottomBar() {

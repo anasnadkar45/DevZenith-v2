@@ -82,7 +82,7 @@ export default async function SquadRoutePage({
 
 
     return (
-        <div className="mb-6 mr-3 md:mr-0">
+        <div className="mb-6 md:mr-0">
             <div className="flex justify-between mb-4">
                 <Button variant={"outline"}>
                     <Link href={'/squads'}>
@@ -117,8 +117,8 @@ export default async function SquadRoutePage({
             </div>
 
             <div className="flex justify-between">
-                <div className="space-y-4 max-w-[650px] pr-6">
-                    <div className="flex gap-4 items-center">
+                <div className="space-y-4 max-w-[650px]">
+                    <div className="flex-col md:flex gap-4 items-center">
                         <div className="relative h-[150px] w-[300px]">
                             {data.image ? (
                                 <Image
