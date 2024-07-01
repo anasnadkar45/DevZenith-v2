@@ -1,14 +1,10 @@
 "use client"
 import { State, deleteMeeting } from "@/app/actions";
+import { resourceProps } from "@/types";
 import { Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-
-interface resourceProps {
-    id: string;
-    projectId: string;
-}
 
 function DeleteProjectMeeting({ id, projectId }: resourceProps) {
     const initialState: State = { message: "", status: undefined };
