@@ -54,9 +54,9 @@ async function getRoomData(userId: string, search: string) {
 }
 
 export default async function YourRoomsPage({
-    searchParams,
+    params,
 }: {
-    searchParams: {
+    params: {
         search: string;
     };
 }) {
@@ -70,8 +70,7 @@ export default async function YourRoomsPage({
         return <div>No user ID found.</div>;
     }
 
-    const roomData = await getRoomData(userId, searchParams.search || "");
-    console.log(roomData);
+    const roomData = await getRoomData(userId, params.search || "");
 
     return (
         <div>
@@ -87,8 +86,8 @@ export default async function YourRoomsPage({
                             key={room.id}
                             id={room.id}
                             name={room.name}
-                            tags={room.tags as string[]} // Cast to string[]
-                            description={room.description ?? "No description available"}
+                            tags={room.tags} // Cast to string[]
+                            description={room.description ?? ""}
                             url={room.url ?? ""}
                         />
                     ))}
