@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FiDownload } from "react-icons/fi"; // Import the download icon
+import { unstable_noStore } from "next/cache";
 
 async function getData(id: string) {
     const data = await prisma.project.findUnique({
@@ -82,6 +83,7 @@ export default async function MyProjectRoute({
 }: {
     params: { id: string }
 }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData(params.id);

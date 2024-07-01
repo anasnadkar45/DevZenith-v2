@@ -6,6 +6,7 @@ import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { DevZenithVideo } from "./video-player";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { unstable_noStore } from "next/cache";
 
 async function getData(id: string) {
     try {
@@ -42,6 +43,7 @@ interface RoomPageProps {
 
 
 export default async function Roompage({ params }: RoomPageProps) {
+    unstable_noStore();
     const room = await getData(params.id);
     const { getUser } = getKindeServerSession();
     const user = await getUser();

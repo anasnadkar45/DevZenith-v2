@@ -7,6 +7,7 @@ import Link from "next/link";
 import { SquadCard } from "../../components/SquadCard";
 import { Suspense } from "react";
 import AddSquad from "./create/page";
+import { unstable_noStore } from "next/cache";
 
 
 // Function to get squad data
@@ -30,6 +31,7 @@ async function getData() {
 }
 
 export default async function Squads() {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const data = await getData();

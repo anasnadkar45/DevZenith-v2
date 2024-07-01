@@ -2,6 +2,7 @@ import { UpdateTaskStatus } from "@/app/components/project/joined/UpdateTaskStat
 import prisma from "@/app/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { TaskCard } from "@/app/components/project/joined/TaskCard";
+import { unstable_noStore } from "next/cache";
 
 export async function getTaskData(userId: string, projectId: string) {
     const data = await prisma.task.findMany({
@@ -28,6 +29,7 @@ export default async function TaskPage({
 }: {
     params: { id: string }
 }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id as string;

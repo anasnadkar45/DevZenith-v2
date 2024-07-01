@@ -1,4 +1,3 @@
-import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import CreateProjectMeet from "@/app/components/project/myproject/CreateProjectMeet";
 import { ProjectMeetCard } from "@/app/components/project/myproject/ProjectMeetCard";
 import { amaranth } from "@/app/layout";
@@ -43,6 +42,7 @@ export default async function ProjectMeetPage({
         id: string;
     };
 }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id as string;

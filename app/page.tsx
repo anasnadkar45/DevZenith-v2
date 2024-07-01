@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { unstable_noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
+  unstable_noStore();
   const { isAuthenticated } = getKindeServerSession();
 
   if (await isAuthenticated()) {

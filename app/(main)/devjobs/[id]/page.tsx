@@ -10,6 +10,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { FaBusinessTime } from "react-icons/fa";
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { SquareMousePointer } from "lucide-react";
+import { unstable_noStore } from "next/cache";
 
 async function getJobData(id: string) {
     const data = await prisma.job.findUnique({
@@ -83,6 +84,7 @@ export default async function JobPage({
 }: {
     params: { id: string };
 }) {
+    unstable_noStore();
     const data = await getJobData(params.id);
     const similarJob = await getSimilarJobs(data?.role as string, params.id);
     return (

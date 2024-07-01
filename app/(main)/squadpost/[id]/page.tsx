@@ -18,6 +18,7 @@ import { formatDistanceToNow } from "date-fns";
 import UpdateSquadPost from "./update/page";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { DeleteSquadPost } from "./delete/page";
+import { unstable_noStore } from "next/cache";
 
 async function getData(id: string) {
     const data = await prisma.squadPost.findUnique({
@@ -115,6 +116,7 @@ export default async function SquadPostRoute({
 }: {
     params: { id: string };
 }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession()
     const user = await getUser()
     const userId = user?.id as string;

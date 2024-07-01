@@ -3,6 +3,7 @@ import { DataTableDemo } from "@/app/components/project/myproject/DataTableDemo"
 import prisma from "@/app/lib/db";
 import { Button } from "@/components/ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { unstable_noStore } from "next/cache";
 
 export async function getData(id: string) {
   const data = await prisma.project.findUnique({
@@ -30,6 +31,7 @@ export async function getData(id: string) {
 export default async function ResourcesPage(
   { params }: { params: { id: string } }
 ) {
+  unstable_noStore();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const data = await getData(params.id);

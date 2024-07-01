@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DotPattern from "@/app/components/dot-pattern";
 import { cn } from "@/lib/utils";
+import { unstable_noStore } from "next/cache";
 
 export async function getData(userId: string) {
     const membershipRequests = await prisma.membershipRequest.findMany({
@@ -44,6 +45,7 @@ export async function getData(userId: string) {
 }
 
 export default async function JoinedPage() {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id;

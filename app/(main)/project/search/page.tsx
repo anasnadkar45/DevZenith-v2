@@ -2,6 +2,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/app/lib/db";
 import SearchPageClient from "@/app/components/project/search/SearchPageClient";
+import { unstable_noStore } from "next/cache";
 
 async function getData(userId: string | undefined) {
     const data = await prisma.project.findMany({
@@ -52,6 +53,7 @@ async function getData(userId: string | undefined) {
 }
 
 export default async function SearchPage() {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id;

@@ -3,6 +3,7 @@ import { amaranth } from "@/app/layout";
 import prisma from "@/app/lib/db";
 import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { unstable_noStore } from "next/cache";
 
 export async function getProjectData(id: string) {
     const data = await prisma.project.findUnique({
@@ -22,6 +23,7 @@ export async function getProjectData(id: string) {
 }
 
 export default async function SettingsPage({ params }: { params: { id: string } }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession()
     const user = await getUser()
     const projectData = await getProjectData(params.id)

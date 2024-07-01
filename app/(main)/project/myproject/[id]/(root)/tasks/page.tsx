@@ -4,6 +4,7 @@ import { TaskPage } from '@/app/components/project/joined/TaskPage';
 import AssignTask from '@/app/components/project/myproject/AssignTask';
 import prisma from '@/app/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { unstable_noStore } from 'next/cache';
 
 interface Task {
     id: string;
@@ -74,6 +75,7 @@ export async function getProjectData(id: string): Promise<ProjectData | null> {
 }
 
 export default async function TasksPage({ params }: { params: { id: string } }) {
+    unstable_noStore();
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const projectData = await getProjectData(params.id);
