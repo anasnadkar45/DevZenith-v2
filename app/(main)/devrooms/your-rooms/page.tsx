@@ -2,56 +2,11 @@ import CreateRoom from "@/app/components/dev-rooms/CreateRoom";
 import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import { YourDevRoomCard } from "@/app/components/dev-rooms/YourDevRoomCard";
 import { amaranth } from "@/app/layout";
-import prisma from "@/app/lib/db";
 import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore } from "next/cache";
 import { Suspense } from "react";
-
-export async function getRoomData(userId: string, search: string) {
-    // Split the search term by spaces to allow multi-word searches.
-    const searchWords = search.split(" ").filter(word => word);
-    const data = await prisma.room.findMany({
-        where: {
-            userId: userId,
-            OR: [
-
-                {
-                    name: {
-                        contains: search,
-                        mode: 'insensitive',
-                    },
-                },
-                {
-                    description: {
-                        contains: search,
-                        mode: 'insensitive',
-                    },
-                },
-                {
-                    tags: {
-                        hasSome: searchWords,
-                    },
-                },
-            ],
-        },
-        select: {
-            id: true,
-            name: true,
-            description: true,
-            url: true,
-            tags: true,
-            User: {
-                select: {
-                    firstName: true,
-                    lastName: true,
-                    profileImage: true,
-                }
-            }
-        }
-    });
-    return data;
-}
+import { getRoomData } from "./action";
 
 export default async function YourRoomsPage({
     searchParams,
@@ -76,7 +31,9 @@ export default async function YourRoomsPage({
     return (
         <div>
             <div className="w-full flex justify-between my-2">
-                <h1 className={cn(amaranth.className, "text-2xl font-bold")}><span className="text-primary">Your</span> DevRooms</h1>
+                <h1 className={cn(amaranth.className, "text-2xl font-bold")}>
+                    <span className="text-primary">Your</span> DevRooms
+                </h1>
                 <CreateRoom />
             </div>
             <SearchBar />
@@ -98,6 +55,5 @@ export default async function YourRoomsPage({
                 </Suspense>
             </div>
         </div>
-
     );
 }
