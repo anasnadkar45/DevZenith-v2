@@ -12,7 +12,7 @@ interface squadProps {
     squadId: string;
 }
 
-export function DeleteSquadPost({ id , squadId}: squadProps) {
+export default function DeleteSquadPost({ id , squadId}: squadProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(deleteSquadPost, initialState);
 

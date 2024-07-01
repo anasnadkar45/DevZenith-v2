@@ -17,7 +17,7 @@ import { CommentForm } from "@/app/components/CommentForm";
 import { formatDistanceToNow } from "date-fns";
 import UpdateSquadPost from "./update/page";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { DeleteSquadPost } from "./delete/page";
+import  DeleteSquadPost  from "./delete/page";
 import { unstable_noStore } from "next/cache";
 
 async function getData(id: string) {

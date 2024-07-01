@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SquadPostCard } from "@/app/components/SquadPostCard";
 import UpdateSquad from "../update/page";
-import { DeleteSquad } from "../delete/page";
+import DeleteSquad  from "../delete/page";
 import { unstable_noStore } from "next/cache";
 
 async function getData(username: string) {

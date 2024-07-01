@@ -10,7 +10,7 @@ interface resourceProps {
     projectId: string;
 }
 
-export function DeleteProjectMeeting({ id, projectId }: resourceProps) {
+export default function DeleteProjectMeeting({ id, projectId }: resourceProps) {
     const initialState: State = { message: "", status: undefined };
     const [state, formAction] = useFormState(deleteMeeting, initialState);
 
