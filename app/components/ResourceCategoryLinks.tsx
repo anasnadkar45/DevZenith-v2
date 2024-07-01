@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export const categoryLinks = [
     {
@@ -23,6 +24,16 @@ export const categoryLinks = [
     },
     {
         id: 3,
+        name: 'devops',
+        href: '/resources/devops'
+    },
+    {
+        id: 4,
+        name: 'devops',
+        href: '/resources/devops'
+    },
+    {
+        id: 5,
         name: 'devops',
         href: '/resources/devops'
     },
@@ -58,17 +69,20 @@ export function ResourceCategoryLinks() {
     const [selectedTab, setSelectedTab] = useState<string>(location);
 
     return (
-        <div className="w-full overflow-x-scroll flex justify-center items-center col-span-6 gap-x-2">
-            {categoryLinks.map((item) => (
-                <Link href={item.href} key={item.id}>
-                    <Tab
-                        name={item.name}
-                        href={item.href}
-                        selected={selectedTab === item.href}
-                        setSelected={setSelectedTab}
-                    />
-                </Link>
-            ))}
-        </div>
+        <ScrollArea className="w-[300px] md:w-[500px] whitespace-nowrap rounded-md border">
+            <div className="flex w-max space-x-4 p-2">
+                {categoryLinks.map((item) => (
+                    <Link href={item.href} key={item.id}>
+                        <Tab
+                            name={item.name}
+                            href={item.href}
+                            selected={selectedTab === item.href}
+                            setSelected={setSelectedTab}
+                        />
+                    </Link>
+                ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+        </ScrollArea>
     );
 }

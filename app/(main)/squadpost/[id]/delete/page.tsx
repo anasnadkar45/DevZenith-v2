@@ -3,7 +3,7 @@ import { State, deleteSquadPost } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ export function DeleteSquadPost({ id , squadId}: squadProps) {
         } else if (state.status === "error") {
             toast.error(state.message);
         }
-    }, [state]);
+    }, [state,squadId]);
     console.log(id)
     return (
         <form action={formAction} method="post">

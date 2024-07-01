@@ -38,7 +38,7 @@ export default async function ResourcesPage(
   return (
     <div>
       <div className="flex justify-between">
-        <p className="text-2xl font-bold"><span className="text-primary">Project</span> Resource's</p>
+        <p className="text-2xl font-bold"><span className="text-primary">Project</span> Resources</p>
         <AddResources id={data?.id ?? ""} />
       </div>
       <DataTableDemo data={resources} />

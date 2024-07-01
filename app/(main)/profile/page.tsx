@@ -3,7 +3,7 @@ import { SettingsForm } from "@/app/components/profile/SettingsForm";
 import { MyProjectCard } from "@/app/components/project/MyProjectCard";
 import { amaranth } from "@/app/layout";
 import prisma from "@/app/lib/db";
-import { Card } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore as noStore } from "next/cache";
@@ -102,7 +102,7 @@ export default async function SetttingsPage() {
                     />
                 </Card>
                 <Card className="col-span-1 lg:col-span-3 p-6">
-                    <h1 className="text-2xl font-bold mb-2">Recent Project's</h1>
+                    <CardTitle className="text-2xl font-bold mb-2">Recent Projects</CardTitle>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {projectData.map((project) => {
                             const totalTasks = project.tasks.length;
@@ -130,7 +130,7 @@ export default async function SetttingsPage() {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
                 <Card className="col-span-4 p-6">
-                    <h1 className="text-2xl font-bold mb-2">Recent Project's</h1>
+                    <CardTitle className="text-2xl font-bold mb-2">Recent Projects</CardTitle>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                         {squadData.map((squad) => (
                             <SquadCard

@@ -23,7 +23,7 @@ function LoadMore({ category, initialData }: { category: string, initialData: iR
                 }
             });
         }
-    }, [inView, category, hasMore]); // Trigger effect when inView, search, or page changes
+    }, [inView, category, hasMore,page]); // Trigger effect when inView, search, or page changes
 
     return (
         <>

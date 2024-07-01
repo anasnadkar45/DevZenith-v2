@@ -77,8 +77,8 @@ export default async function Roompage({ params }: {
                             <p>Github Url</p>
                         </Link>
                         <div className="flex flex-wrap gap-2">
-                            {room.tags.map((tag) => (
-                                <Badge variant={"secondary"}>{tag}</Badge>
+                            {room.tags.map((tag,index) => (
+                                <Badge key={index} variant={"secondary"}>{tag}</Badge>
                             ))}
                         </div>
                     </div>

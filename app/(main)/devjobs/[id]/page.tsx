@@ -91,8 +91,8 @@ export default async function JobPage({
                 <div className="w-full p-3 space-y-2">
                     <h1 className="text-4xl font-bold">{data?.role}</h1>
                     <div className="flex flex-wrap items-center gap-2">
-                        {data?.batches.map((batch) => (
-                            <Badge className="w-fit rounded-sm">{batch}</Badge>
+                        {data?.batches.map((batch,index) => (
+                            <Badge className="w-fit rounded-sm" key={index}>{batch}</Badge>
                         ))}
                     </div>
                 </div>
@@ -122,8 +122,8 @@ export default async function JobPage({
                         </div>
                     </div>
                     <div className="w-full space-x-2">
-                        {data?.batches.map((batch) => (
-                            <Badge className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
+                        {data?.batches.map((batch,index) => (
+                            <Badge key={index} className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
                         ))}
                     </div>
                     <div className="space-y-2">
@@ -181,8 +181,8 @@ export default async function JobPage({
                             </div>
                         </div>
                         <div className="w-full space-x-2">
-                            {data?.batches.map((batch) => (
-                                <Badge className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
+                            {data?.batches.map((batch,index) => (
+                                <Badge key={index} className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
                             ))}
                         </div>
                         <div className="space-y-2">

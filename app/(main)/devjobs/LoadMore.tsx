@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useInView } from "react-intersection-observer";
 import { getJobData } from "./action";
@@ -11,19 +11,25 @@ function LoadMore({ search }: { search: string }) {
   const [data, setData] = useState<iJobProps[]>([]);
   const [page, setPage] = useState(1); // Keep track of the current page
   const [hasMore, setHasMore] = useState(true); // Track if more data is available
+  const [loading, setLoading] = useState(false); // Track loading state
+
+  const loadMoreData = useCallback(() => {
+    setLoading(true);
+    getJobData(search, page * 3, 3).then((res) => {
+      setData((prevData) => [...prevData, ...res]); // Append new data
+      setPage((prevPage) => prevPage + 1); // Increment the page number
+      setLoading(false);
+      if (res.length < 3) {
+        setHasMore(false); // No more data to load if fewer than expected items are fetched
+      }
+    });
+  }, [page, search]); // Include page and search in dependency array
 
   useEffect(() => {
-    if (inView && hasMore) {
-      // Fetch next page
-      getJobData(search, page * 3, 3).then((res) => {
-        setData((prevData) => [...prevData, ...res]); // Append new data
-        setPage((prevPage) => prevPage + 1); // Increment the page number
-        if (res.length < 3) {
-          setHasMore(false); // No more data to load if fewer than expected items are fetched
-        }
-      });
+    if (inView && hasMore && !loading) {
+      loadMoreData();
     }
-  }, [inView, search, hasMore]); // Trigger effect when inView, search, or hasMore changes
+  }, [inView, hasMore, loadMoreData, loading]); // Include dependencies and callback
 
   return (
     <>

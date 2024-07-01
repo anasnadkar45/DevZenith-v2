@@ -60,7 +60,7 @@ export const DevZenithVideo = ({ room, session }: DevZenithVideoProps) => {
                 .then(() => client.disconnectUser())
                 .catch(console.error);
         };
-    }, [room])
+    }, [room,session.id, session.image, session.name])
     return (
         client &&
         call && (

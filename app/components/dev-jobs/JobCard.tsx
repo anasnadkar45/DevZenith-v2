@@ -63,8 +63,8 @@ export function JobCard({ job }: Prop) {
                     </div>
                 </div>
                 <div className="w-full flex flex-wrap gap-2">
-                    {job.batches.map((batch) => (
-                        <Badge className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
+                    {job.batches.map((batch,index) => (
+                        <Badge key={index} className="w-fit bg-muted text-muted-foreground rounded-sm">{batch}</Badge>
                     ))}
                 </div>
             </CardHeader>

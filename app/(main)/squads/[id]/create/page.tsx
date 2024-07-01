@@ -31,7 +31,7 @@ export default function CreatePostRoute({
         } else if (state.status === "error") {
             toast.error(state.message);
         }
-    }, [state]);
+    }, [state, params.id]);
 
     return (
         <div className="grid ">

@@ -98,7 +98,7 @@ export default function PostJob() {
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label>Skill's</Label>
+                            <Label>Skills</Label>
                             <div className="flex gap-2">
                                 <Input
                                     value={batchInput}

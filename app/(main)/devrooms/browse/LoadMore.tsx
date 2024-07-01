@@ -22,7 +22,7 @@ function LoadMore({ search }: { search: string }) {
         }
       });
     }
-  }, [inView, search, hasMore]); // Trigger effect when inView, search, or page changes
+  }, [inView, search, hasMore, page]); // Trigger effect when inView, search, hasMore, or page changes
 
   return (
     <>

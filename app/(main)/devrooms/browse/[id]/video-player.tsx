@@ -9,9 +9,8 @@ import {
     StreamTheme,
     StreamVideo,
     StreamVideoClient,
-    User,
 } from '@stream-io/video-react-sdk';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Room } from "@prisma/client";
 import { generateTokenAction } from "@/app/actions";
@@ -60,7 +59,7 @@ export const DevZenithVideo = ({ room, session }: DevZenithVideoProps) => {
                 .then(() => client.disconnectUser())
                 .catch(console.error);
         };
-    }, [room])
+    }, [room,session.id, session.image, session.name])
     return (
         client &&
         call && (
