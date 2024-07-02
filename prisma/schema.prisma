@@ -35,6 +35,16 @@ model User {
   rooms              Room[]
   meetings           ProjectMeet[]
   jobs               Job[]
+  feedbacks          FeedBack[]
+}
+
+model FeedBack {
+  id          String       @id @default(uuid())
+  title       String
+  category    FeedBackType
+  description String
+  User        User?        @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Resource {
@@ -206,6 +216,15 @@ model Job {
   updatedAt       DateTime @updatedAt
   User            User?    @relation(fields: [userId], references: [id])
   userId          String?
+}
+
+enum FeedBackType {
+  Issue
+  Idea
+  Question
+  Complaint
+  FeatureRequest
+  Other
 }
 
 enum JobType {

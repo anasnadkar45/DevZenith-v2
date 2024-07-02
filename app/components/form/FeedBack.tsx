@@ -23,6 +23,8 @@ import {
 import { TbMessage2Heart } from "react-icons/tb";
 import { SubmitButton } from "../SubmitButtons"
 import { Textarea } from "@/components/ui/textarea"
+import { SelectJobType } from "../dev-jobs/SelectJobType"
+import { SelectFeedbackType } from "../SelectFeedbackType"
 
 export function FeedBack() {
     return (
@@ -39,36 +41,22 @@ export function FeedBack() {
                 </SheetHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid  items-center gap-4">
-                        <Label htmlFor="name" className="text-left">
+                        <Label htmlFor="name"  className="text-left">
                             Title
                         </Label>
-                        <Input id="name" placeholder="Add Dark Mode" />
+                        <Input id="title" name="title" placeholder="Add Dark Mode" />
                     </div>
                     <div className="grid items-center gap-4">
-                        <Label htmlFor="username" className="text-left">
-                            Label
-                        </Label>
-                        <Select>
-                            <SelectTrigger className="">
-                                <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-background">
-                                <SelectGroup>
-                                    <SelectItem value="apple">Issue</SelectItem>
-                                    <SelectItem value="banana">Idea</SelectItem>
-                                    <SelectItem value="blueberry">Question</SelectItem>
-                                    <SelectItem value="grapes">Complaint</SelectItem>
-                                    <SelectItem value="pineapple">Feature Request</SelectItem>
-                                    <SelectItem value="pineapple">Other</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                    <div className="flex flex-col gap-y-2">
+                            <Label>Job Type</Label>
+                            <SelectFeedbackType />
+                        </div>
                     </div>
                     <div className="grid  items-center gap-4">
                         <Label htmlFor="name" className="text-left">
                             Message
                         </Label>
-                        <Textarea placeholder="Please add dark mode to the app" />
+                        <Textarea name="title" placeholder="Please add dark mode to the app" />
                     </div>
                 </div>
                 <SheetFooter>

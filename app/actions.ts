@@ -121,6 +121,10 @@ const resourceSchema = z.object({
         .min(1, { message: "URL is required" }),
 });
 
+const feedbackSchema = z.object({
+    
+})
+
 export async function AddResource(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
