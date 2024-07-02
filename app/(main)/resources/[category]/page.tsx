@@ -26,7 +26,6 @@ export default async function CategoryPage({
         <div>
             <div>
                 <h1 className="text-3xl font-bold text-primary">Resources</h1>
-                <p className="text-muted-foreground">Popular Resources</p>
             </div>
             <div className="flex justify-center mt-2 mx-auto">
                 <ResourceCategoryLinks />

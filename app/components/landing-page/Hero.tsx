@@ -71,7 +71,7 @@ function Hero({ }: Props) {
                                 <div className='rounded-[17px] sm:rounded-[25px] overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-950'>
                                     <Image src={Header1} className='object-fill object-center' alt='Hero-Image' />
                                     <div className='absolute inset-0 bg-black/30 flex items-center justify-center'>
-                                        <button className='inline-flex h-10 rounded-xl p-px bg-gradient-to-br from-[#84B2E5] to-[#2F6EB1] shadow-lg'>
+                                        <button className='inline-flex h-10 rounded-xl px-4 text-center py-2 bg-gradient-to-br from-[#84B2E5] to-[#2F6EB1] shadow-lg'>
                                             <LoginLink>Login</LoginLink>
                                         </button>
                                     </div>

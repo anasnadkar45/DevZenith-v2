@@ -44,17 +44,17 @@ export default function BottomBar() {
     }, [activeTab]);
 
     return (
-        <div className="fixed bottom-0 w-full bg-card py-3 flex md:hidden px-3 border-t-2 ">
+        <div className="fixed bottom-0 w-full bg-card py-2 flex md:hidden px-2 border-t-2 ">
             <div className="relative flex justify-between w-full items-center">
                 {TABS.map((tab, index) => (
                     <Link href={tab.href} key={index} passHref>
                         <button
                             ref={(el) => (tabRefs.current[index] = el)}
-                            className={`relative flex flex-col items-center p-2 transition-colors duration-300 ${
+                            className={`relative flex flex-col items-center p-1 transition-colors duration-300 ${
                                 isActiveTab(tab) ? "text-primary" : "text-slate-400"
                             }`}
                         >
-                            <tab.icon className="h-6 w-6" />
+                            <tab.icon className="h-4 w-4" />
                             <span className="text-sm">{tab.name}</span>
                         </button>
                     </Link>
