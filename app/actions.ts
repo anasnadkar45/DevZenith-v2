@@ -2,7 +2,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
 import prisma from "./lib/db";
-import { JobType, RequestStatus, Role, TaskStatus, TypeOfVote, type CategoryTypes } from "@prisma/client";
+import { FeedBackType, JobType, RequestStatus, Role, TaskStatus, TypeOfVote, type CategoryTypes } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { revalidatePath } from "next/cache";
@@ -64,43 +64,43 @@ const userSettingsSchema = z.object({
 export async function UpdateUserSettings(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-  
+
     if (!user) {
-      throw new Error("something went wrong");
+        throw new Error("something went wrong");
     }
-  
+
     const validateFields = userSettingsSchema.safeParse({
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
     });
-  
+
     if (!validateFields.success) {
-      const state: State = {
-        status: "error",
-        errors: validateFields.error.flatten().fieldErrors,
-        message: "Oops, I think there is a mistake with your inputs.",
-      };
-  
-      return state;
+        const state: State = {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+
+        return state;
     }
-  
+
     const data = await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        firstName: validateFields.data.firstName,
-        lastName: validateFields.data.lastName,
-      },
+        where: {
+            id: user.id,
+        },
+        data: {
+            firstName: validateFields.data.firstName,
+            lastName: validateFields.data.lastName,
+        },
     });
-  
+
     const state: State = {
-      status: "success",
-      message: "Your Settings have been updated",
+        status: "success",
+        message: "Your Settings have been updated",
     };
-  
+
     return state;
-  }
+}
 
 // Resources
 const resourceSchema = z.object({
@@ -121,9 +121,6 @@ const resourceSchema = z.object({
         .min(1, { message: "URL is required" }),
 });
 
-const feedbackSchema = z.object({
-    
-})
 
 export async function AddResource(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
@@ -1811,7 +1808,7 @@ export async function postDevJob(prevState: any, formData: FormData) {
     if (!user) {
         return {
             status: "error",
-            message: "User not found. Please log in to create a DevRoom.",
+            message: "User not found. Please log in to create a DevJobs.",
         };
     }
 
@@ -1946,3 +1943,72 @@ export async function deleteJob(prevState: any, formData: FormData) {
     }
 }
 
+// feedback support
+const feedbackSchema = z.object({
+    title: z
+        .string()
+        .min(3, { message: "The title has to be a minimum character length of 3" }),
+    description: z
+        .string()
+        .min(10, { message: "Description is required" }),
+    category: z
+        .string()
+        .min(1, { message: "Category is required" }),
+})
+
+export async function postFeedback(prevState:any, formData:FormData){
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return {
+            status: "error",
+            message: "User not found. Please log in to create a DevRoom.",
+        };
+    }
+
+    const validateFields = feedbackSchema.safeParse({
+        title: formData.get('title'),
+        category: formData.get('category'),
+        description: formData.get('description'),
+    });
+
+    if (!validateFields.success) {
+        return {
+            status: "error",
+            errors: validateFields.error.flatten().fieldErrors,
+            message: "Oops, I think there is a mistake with your inputs.",
+        };
+    }
+
+    try {
+        const data = await prisma.feedBack.create({
+            data: {
+                title: validateFields.data.title,
+                description: validateFields.data.description,
+                category: validateFields.data.category as FeedBackType,
+                userId: user.id,
+            },
+        });
+
+        if (data) {
+            return {
+                status: "success",
+                message: "Your Feedback has been posted successfully",
+            };
+        }
+
+        const state: State = {
+            status: "success",
+            message: "Your Feedback has been posted successfully",
+        };
+        return state;
+
+    } catch (error) {
+        console.error("Database error:", error);
+        return {
+            status: "error",
+            message: "An error occurred while posting the Feedback. Please try again later.",
+        };
+    }
+}

@@ -11,7 +11,7 @@ export function SelectFeedbackType() {
             <input type="hidden" name="category" value={selectedJobType || ""} />
             <Select onValueChange={(value) => setSelectedJobType(value)}>
                 <SelectTrigger className="">
-                    <SelectValue placeholder="Type of the job" />
+                    <SelectValue placeholder="Type of the feedback" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>

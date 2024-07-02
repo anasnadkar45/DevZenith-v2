@@ -134,7 +134,7 @@ export default async function SetttingsPage() {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
                 <Card className="col-span-4 p-6">
-                    <CardTitle className="text-2xl font-bold mb-2">Recent Projects</CardTitle>
+                    <CardTitle className="text-2xl font-bold mb-2">Recent DevSquads</CardTitle>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                         {squadData.map((squad) => (
                             <SquadCard
