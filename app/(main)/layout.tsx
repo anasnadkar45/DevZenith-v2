@@ -8,7 +8,7 @@ export default async function ProjectLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div>
+        <div className="custom-scrollbar">
             <Navbar />
             <div className="h-screen grid flex-1 md:grid-cols-[200px_1fr] pt-14">
                 <aside className="hidden w-[200px] h-full flex-col md:flex">

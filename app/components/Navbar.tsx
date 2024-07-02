@@ -58,9 +58,9 @@ export async function Navbar() {
 
 
       <div className="flex items-center ms-auto md:col-span-3">
-        <ModeToggle />
         {user ? (
           <div className="flex gap-2">
+            <ModeToggle />
             <div>
               <FeedBack />
             </div>
@@ -73,11 +73,13 @@ export async function Navbar() {
             />
           </div>
         ) : (
-          <div className="flex items-center gap-x-2">
-            <Button asChild>
+          <div className="flex items-center gap-x-4">
+            <button className='relative inline-flex h-9 w-full items-center justify-center rounded-md bg-white px-6 font-medium text-gray-950 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50'>
+              <div className='absolute -inset-0.5 -z-10 rounded-lg bg-gradient-to-b from-[#c7d2fe] to-[#8678f9] opacity-75 blur' />
               <LoginLink>Login</LoginLink>
-            </Button>
-            <Button variant="secondary" asChild>
+            </button>
+
+            <Button size={"sm"}  asChild>
               <RegisterLink>Register</RegisterLink>
             </Button>
           </div>

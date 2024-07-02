@@ -29,11 +29,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isAuthenticated } = getKindeServerSession();
   return (
     <html lang="en">
-      <body className={titillium_Web.className}>
-        <main className="custom-scrollbar">
+      <body className={cn(titillium_Web.className , "bg-none")}>
+        <main >
           <NextSSRPlugin
             routerConfig={extractRouterConfig(ourFileRouter)}
           />
@@ -44,7 +43,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
           </ThemeProvider>
         </main>

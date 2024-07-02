@@ -33,11 +33,11 @@ export function FeedBack() {
         }
     }, [state]);
     return (
-        <Sheet>
+        <Sheet >
             <SheetTrigger asChild>
                 <Button variant="ghost" size={"icon"}><TbMessage2Heart size={25} /></Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="w-full sm:max-w-full lg:max-w-[800px] max-h-[100vh] overflow-y-auto p-4">
                 <SheetHeader>
                     <SheetTitle className="text-2xl font-bold">Feedback</SheetTitle>
                     <SheetDescription className="text-base">
