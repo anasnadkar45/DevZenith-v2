@@ -12,7 +12,11 @@ export async function GET() {
 
   if (!user || user === null || !user.id) {
     console.error("No user found in session or user.id is missing");
-    return NextResponse.redirect("http://localhost:3000");
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://dev-zenith-v2.vercel.app/"
+    );
   }
 
   let dbUser = await prisma.user.findUnique({
@@ -37,13 +41,25 @@ export async function GET() {
       });
     } catch (error) {
       console.error("Error creating user in database:", error);
-      return NextResponse.redirect("http://localhost:3000");
+      return NextResponse.redirect(
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:3000"
+          : "https://dev-zenith-v2.vercel.app/"
+      );
     }
   }
 
   if (dbUser) {
-    return NextResponse.redirect("http://localhost:3000/profile");
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "development"
+      ?"http://localhost:3000/resources/all"
+      : "https://dev-zenith-v2.vercel.app/resources/all"
+    );
   } else {
-    return NextResponse.redirect("http://localhost:3000");
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://dev-zenith-v2.vercel.app/"
+    );
   }
 }

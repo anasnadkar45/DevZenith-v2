@@ -52,7 +52,7 @@ function Hero({ }: Props) {
                     </motion.h1>
                     <motion.ul initial='hidden' animate='visible' variants={wrapper} className='text-white w-full mx-auto space-y-2'>
                         <motion.li variants={list} className='flex justify-center'>
-                            <Badge variant={'secondary'} className='text-md'>Empower Your Coding Journey Through Collaboration.</Badge>
+                            <Badge variant={'secondary'} className='text-sm md:text-md'>Empower Your Coding Journey Through Collaboration.</Badge>
                         </motion.li>
                     </motion.ul>
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, delay: 1.5 }} className='mt-10 flex justify-center items-center gap-3'>
