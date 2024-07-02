@@ -37,6 +37,41 @@ export const categoryLinks = [
         name: 'devops',
         href: '/resources/devops'
     },
+    {
+        id: 6,
+        name: 'AI',
+        href: '/resources/ai'
+    },
+    {
+        id: 7,
+        name: 'Cyber Security',
+        href: '/resources/cybersecurity'
+    },
+    {
+        id: 8,
+        name: 'Cloud computing',
+        href: '/resources/cloudcomputing'
+    },
+    {
+        id: 9,
+        name: 'Data Structure',
+        href: '/resources/datastructure'
+    },
+    {
+        id: 10,
+        name: 'Competitive Programming',
+        href: '/resources/competitiveprogramming'
+    },
+    {
+        id: 11,
+        name: 'Placement Prep',
+        href: '/resources/placementprep'
+    },
+    {
+        id: 12,
+        name: 'Blockchain',
+        href: '/resources/blockchain'
+    },
 ]
 
 interface TabProps {
@@ -53,7 +88,7 @@ const Tab = ({ name, href, selected, setSelected }: TabProps) => {
             whileTap={{ scale: 0.95 }}
             className={cn(
                 selected
-                    ? 'bg-card border-primary rounded-lg text-white'
+                    ? 'bg-card border-primary rounded-lg'
                     : 'hover:bg-card hover:bg-opacity-75',
                 'group text-sm flex items-center px-5 py-1 border-2 font-medium rounded-md transition-colors cursor-pointer'
             )}
