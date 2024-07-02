@@ -14,23 +14,23 @@ export const categoryLinks = [
     },
     {
         id: 1,
-        name: 'frontend',
+        name: 'Frontend',
         href: '/resources/frontend'
     },
     {
         id: 2,
-        name: 'backend',
+        name: 'Backend',
         href: '/resources/backend'
     },
     {
         id: 3,
-        name: 'devops',
-        href: '/resources/devops'
+        name: 'Languages',
+        href: '/resources/languages'
     },
     {
         id: 4,
-        name: 'devops',
-        href: '/resources/devops'
+        name: 'Opensource',
+        href: '/resources/opensource'
     },
     {
         id: 5,

@@ -247,7 +247,16 @@ enum TypeOfVote {
 enum CategoryTypes {
   frontend
   backend
+  languages
+  opensource
   devops
+  ai
+  cybersecurity
+  cloudcomputing
+  datastructure
+  competitiveprogramming
+  placementprep
+  blockchain
 }
 
 enum Role {
