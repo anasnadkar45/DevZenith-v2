@@ -14,6 +14,5 @@ export default function Loading() {
                 <Skeleton className="min-h-[250px] " />
             </div>
         </div>
-
     )
 }

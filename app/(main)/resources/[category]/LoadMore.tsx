@@ -23,16 +23,16 @@ function LoadMore({ category, initialData }: { category: string, initialData: iR
                 }
             });
         }
-    }, [inView, category, hasMore,page]); // Trigger effect when inView, search, or page changes
+    }, [inView, category, hasMore, page]); // Trigger effect when inView, search, or page changes
 
     return (
         <>
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-2 mt-4">
-                <Suspense fallback={<p>Loading feed...</p>}>
-                    {data.map((item: iResourceProps, index: number) => (
-                        <ResourceCard key={item.id} resource={item} index={index} />
-                    ))}
-                </Suspense>
+
+                {data.map((item: iResourceProps, index: number) => (
+                    <ResourceCard key={item.id} resource={item} index={index} />
+                ))}
+
             </div>
             <section className="flex justify-center items-center w-full h-20">
                 {hasMore ? (

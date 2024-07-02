@@ -1,3 +1,4 @@
+import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
 import CreateRoom from "@/app/components/dev-rooms/CreateRoom";
 import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import { YourDevRoomCard } from "@/app/components/dev-rooms/YourDevRoomCard";
@@ -66,20 +67,23 @@ export default async function YourRoomsPage({
     const userId = user?.id as string;
 
     // Handle case where userId might be undefined
-    if (!userId) {
-        return <div>No user ID found.</div>;
+    if (!user) {
+        // If the user is not logged in
+        return (
+            <UnauthorizedUser title="You have login to get access to Your Rooms." />
+        );
     }
 
     const roomData = await getRoomData(userId, params.search || "");
 
     return (
-        <div>
+        <div className="space-y-2">
             <div className="w-full flex justify-between my-2">
                 <h1 className={cn(amaranth.className, "text-2xl font-bold")}><span className="text-primary">Your</span> DevRooms</h1>
                 <CreateRoom />
             </div>
-            <SearchBar />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {/* <SearchBar /> */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                 <Suspense fallback={<p>Loading feed...</p>}>
                     {roomData.map((room) => (
                         <YourDevRoomCard

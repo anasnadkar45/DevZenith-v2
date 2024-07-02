@@ -6,10 +6,9 @@ import { Menu, Package2 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
 import { FaExternalLinkSquareAlt, FaTasks } from "react-icons/fa";
-import { MdDashboard, MdVideoCall } from "react-icons/md";
+import { MdVideoCall } from "react-icons/md";
 
 const navItems = [
-    { name: "Dashboard", icon: MdDashboard, tooltip: "Dashboard" },
     { name: "Resources", icon: FaExternalLinkSquareAlt, tooltip: "Resources" },
     { name: "Tasks", icon: FaTasks, tooltip: "Tasks" },
     { name: "Meet", icon: MdVideoCall, tooltip: "Meet" },

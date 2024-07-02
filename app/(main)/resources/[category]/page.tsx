@@ -4,6 +4,8 @@ import { ResourceCategoryLinks } from "@/app/components/ResourceCategoryLinks";
 import { getResourceData } from "./action";
 import LoadMore from "./LoadMore";
 import { Suspense } from "react";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
 
 export default async function CategoryPage({
     params,
@@ -11,6 +13,14 @@ export default async function CategoryPage({
     params: { category: string };
 }) {
     noStore();
+    const { getUser } = getKindeServerSession();
+    const user = await getUser()
+    if (!user) {
+        // If the user is not logged in
+        return (
+            <UnauthorizedUser title="Login to access the all the resources" />
+        );
+    }
     const initialData = await getResourceData(params.category, 0, 3); // Fetch the initial page of data
     return (
         <div>
@@ -28,7 +38,9 @@ export default async function CategoryPage({
                     ))}
                 </Suspense>
             </div> */}
-            <LoadMore category={params.category} initialData={initialData} />
+            <Suspense fallback={<p>Loading feed...</p>}>
+                <LoadMore category={params.category} initialData={initialData} />
+            </Suspense>
         </div>
     );
 }

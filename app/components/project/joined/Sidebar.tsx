@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { MdDashboard, MdVideoCall } from "react-icons/md";
+import { MdVideoCall } from "react-icons/md";
 import { FaExternalLinkSquareAlt, FaTasks } from "react-icons/fa";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // For collapse button
 
 // Define your nav items without the hardcoded project ID
 const navItems = [
-    { name: "Dashboard", icon: MdDashboard, tooltip: "Dashboard" },
     { name: "Resources", icon: FaExternalLinkSquareAlt, tooltip: "Resources" },
     { name: "Tasks", icon: FaTasks, tooltip: "Tasks" },
     { name: "Meet", icon: MdVideoCall, tooltip: "Meet" },

@@ -1,3 +1,4 @@
+import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
 import { SearchBar } from "@/app/components/dev-rooms/SearchBar";
 import CreateProject from "@/app/components/form/CreateProject";
 import { MyProjectCard } from "@/app/components/project/MyProjectCard";
@@ -6,6 +7,7 @@ import prisma from "@/app/lib/db";
 import { cn } from "@/lib/utils";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { unstable_noStore } from "next/cache";
+import { Suspense } from "react";
 async function getData(userId: string) {
     const data = await prisma.project.findMany({
         where: {
@@ -45,10 +47,16 @@ export default async function MyProject() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id;
+    if (!user) {
+        // If the user is not logged in
+        return (
+            <UnauthorizedUser title="You have to login to access your projects" />
+        );
+    }
     const data = await getData(userId as string);
 
     return (
-        <div>
+        <Suspense fallback={<p>Loading feed...</p>}>
             <div className="w-full flex justify-between my-2">
                 <h1 className={cn(amaranth.className, "text-2xl font-bold")}><span className="text-primary">Your</span> Project</h1>
                 <CreateProject />
@@ -76,7 +84,6 @@ export default async function MyProject() {
                     );
                 })}
             </div>
-        </div>
-
+        </Suspense>
     );
 }

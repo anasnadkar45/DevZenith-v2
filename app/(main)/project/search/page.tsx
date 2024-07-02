@@ -3,6 +3,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/app/lib/db";
 import SearchPageClient from "@/app/components/project/search/SearchPageClient";
 import { unstable_noStore } from "next/cache";
+import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
+import { Suspense } from "react";
 
 async function getData(userId: string | undefined) {
     const data = await prisma.project.findMany({
@@ -57,8 +59,19 @@ export default async function SearchPage() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id;
+    if (!user) {
+        // If the user is not logged in
+        return (
+            <UnauthorizedUser title="Unleashing the magic of developer project with Project Collab. An opportunity to collaborate together with like-minded devs." />
+        );
+    }
 
     const projects = await getData(userId);
 
-    return <SearchPageClient projects={projects} />;
+    return (
+        <Suspense fallback={<p>Loading feed...</p>}>
+            <SearchPageClient projects={projects} />
+        </Suspense>
+        
+    );
 }

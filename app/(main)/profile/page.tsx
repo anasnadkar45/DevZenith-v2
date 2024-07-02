@@ -1,4 +1,5 @@
 import { SquadCard } from "@/app/components/SquadCard";
+import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
 import { SettingsForm } from "@/app/components/profile/SettingsForm";
 import { MyProjectCard } from "@/app/components/project/MyProjectCard";
 import { amaranth } from "@/app/layout";
@@ -86,7 +87,10 @@ export default async function SetttingsPage() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user) {
-        throw new Error("Not Authorized");
+        // If the user is not logged in
+        return (
+            <UnauthorizedUser title="Login to view your profile." />
+        );
     }
     const data = await getData(user.id);
     const projectData = await getProject(user.id)
