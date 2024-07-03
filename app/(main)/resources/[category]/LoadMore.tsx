@@ -10,16 +10,18 @@ function LoadMore({ category, initialData }: { category: string, initialData: iR
     const { ref, inView } = useInView();
     const [data, setData] = useState<iResourceProps[]>(initialData);
     const [page, setPage] = useState(1); // Keep track of the current page
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(initialData.length > 0);
+    const pageSize = 3;
 
     useEffect(() => {
         if (inView && hasMore) {
             // Fetch next page
-            getResourceData(category, page * 3, 3).then((res) => {
-                setData((prevData) => [...prevData, ...res]); // Append new data
-                setPage((prevPage) => prevPage + 1); // Increment the page number
-                if (res.length > 3) {
-                    setHasMore(false)
+            getResourceData(category, page * pageSize, pageSize).then((res) => {
+                if (res.length > 0) {
+                    setData((prevData) => [...prevData, ...res]); // Append new data
+                    setPage((prevPage) => prevPage + 1); // Increment the page number
+                } else {
+                    setHasMore(false); // No more data to load
                 }
             });
         }

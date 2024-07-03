@@ -82,7 +82,7 @@ export function JobCard({ job }: Prop) {
                 </div>
                 <div className="flex gap-2 items-center">
                     <RiMoneyRupeeCircleLine size={20} className="text-green-500" />
-                    <p>{job.duration}</p>
+                    <p>{job.salary}</p>
                 </div>
             </CardContent>
             <CardFooter className="-mt-4">

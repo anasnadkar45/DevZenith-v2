@@ -6,6 +6,21 @@ import LoadMore from "./LoadMore";
 import { Suspense } from "react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UnauthorizedUser } from "@/app/components/UnauthorizedUser";
+import prisma from "@/app/lib/db";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+async function getUserRole(id: string){
+    const data = await prisma.user.findUnique({
+        where:{
+            id: id,
+        },
+        select:{
+            role:true,
+        }
+    })
+    return data;
+}
 
 export default async function CategoryPage({
     params,
@@ -14,7 +29,9 @@ export default async function CategoryPage({
 }) {
     noStore();
     const { getUser } = getKindeServerSession();
-    const user = await getUser()
+    const user = await getUser();
+    const userId = user?.id as string;
+    const userRole = await getUserRole(userId);
     if (!user) {
         // If the user is not logged in
         return (
@@ -24,8 +41,15 @@ export default async function CategoryPage({
     const initialData = await getResourceData(params.category, 0, 3); // Fetch the initial page of data
     return (
         <div>
-            <div>
+            <div className=" w-full flex justify-between">
                 <h1 className="text-3xl font-bold text-primary">Resources</h1>
+                {userRole?.role === 'ADMIN' && (
+                    <Link href={'/new-resource'}>
+                        <Button size={"sm"}>
+                            Add Resources
+                        </Button>
+                    </Link>
+                )}
             </div>
             <div className="flex justify-center mt-2 mx-auto">
                 <ResourceCategoryLinks />

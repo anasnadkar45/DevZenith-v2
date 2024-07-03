@@ -142,7 +142,7 @@ export default async function JobPage({
                         </div>
                         <div className="flex gap-2 items-center">
                             <RiMoneyRupeeCircleLine size={20} className="text-green-500" />
-                            <p>{data?.duration}</p>
+                            <p>{data?.salary}</p>
                         </div>
                         <p className="text-xs text-slate-400">
                             Posted on:{' '}
@@ -201,7 +201,7 @@ export default async function JobPage({
                             </div>
                             <div className="flex gap-2 items-center">
                                 <RiMoneyRupeeCircleLine size={20} className="text-green-500" />
-                                <p>{data?.duration}</p>
+                                <p>{data?.salary}</p>
                             </div>
                             <p className="text-xs text-slate-400">
                                 Posted on:{' '}

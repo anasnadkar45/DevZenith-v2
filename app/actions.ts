@@ -811,20 +811,47 @@ export async function deleteProject(prevState: any, formData: FormData) {
 
     const projectId = formData.get('projectId') as string;
     try {
-        const data = await prisma.project.delete({
+        // Delete related data first
+        await prisma.projectMembership.deleteMany({
+            where: {
+                projectId: projectId
+            }
+        });
+        await prisma.membershipRequest.deleteMany({
+            where: {
+                projectId: projectId
+            }
+        });
+        await prisma.projectResource.deleteMany({
+            where: {
+                projectId: projectId
+            }
+        });
+        await prisma.projectMeet.deleteMany({
+            where: {
+                projectId: projectId
+            }
+        });
+        await prisma.task.deleteMany({
+            where: {
+                projectId: projectId
+            }
+        });
+
+        // Delete the project itself
+        await prisma.project.delete({
             where: {
                 id: projectId
-            },
+            }
         });
 
         revalidatePath('/project/myproject');
+        revalidatePath('/project/joined');
 
-
-        const state: State = {
+        return {
             status: "success",
             message: "Your Request has been deleted successfully",
         };
-        return state;
 
     } catch (error) {
         console.error("Error deleting project:", error);
@@ -1146,6 +1173,8 @@ export async function createMembershipRequest(prevState: any, formData: FormData
                 status: "PENDING",
             }
         });
+
+        revalidatePath('project/search');
 
         if (data) {
             return {
