@@ -148,7 +148,7 @@ export default async function MyProjectRoute({
                     <CardHeader>
                         <CardTitle>Project Team</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-4">
+                    <CardContent className="grid gap-4 h-[40vh] overflow-y-scroll scroll-smooth">
                         {data?.ProjectMemberships.map((member) => (
                             <div key={member.User?.id} className="flex items-center gap-4">
                                 <Avatar>
@@ -168,7 +168,7 @@ export default async function MyProjectRoute({
                     <CardHeader>
                         <CardTitle>Project Resources</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-4">
+                    <CardContent className="grid gap-4 h-[40vh] overflow-y-scroll scroll-smooth">
                         {data?.ProjectResources.map((resource) => (
                             <div key={resource.id} className="flex items-center justify-between">
                                 <div>
@@ -194,7 +194,7 @@ export default async function MyProjectRoute({
                     <CardHeader>
                         <CardTitle>Assigned Tasks</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-4">
+                    <CardContent className="grid gap-4 h-[40vh] overflow-y-scroll scroll-smooth">
                         {data?.tasks.map((task) => (
                             <div key={task.id} className="flex items-center justify-between">
                                 <div>
@@ -203,12 +203,11 @@ export default async function MyProjectRoute({
                                         Assigned to {task.User?.firstName} {task.User?.lastName}
                                     </div>
                                 </div>
-                                <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                    task.status === "IN_PROGRESS" ? "bg-blue-100 text-blue-600" :
-                                    task.status === "DONE" ? "bg-green-100 text-green-600" :
-                                    task.status === "TODO" ? "bg-yellow-100 text-yellow-600" :
-                                    "bg-gray-100 text-gray-600"
-                                }`}>
+                                <div className={`px-2 py-1 rounded-full text-xs font-medium ${task.status === "IN_PROGRESS" ? "bg-blue-100 text-blue-600" :
+                                        task.status === "DONE" ? "bg-green-100 text-green-600" :
+                                            task.status === "TODO" ? "bg-yellow-100 text-yellow-600" :
+                                                "bg-gray-100 text-gray-600"
+                                    }`}>
                                     {task.status}
                                 </div>
                             </div>
